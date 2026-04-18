@@ -1,14 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Silence Turbopack conflict while we use --webpack
-  turbopack: {},
-  webpack: (config, { dev, isServer }) => {
-    // Completely disable persistent caching to avoid 37MB .pack files
-    if (config.cache && !dev) {
-      config.cache = false;
-    }
-    return config;
-  },
+    output: 'export',
+    images: {
+        unoptimized: true,
+    },
+    // This ensures modern builds don't get stuck on old cache files
+    webpack: (config, { dev }) => {
+        if (config.cache && !dev) {
+            config.cache = false;
+        }
+        return config;
+    },
 };
 
 export default nextConfig;
