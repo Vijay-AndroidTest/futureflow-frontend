@@ -43,6 +43,13 @@ const myPortableTextComponents = {
   },
 };
 
+export async function generateStaticParams() {
+  const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`);
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export default async function PostPage({ params }) {
   // Await the params for Next.js 16+
   const { slug } = await params; 
