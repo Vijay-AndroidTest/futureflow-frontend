@@ -1,8 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+@theme {
+  --color-brand-blue: #2563eb;
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -19,7 +20,7 @@ body {
 }
 
 .swiper-pagination-bullet-active {
-  background: #2563eb !important;
+  background: var(--color-brand-blue) !important;
   width: 20px !important;
   border-radius: 4px !important;
 }
