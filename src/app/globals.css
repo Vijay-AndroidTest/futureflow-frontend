@@ -6,20 +6,27 @@
   --color-brand-dark: #0f172a;
 }
 
-@layer base {
-  body {
-    @apply font-sans bg-[#fbfcfd] text-slate-900 antialiased;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-  }
+/* Base Styles */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #fbfcfd;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom Utilities for Premium Look */
 .glass-effect {
-  @apply bg-white/70 backdrop-blur-xl border border-white/20;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-br from-slate-900 via-slate-800 to-slate-600;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to bottom right, #0f172a, #1e293b, #475569);
 }
 
 .card-shadow {
@@ -27,7 +34,13 @@
 }
 
 .card-hover {
-  @apply transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-blue-500/30;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  border-color: rgba(37, 99, 235, 0.2);
 }
 
 /* Fix Swiper pagination dots position */
@@ -38,9 +51,15 @@
 }
 
 .swiper-pagination-bullet {
-  @apply bg-slate-300 opacity-100 w-2 h-2 transition-all duration-300;
+  background: #cbd5e1 !important;
+  opacity: 1 !important;
+  width: 8px !important;
+  height: 8px !important;
+  transition: all 0.3s ease !important;
 }
 
 .swiper-pagination-bullet-active {
-  @apply bg-blue-600 w-8 rounded-full !important;
+  background: #2563eb !important;
+  width: 32px !important;
+  border-radius: 99px !important;
 }
