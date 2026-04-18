@@ -3,8 +3,6 @@ import Link from "next/link";
 import { client } from "../sanity/client";
 import { urlFor } from "../sanity/imageBuilder";
 
-export const revalidate = 0;
-
 export default async function RootLayout({ children }) {
   const settings = await client.fetch(`*[_type == "siteSettings"][0]`);
 
