@@ -3,8 +3,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Link from "next/link";
 import { urlFor } from "../sanity/imageBuilder";
-import "swiper/css";
-import "swiper/css/pagination";
+// Replace the old imports with these:
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export default function FeaturedSlider({ featuredPosts }: { featuredPosts: any[] }) {
   return (
