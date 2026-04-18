@@ -3,8 +3,6 @@ import FeaturedSlider from "../components/FeaturedSlider";
 import Link from "next/link";
 import { urlFor } from "../sanity/imageBuilder";
 
-export const revalidate = 0;
-
 export default async function Home() {
   const data = await client.fetch(`{
     "settings": *[_type == "siteSettings"][0]{
