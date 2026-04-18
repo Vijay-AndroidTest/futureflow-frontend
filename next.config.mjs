@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Turbopack is default in Next 16.
-  // We will handle the cache issue via the build command instead.
+  // Silence Turbopack conflict while we use --webpack
+  turbopack: {},
+  webpack: (config, { dev, isServer }) => {
+    // Completely disable persistent caching to avoid 37MB .pack files
+    if (config.cache && !dev) {
+      config.cache = false;
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
