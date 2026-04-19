@@ -13,106 +13,162 @@ export default async function Home() {
   }`);
 
   const { settings, posts } = data;
-  const featuredIds = settings?.featuredContent?.map((p: any) => p._id) || [];
-  const gridPosts = posts?.filter((p: any) => !featuredIds.includes(p._id)) || [];
+
+  // Split posts for the editorial layout
+  const heroPost = posts?.[0];
+  const sidePosts = posts?.slice(1, 3);
+  const storyGridPosts = posts?.slice(3, 7);
+  const latestArticles = posts?.slice(7, 11);
 
   return (
-    <div className="min-h-screen">
-      <main className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen bg-[#f9f9fb]">
+      <main className="max-w-7xl mx-auto px-6 py-12">
         
-        {/* --- PREMIUM HERO SECTION --- */}
-        <header className="py-24 md:py-40 text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-100 rounded-full mb-8">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-            </span>
-            <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Live: AI Index v4.0</span>
+        {/* --- DYNAMIC HERO SECTION (Editorial Layout) --- */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-20">
+          
+          {/* Main Hero Story */}
+          <div className="lg:col-span-7 bg-[#4a4a55] rounded-3xl p-10 md:p-16 text-white relative overflow-hidden flex flex-col justify-end min-h-[600px] group">
+            <div className="absolute top-10 left-10 z-10">
+               <span className="px-3 py-1 bg-[#f08554] text-[10px] font-black uppercase tracking-widest rounded">UPDATE NOW →</span>
+            </div>
+            <div className="relative z-10 max-w-lg">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8">
+                {settings?.heroTitle || "Master AI. Rank faster. Build more."}
+              </h1>
+              <p className="text-slate-300 text-lg mb-10 font-medium leading-relaxed">
+                The best AI tools, battle-tested prompts, and SEO workflows — curated weekly for creators and marketers.
+              </p>
+              <div className="flex gap-4">
+                <button className="bg-white text-slate-900 px-8 py-3 rounded-lg font-bold text-sm hover:bg-slate-100 transition-all">Explore tools</button>
+                <button className="bg-white/10 backdrop-blur text-white px-8 py-3 rounded-lg font-bold text-sm hover:bg-white/20 transition-all border border-white/10">Browse all guides</button>
+              </div>
+
+              <div className="flex gap-12 mt-16 pt-10 border-t border-white/10">
+                 <div>
+                   <div className="text-2xl font-black">142</div>
+                   <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">PROMPTS OPS</div>
+                 </div>
+                 <div>
+                   <div className="text-2xl font-black">48</div>
+                   <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TOOL REVIEWS</div>
+                 </div>
+                 <div>
+                   <div className="text-2xl font-black">31K</div>
+                   <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">READERS</div>
+                 </div>
+              </div>
+            </div>
+            {/* Background Image Overlay (Placeholder for post mainImage) */}
+            {heroPost?.mainImage && (
+              <img src={urlFor(heroPost.mainImage).width(1200).url()} className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-1000" alt="" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
           </div>
 
-          <h1 className="text-5xl md:text-8xl font-[800] tracking-tight text-slate-900 leading-[0.95] mb-10 text-gradient">
-            {settings?.heroTitle || "Discover & Compare the Best AI Tools."}
-          </h1>
-          
-          <p className="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-            Explore 1,000+ vetted AI tools to supercharge your workflow. Built for founders, creators, and engineers.
-          </p>
-
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] w-full mb-4">Trending Searches:</span>
-            {settings?.trendingSearches?.map((tag: string, i: number) => (
-              <span key={i} className="px-6 py-3 bg-white border border-slate-200 rounded-full text-[11px] font-bold text-slate-600 hover:border-blue-600 hover:text-blue-600 transition-all cursor-pointer shadow-sm hover:shadow-md active:scale-95">
-                {tag}
-              </span>
+          {/* Sidebar Featured Stories */}
+          <div className="lg:col-span-5 flex flex-col gap-8">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Featured THIS WEEK</h4>
+            {sidePosts?.map((post: any) => (
+              <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex gap-6 p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-xl transition-all h-full">
+                <div className="w-1/3 aspect-[1280/720] overflow-hidden rounded-xl bg-slate-100">
+                  {post.mainImage && (
+                    <img src={urlFor(post.mainImage).width(400).url()} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
+                  )}
+                </div>
+                <div className="w-2/3 flex flex-col justify-center">
+                   <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-2">AI TOOLS</span>
+                   <h3 className="text-lg font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors line-clamp-2">{post.title}</h3>
+                   <div className="mt-3 text-[9px] font-bold text-slate-400 uppercase flex gap-4">
+                      <span>May 10</span>
+                      <span>5 min read</span>
+                   </div>
+                </div>
+              </Link>
             ))}
           </div>
-        </header>
+        </section>
 
-        {/* --- FEATURED SLIDER SECTION --- */}
-        {settings?.featuredContent?.length > 0 && (
-          <section className="relative z-10 mb-32">
-            <FeaturedSlider featuredPosts={settings.featuredContent} />
-          </section>
-        )}
+        {/* --- TOP STORIES (Grid Layout) --- */}
+        <section className="mb-32">
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic">Top stories</h2>
+            <Link href="#" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Read All →</Link>
+          </div>
 
-        {/* --- LATEST ADDITIONS HEADER --- */}
-        <div className="flex flex-col items-center mb-16">
-          <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-blue-600 mb-4">
-            Latest Database Additions
-          </h2>
-          <div className="h-1 w-12 bg-blue-600 rounded-full"></div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+             {storyGridPosts?.map((post: any, i: number) => (
+                <Link
+                  href={`/post/${post.slug?.current}`}
+                  key={post._id}
+                  className={`group relative overflow-hidden rounded-3xl ${i === 0 ? "md:col-span-2 md:row-span-2 min-h-[500px]" : "min-h-[250px] md:col-span-1"}`}
+                >
+                  <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-80"></div>
+                  {post.mainImage && (
+                    <img src={urlFor(post.mainImage).width(800).url()} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt="" />
+                  )}
+                  <div className="absolute bottom-8 left-8 right-8 z-20">
+                     <span className="text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/10 backdrop-blur rounded mb-4 inline-block">Category</span>
+                     <h3 className={`text-white font-black leading-tight ${i === 0 ? "text-3xl" : "text-lg"} group-hover:text-[#f08554] transition-colors`}>{post.title}</h3>
+                  </div>
+                </Link>
+             ))}
+          </div>
+        </section>
+
+        {/* --- TAG CLOUD --- */}
+        <div className="flex flex-wrap justify-center gap-3 mb-32 max-w-3xl mx-auto">
+          {['All topics', 'AI Tools', 'Prompts', 'SEO & Growth', 'Make Money', 'Guides', 'AI Video', 'Trends'].map((tag) => (
+            <span key={tag} className="px-6 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black text-slate-500 uppercase tracking-widest hover:border-[#f08554] hover:text-[#f08554] transition-all cursor-pointer shadow-sm">
+              {tag}
+            </span>
+          ))}
         </div>
 
-        {/* --- TOOLS GRID --- */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-32">
-          {gridPosts.map((post: any) => (
-            <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex flex-col h-full">
-              <article className="bg-white rounded-[2rem] border border-slate-200 overflow-hidden card-shadow card-hover flex flex-col h-full">
-                
-                {/* Image Wrap */}
-                <div className="aspect-[16/10] overflow-hidden bg-slate-100 relative">
+        {/* --- LATEST ARTICLES --- */}
+        <section className="pb-24">
+           <div className="flex justify-between items-center mb-12">
+            <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic">Latest articles</h2>
+            <Link href="#" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Archive →</Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {latestArticles?.map((post: any) => (
+              <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex flex-col h-full bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all">
+                <div className="aspect-[1280/720] overflow-hidden bg-slate-100">
                   {post.mainImage && (
-                    <img 
-                      src={urlFor(post.mainImage).width(600).url()} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                      alt={post.title} 
-                    />
+                    <img src={urlFor(post.mainImage).width(600).url()} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
                   )}
-                  <div className="absolute top-6 left-6">
-                    <span className="px-3 py-1 bg-white/90 backdrop-blur text-[9px] font-black uppercase tracking-widest rounded-lg shadow-sm">
-                      Tool Index
-                    </span>
-                  </div>
                 </div>
-
-                {/* Text Content */}
-                <div className="p-8 flex flex-col flex-grow">
-                  <h3 className="text-2xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-tight mb-6">
-                    {post.title}
-                  </h3>
-                  
-                  <div className="mt-auto pt-6 border-t border-slate-50 flex justify-between items-center">
-                    <div className="flex flex-col">
-                      <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Entry Date</span>
-                      <span className="text-[11px] font-bold text-slate-900">{new Date(post.publishedAt).getFullYear()}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 group-hover:gap-4 transition-all duration-300">
-                      <span className="text-slate-900 font-bold text-[10px] uppercase tracking-widest">
-                        View Review
-                      </span>
-                      <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center group-hover:bg-blue-600 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
+                <div className="p-8">
+                   <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-4 inline-block">Tutorial</span>
+                   <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-6">{post.title}</h3>
+                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">May 10 — 12:30 PM</div>
                 </div>
-              </article>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </section>
+
+        {/* --- NEWSLETTER CALLOUT --- */}
+        <section className="bg-[#4a4a55] rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden">
+           <div className="relative z-10 max-w-2xl mx-auto">
+             <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-8">
+               Stay ahead of <span className="text-slate-400">every AI shift</span>
+             </h2>
+             <p className="text-slate-300 mb-12 text-lg font-medium leading-relaxed">
+               One email a week. The best AI tools, prompts, and SEO moves — curated, not AI-generated. Trusted by 31,000+ creators.
+             </p>
+             <form className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
+               <input type="email" placeholder="your@email.com" className="flex-grow px-8 py-4 rounded-xl bg-white text-slate-900 font-bold focus:outline-none focus:ring-4 focus:ring-orange-500/20" />
+               <button className="bg-[#f08554] text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-orange-950/20">Subscribe</button>
+             </form>
+             <p className="mt-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">NO SPAM. UNLOCK EXCLUSIVE CONTENT. FREE FOREVER.</p>
+           </div>
+           <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500 opacity-10 blur-[150px] -mr-48 -mt-48"></div>
+           <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500 opacity-10 blur-[150px] -ml-48 -mb-48"></div>
+        </section>
+
       </main>
     </div>
   );

@@ -2,64 +2,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @theme {
-  --color-brand-blue: #2563eb;
-  --color-brand-dark: #0f172a;
+  --color-brand-orange: #f08554;
+  --color-brand-dark: #2d2d35;
+  --color-brand-muted: #4a4a55;
+  --color-brand-bg: #f9f9fb;
 }
 
 /* Base Styles */
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #fbfcfd;
-  color: #0f172a;
+  background-color: #f9f9fb;
+  color: #2d2d35;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Utilities for Premium Look */
-.glass-effect {
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
+/* Typography Utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+.editorial-title {
+  @apply tracking-tight leading-[0.9] font-extrabold;
+}
+
+/* UI Elements */
+.glass-nav {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.text-gradient {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(to bottom right, #0f172a, #1e293b, #475569);
+.btn-primary {
+  @apply bg-brand-orange text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:brightness-110 transition-all shadow-lg shadow-brand-orange/20;
 }
 
-.card-shadow {
-  box-shadow: 0 0 0 1px rgba(0,0,0,.03), 0 2px 4px rgba(0,0,0,.05), 0 12px 24px rgba(0,0,0,.05);
+.card-editorial {
+  @apply bg-white rounded-2xl overflow-hidden border border-slate-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
 }
 
-.card-hover {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.hero-stats {
+  @apply flex gap-8 border-t border-white/10 pt-8 mt-8;
 }
 
-.card-hover:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-  border-color: rgba(37, 99, 235, 0.2);
-}
-
-/* Fix Swiper pagination dots position */
-.swiper-pagination {
-  position: relative !important;
-  bottom: 0px !important;
-  margin-top: 24px;
-}
-
+/* Custom Swiper Styles */
 .swiper-pagination-bullet {
   background: #cbd5e1 !important;
   opacity: 1 !important;
-  width: 8px !important;
-  height: 8px !important;
-  transition: all 0.3s ease !important;
 }
 
 .swiper-pagination-bullet-active {
-  background: #2563eb !important;
-  width: 32px !important;
-  border-radius: 99px !important;
+  background: #f08554 !important;
 }

@@ -9,82 +9,79 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="min-h-screen">
-        <nav className="w-full glass-effect sticky top-0 z-50 border-b border-slate-200/50">
-          <div className="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center group">
-              {settings?.logo ? (
-                <img src={urlFor(settings.logo).height(40).url()} alt="Logo" className="h-7 md:h-9 w-auto" />
-              ) : (
-                <span className="text-xl md:text-2xl font-black tracking-tighter uppercase italic text-slate-900">
-                  FUTUREFLOW<span className="text-blue-600 group-hover:text-blue-500 transition-colors">AI</span>
+        {/* Top Link Nav */}
+        <div className="bg-white border-b border-slate-100 py-2 hidden md:block">
+           <div className="max-w-7xl mx-auto px-6 flex justify-start gap-8">
+             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-900">Homepage</span>
+             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-900">Article</span>
+             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-900">Category</span>
+           </div>
+        </div>
+
+        {/* Main Navigation */}
+        <nav className="sticky top-0 z-50 bg-white border-b border-slate-100 h-20 flex items-center">
+          <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
+            {/* Logo Section */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-8 h-8 bg-slate-900 flex items-center justify-center rounded">
+                <span className="text-white text-lg font-black tracking-tighter italic">F</span>
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
+                  FutureFlow <span className="text-[#f08554]">AI</span>
                 </span>
-              )}
+              </div>
             </Link>
 
-            {/* Nav Menu */}
-            <div className="hidden md:flex items-center gap-8">
-              {settings?.mainMenu?.map((item, i) => (
-                <Link 
-                  key={i} 
-                  href={item.link || "#"} 
-                  className={item.isButton 
-                    ? "bg-slate-900 text-white px-6 py-2.5 rounded-full text-[11px] font-bold hover:bg-blue-600 transition-all shadow-lg shadow-slate-200 hover:shadow-blue-200"
-                    : "text-slate-500 hover:text-slate-900 text-[11px] font-bold uppercase tracking-widest transition-all"
-                  }
-                >
-                  {item.label}
+            {/* Desktop Menu */}
+            <div className="hidden lg:flex items-center gap-10">
+              {['AI Tools', 'Prompts', 'SEO', 'Guides', 'Trends', 'More Stories'].map((item) => (
+                <Link key={item} href="#" className="text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-[0.2em] transition-all">
+                  {item}
                 </Link>
               ))}
-            </div>
-
-            {/* Mobile Menu Icon (Placeholder) */}
-            <div className="md:hidden text-slate-900">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-              </svg>
+              <div className="h-4 w-px bg-slate-200 mx-2"></div>
+              <Link href="#" className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Sign In</Link>
+              <Link href="#" className="bg-[#f08554] text-white px-6 py-2.5 rounded-lg text-[10px] font-black hover:brightness-110 transition-all shadow-lg shadow-orange-100 uppercase tracking-[0.2em]">
+                Subscribe Free
+              </Link>
             </div>
           </div>
         </nav>
 
-        <main className="pt-8">{children}</main>
+        <main>{children}</main>
 
-        <footer className="bg-slate-900 text-slate-400 py-20 px-6 mt-32">
+        {/* Editorial Footer */}
+        <footer className="bg-[#2d2d35] text-white py-24 px-6 mt-32">
           <div className="max-w-7xl mx-auto">
-             <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
-               <div className="max-w-xs">
-                 <span className="text-white font-black text-2xl tracking-tighter uppercase mb-6 block">FUTUREFLOW AI</span>
-                 <p className="text-sm leading-relaxed text-slate-500">
-                   The world's most comprehensive database of AI tools, compared and ranked for the modern professional.
+             <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+               <div className="col-span-1">
+                 <span className="text-2xl font-black italic tracking-tighter uppercase mb-6 block">
+                   FutureFlow <span className="text-[#f08554]">AI</span>
+                 </span>
+                 <p className="text-sm text-slate-400 leading-relaxed max-w-xs font-medium">
+                   Your daily source for AI mastery — tools, prompts, and growth strategies for the creators of tomorrow.
                  </p>
                </div>
 
-               <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
-                 <div>
-                   <h4 className="text-white text-[10px] font-black uppercase tracking-[0.2em] mb-6">Directory</h4>
-                   <ul className="space-y-4 text-xs font-bold">
-                     <li className="hover:text-white transition-colors cursor-pointer">Top Rated</li>
-                     <li className="hover:text-white transition-colors cursor-pointer">Recently Added</li>
-                     <li className="hover:text-white transition-colors cursor-pointer">Categories</li>
+               {['AI Tools', 'Learn', 'Support'].map((title, i) => (
+                 <div key={i}>
+                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8">{title}</h4>
+                   <ul className="space-y-4 text-xs font-bold text-slate-300">
+                     <li className="hover:text-[#f08554] cursor-pointer transition-colors">Image Generators</li>
+                     <li className="hover:text-[#f08554] cursor-pointer transition-colors">Video Editors</li>
+                     <li className="hover:text-[#f08554] cursor-pointer transition-colors">SEO Workflows</li>
                    </ul>
                  </div>
-                 <div>
-                   <h4 className="text-white text-[10px] font-black uppercase tracking-[0.2em] mb-6">Company</h4>
-                   <ul className="space-y-4 text-xs font-bold">
-                     <li className="hover:text-white transition-colors cursor-pointer">About Us</li>
-                     <li className="hover:text-white transition-colors cursor-pointer">Submit Tool</li>
-                     <li className="hover:text-white transition-colors cursor-pointer">Privacy</li>
-                   </ul>
-                 </div>
-               </div>
+               ))}
              </div>
 
-             <div className="pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
-               <p className="text-[10px] tracking-[0.1em] uppercase font-bold text-slate-600">
-                 {settings?.footerCopyright || `© ${new Date().getFullYear()} FutureFlow AI. All Rights Reserved.`}
-               </p>
-               <div className="flex gap-6 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all">
-                 {/* Social links placeholder */}
+             <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">© 2026 FUTUREFLOW AI — ALL RIGHTS RESERVED</p>
+               <div className="flex gap-10 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                 <span>Next JS</span>
+                 <span>Sanity</span>
+                 <span>Cloudflare</span>
                </div>
              </div>
           </div>
