@@ -2,6 +2,7 @@ import { urlFor } from "../../../sanity/imageBuilder";
 import { client } from "../../../sanity/client";       
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const myPortableTextComponents = {
   types: {
@@ -73,15 +74,7 @@ export default async function PostPage({ params }) {
   );
 
   if (!post) {
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-[#f9f9fb]">
-            <div className="text-center">
-                <h1 className="text-9xl font-black text-slate-200 italic-header italic">404</h1>
-                <p className="text-slate-400 font-bold uppercase tracking-widest mt-4">Story not found</p>
-                <Link href="/" className="mt-8 inline-block bg-[#f08554] text-white px-8 py-3 rounded-lg font-black text-[10px] uppercase tracking-widest">Back to Homepage</Link>
-            </div>
-        </div>
-    );
+    redirect('/');
   }
 
   return (
