@@ -27,55 +27,62 @@ export default function FeaturedSlider({ featuredPosts }: { featuredPosts: any[]
       >
         {featuredPosts.map((post) => (
           <SwiperSlide key={post._id}>
-            <Link href={`/post/${post.slug?.current}`} className="flex flex-col lg:flex-row min-h-[500px] lg:h-[600px]">
-              {/* Image side - 60% width on desktop */}
-              <div className="lg:w-3/5 relative overflow-hidden bg-slate-100">
+            {/*
+                We use a grid where the image defines the height.
+                lg:aspect-video on the image container ensures the 1280x720 ratio is respected.
+            */}
+            <Link href={`/post/${post.slug?.current}`} className="flex flex-col lg:grid lg:grid-cols-12 min-h-[500px]">
+
+              {/* Image Side - Locked to 16:9 Aspect Ratio */}
+              <div className="lg:col-span-7 relative overflow-hidden bg-slate-100 aspect-video lg:aspect-auto">
                 {post.mainImage && (
                   <img
                     src={urlFor(post.mainImage).width(1280).height(720).url()}
-                    className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110"
-                    alt={post.title}
+                    className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105"
+                    alt={post.mainImage.alt || post.title}
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
-                <div className="absolute top-8 left-8">
-                   <span className="px-4 py-1.5 bg-[#f08554] text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-lg shadow-lg shadow-orange-500/20">
-                     Featured Story
+                <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent"></div>
+                <div className="absolute top-6 left-6">
+                   <span className="px-4 py-1.5 bg-[#f08554] text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-lg shadow-lg">
+                     EDITOR'S CHOICE
                    </span>
                 </div>
               </div>
 
-              {/* Content side - 40% width on desktop */}
-              <div className="lg:w-2/5 p-10 lg:p-16 flex flex-col justify-center bg-white border-l border-slate-50">
-                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.3em] mb-6 block">
-                  LATEST INSIGHTS
+              {/* Content Side - Matches Image Height */}
+              <div className="lg:col-span-5 p-8 lg:p-12 flex flex-col justify-center bg-white">
+                <span className="text-[#f08554] text-[9px] font-black uppercase tracking-[0.3em] mb-4 block">
+                  INSIGHT REPORT
                 </span>
 
-                <h2 className="text-3xl lg:text-5xl font-black leading-[1.1] mb-8 text-slate-900 tracking-tighter italic">
+                <h2 className="text-2xl lg:text-4xl font-black leading-tight mb-6 text-slate-900 tracking-tighter italic uppercase">
                   {post.title}
                 </h2>
 
-                <p className="text-slate-500 text-lg leading-relaxed mb-10 line-clamp-3 font-medium">
-                  {post.excerpt || "Explore the latest breakthroughs in AI technology and how they are reshaping the future of digital workflows and creative automation."}
+                <p className="text-slate-500 text-sm lg:text-base leading-relaxed mb-8 line-clamp-3 font-medium">
+                  {post.description || "Deep dive into the latest AI breakthroughs and technical workflows."}
                 </p>
 
-                <div className="flex items-center gap-4 group/btn">
+                <div className="flex items-center gap-4 group/btn mt-auto lg:mt-0">
                   <span className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">
                     Read Full Story
                   </span>
                   <div className="w-12 h-px bg-slate-900 transition-all duration-300 group-hover/btn:w-20 group-hover/btn:bg-[#f08554]"></div>
                 </div>
 
-                <div className="mt-16 pt-8 border-t border-slate-50 flex gap-8">
+                <div className="mt-10 pt-6 border-t border-slate-50 flex gap-8">
                    <div>
-                     <div className="text-xl font-black text-slate-900 italic tracking-tighter">
+                     <div className="text-lg font-black text-slate-900 italic tracking-tighter">
                         {new Date(post.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                      </div>
-                     <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">PUBLISHED</div>
+                     <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">PUBLISHED</div>
                    </div>
                    <div>
-                     <div className="text-xl font-black text-slate-900 italic tracking-tighter">5 MIN</div>
-                     <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">READ TIME</div>
+                     <div className="text-lg font-black text-slate-900 italic tracking-tighter">
+                        {post.readTime || 5} MIN
+                     </div>
+                     <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">READ TIME</div>
                    </div>
                 </div>
               </div>
@@ -83,8 +90,6 @@ export default function FeaturedSlider({ featuredPosts }: { featuredPosts: any[]
           </SwiperSlide>
         ))}
       </Swiper>
-
-      {/* Custom styles for swiper bullets if needed in globals.css, but Tailwind classes added above handle most of it */}
     </div>
   );
 }

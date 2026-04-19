@@ -55,7 +55,7 @@ export default async function RootLayout({ children }) {
                   </div>
                   <div className="flex flex-col leading-none">
                     <span className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
-                      {config?.siteName || "FutureFlow"} <span className="text-[#f08554]">AI</span>
+                      {config?.siteName?.toLowerCase().includes("ai") ? config.siteName.replace(/ai/gi, '').trim() : (config?.siteName || "FutureFlow")} <span className="text-[#f08554]">AI</span>
                     </span>
                   </div>
                 </>
