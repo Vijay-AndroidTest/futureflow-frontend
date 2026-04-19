@@ -14,9 +14,9 @@ export default async function Home() {
 
   const { settings, posts } = data;
 
-  // Split posts for the editorial layout
+  // Use CMS Featured Content for the Sidebar, or fallback to latest posts
+  const sidePosts = settings?.featuredContent || posts?.slice(1, 4);
   const heroPost = posts?.[0];
-  const sidePosts = posts?.slice(1, 4); // Fetch 3 images/posts for sidebar as requested
   const storyGridPosts = posts?.slice(4, 8);
   const latestArticles = posts?.slice(8, 12);
 
@@ -29,15 +29,19 @@ export default async function Home() {
           
           {/* Main Hero Story */}
           <div className="lg:col-span-7 bg-[#4a4a55] rounded-3xl p-10 md:p-16 text-white relative overflow-hidden flex flex-col justify-end min-h-[600px] group">
-            <div className="absolute top-10 left-10 z-10">
-               <span className="px-3 py-1 bg-[#f08554] text-[10px] font-black uppercase tracking-widest rounded">UPDATE NOW →</span>
-            </div>
+            {settings?.showAnnouncementBar && (
+              <div className="absolute top-10 left-10 z-10">
+                 <span className="px-3 py-1 bg-[#f08554] text-[10px] font-black uppercase tracking-widest rounded">
+                   {settings.announcementText || "UPDATE NOW →"}
+                 </span>
+              </div>
+            )}
             <div className="relative z-10 max-w-lg">
               <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8">
-                {settings?.heroTitle || "Master AI. Rank faster. Build more."}
+                {settings?.heroHeadline || "Master AI. Rank faster. Build more."}
               </h1>
               <p className="text-slate-300 text-lg mb-10 font-medium leading-relaxed">
-                The best AI tools, battle-tested prompts, and SEO workflows — curated weekly for creators and marketers.
+                {settings?.heroSubtitle || "The best AI tools, battle-tested prompts, and SEO workflows — curated weekly for creators and marketers."}
               </p>
               <div className="flex gap-4">
                 <button className="bg-white text-slate-900 px-8 py-3 rounded-lg font-bold text-sm hover:bg-slate-100 transition-all uppercase tracking-widest">Explore tools</button>
@@ -76,10 +80,10 @@ export default async function Home() {
                   )}
                 </div>
                 <div className="w-2/3 flex flex-col justify-center">
-                   <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-2">AI TOOLS</span>
+                   <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-2">FEATURED</span>
                    <h3 className="text-lg font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors line-clamp-2">{post.title}</h3>
                    <div className="mt-3 text-[9px] font-bold text-slate-400 uppercase flex gap-4">
-                      <span>May 10</span>
+                      <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                       <span>5 min read</span>
                    </div>
                 </div>
@@ -87,6 +91,15 @@ export default async function Home() {
             ))}
           </div>
         </section>
+
+        {/* --- TAG CLOUD --- */}
+        <div className="flex flex-wrap justify-center gap-3 mb-32 max-w-3xl mx-auto">
+          {(settings?.trendingTags || ['All topics', 'AI Tools', 'Prompts', 'SEO & Growth']).map((tag: string) => (
+            <span key={tag} className="px-6 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black text-slate-500 uppercase tracking-widest hover:border-[#f08554] hover:text-[#f08554] transition-all cursor-pointer shadow-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
 
         {/* --- TOP STORIES (Grid Layout) --- */}
         <section className="mb-32">
@@ -107,22 +120,13 @@ export default async function Home() {
                     <img src={urlFor(post.mainImage).width(1280).height(720).url()} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt="" />
                   )}
                   <div className="absolute bottom-8 left-8 right-8 z-20">
-                     <span className="text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/10 backdrop-blur rounded mb-4 inline-block">Category</span>
+                     <span className="text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/10 backdrop-blur rounded mb-4 inline-block">TRENDING</span>
                      <h3 className={`text-white font-black leading-tight ${i === 0 ? "text-3xl" : "text-lg"} group-hover:text-[#f08554] transition-colors`}>{post.title}</h3>
                   </div>
                 </Link>
              ))}
           </div>
         </section>
-
-        {/* --- TAG CLOUD --- */}
-        <div className="flex flex-wrap justify-center gap-3 mb-32 max-w-3xl mx-auto">
-          {['All topics', 'AI Tools', 'Prompts', 'SEO & Growth', 'Make Money', 'Guides', 'AI Video', 'Trends'].map((tag) => (
-            <span key={tag} className="px-6 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black text-slate-500 uppercase tracking-widest hover:border-[#f08554] hover:text-[#f08554] transition-all cursor-pointer shadow-sm">
-              {tag}
-            </span>
-          ))}
-        </div>
 
         {/* --- LATEST ARTICLES --- */}
         <section className="pb-24">
@@ -140,9 +144,11 @@ export default async function Home() {
                   )}
                 </div>
                 <div className="p-8">
-                   <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-4 inline-block">Tutorial</span>
+                   <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-4 inline-block">TUTORIAL</span>
                    <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-6">{post.title}</h3>
-                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">May 10 — 12:30 PM</div>
+                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">
+                     {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                   </div>
                 </div>
               </Link>
             ))}

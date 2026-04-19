@@ -3,6 +3,16 @@ import Link from "next/link";
 import { client } from "../sanity/client";
 import { urlFor } from "../sanity/imageBuilder";
 
+export async function generateMetadata() {
+  const settings = await client.fetch(`*[_type == "siteSettings"][0]{ favicon, heroHeadline }`);
+  return {
+    title: settings?.heroHeadline || "FutureFlow AI",
+    icons: {
+      icon: settings?.favicon ? urlFor(settings.favicon).url() : "/favicon.ico",
+    },
+  };
+}
+
 export default async function RootLayout({ children }) {
   const settings = await client.fetch(`*[_type == "siteSettings"][0]`);
 
@@ -21,16 +31,26 @@ export default async function RootLayout({ children }) {
         {/* Main Navigation */}
         <nav className="sticky top-0 z-50 bg-white border-b border-slate-100 h-20 flex items-center">
           <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
-            {/* Logo Section */}
+            {/* Dynamic Logo Section */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-8 h-8 bg-slate-900 flex items-center justify-center rounded">
-                <span className="text-white text-lg font-black tracking-tighter italic">F</span>
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
-                  FutureFlow <span className="text-[#f08554]">AI</span>
-                </span>
-              </div>
+              {settings?.logo ? (
+                <img
+                  src={urlFor(settings.logo).height(40).url()}
+                  alt="Logo"
+                  className="h-10 w-auto object-contain"
+                />
+              ) : (
+                <>
+                  <div className="w-8 h-8 bg-slate-900 flex items-center justify-center rounded">
+                    <span className="text-white text-lg font-black tracking-tighter italic">F</span>
+                  </div>
+                  <div className="flex flex-col leading-none">
+                    <span className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
+                      FutureFlow <span className="text-[#f08554]">AI</span>
+                    </span>
+                  </div>
+                </>
+              )}
             </Link>
 
             {/* Desktop Menu */}
@@ -51,28 +71,46 @@ export default async function RootLayout({ children }) {
           <div className="max-w-7xl mx-auto">
              <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
                <div className="col-span-1">
-                 <span className="text-2xl font-black italic tracking-tighter uppercase mb-6 block">
-                   FutureFlow <span className="text-[#f08554]">AI</span>
-                 </span>
+                 {settings?.logo ? (
+                    <img src={urlFor(settings.logo).height(30).url()} alt="Logo" className="h-8 w-auto mb-6 brightness-0 invert" />
+                 ) : (
+                    <span className="text-2xl font-black italic tracking-tighter uppercase mb-6 block">
+                      FutureFlow <span className="text-[#f08554]">AI</span>
+                    </span>
+                 )}
                  <p className="text-sm text-slate-400 leading-relaxed max-w-xs font-medium">
-                   Your daily source for AI mastery — tools, prompts, and growth strategies for the creators of tomorrow.
+                   {settings?.footerDescription || "Your daily source for AI mastery — tools, prompts, and growth strategies for the creators of tomorrow."}
                  </p>
                </div>
 
-               {['AI Tools', 'Learn', 'Support'].map((title, i) => (
+               {/* Map Dynamic Footer Columns if they exist, else fallback */}
+               {settings?.footerColumns ? settings.footerColumns.map((col, i) => (
                  <div key={i}>
-                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8">{title}</h4>
+                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8">{col.title}</h4>
                    <ul className="space-y-4 text-xs font-bold text-slate-300">
-                     <li className="hover:text-[#f08554] cursor-pointer transition-colors">Image Generators</li>
-                     <li className="hover:text-[#f08554] cursor-pointer transition-colors">Video Editors</li>
-                     <li className="hover:text-[#f08554] cursor-pointer transition-colors">SEO Workflows</li>
+                     {col.links?.map((link, j) => (
+                        <li key={j} className="hover:text-[#f08554] cursor-pointer transition-colors">{link.label}</li>
+                     ))}
                    </ul>
                  </div>
-               ))}
+               )) : (
+                ['AI Tools', 'Learn', 'Support'].map((title, i) => (
+                  <div key={i}>
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8">{title}</h4>
+                    <ul className="space-y-4 text-xs font-bold text-slate-300">
+                      <li className="hover:text-[#f08554] cursor-pointer transition-colors">Image Generators</li>
+                      <li className="hover:text-[#f08554] cursor-pointer transition-colors">Video Editors</li>
+                      <li className="hover:text-[#f08554] cursor-pointer transition-colors">SEO Workflows</li>
+                    </ul>
+                  </div>
+                ))
+               )}
              </div>
 
              <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">© 2026 FUTUREFLOW AI — ALL RIGHTS RESERVED</p>
+               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                 {settings?.footerCopyright || `© ${new Date().getFullYear()} FUTUREFLOW AI — ALL RIGHTS RESERVED`}
+               </p>
              </div>
           </div>
         </footer>
