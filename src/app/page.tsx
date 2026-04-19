@@ -7,16 +7,19 @@ export default async function Home() {
   const data = await client.fetch(`{
     "settings": *[_type == "siteSettings"][0]{
       ...,
-      "featuredContent": featuredContent[]->{ _id, title, mainImage, slug, publishedAt }
+      "featuredContent": featuredContent[]->{ _id, title, mainImage, slug, publishedAt, excerpt }
     },
     "posts": *[_type == "post"] | order(publishedAt desc)
   }`);
 
   const { settings, posts } = data;
 
-  // Use CMS Featured Content for the Sidebar, or fallback to latest posts
-  const sidePosts = settings?.featuredContent || posts?.slice(1, 4);
+  // Featured posts for the new slider
+  const featuredPosts = settings?.featuredContent || posts?.slice(0, 3);
+
+  // Editorial grid logic
   const heroPost = posts?.[0];
+  const sidePosts = posts?.slice(1, 4);
   const storyGridPosts = posts?.slice(4, 8);
   const latestArticles = posts?.slice(8, 12);
 
@@ -37,7 +40,7 @@ export default async function Home() {
               </div>
             )}
             <div className="relative z-10 max-w-lg">
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8 italic">
                 {settings?.heroHeadline || "Master AI. Rank faster. Build more."}
               </h1>
               <p className="text-slate-300 text-lg mb-10 font-medium leading-relaxed">
@@ -69,7 +72,7 @@ export default async function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
           </div>
 
-          {/* Sidebar Featured Stories (3 Post Auto Roll Area) */}
+          {/* Sidebar Featured Stories */}
           <div className="lg:col-span-5 flex flex-col gap-8">
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Featured THIS WEEK</h4>
             {sidePosts?.map((post: any) => (
@@ -81,7 +84,7 @@ export default async function Home() {
                 </div>
                 <div className="w-2/3 flex flex-col justify-center">
                    <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-2">FEATURED</span>
-                   <h3 className="text-lg font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors line-clamp-2">{post.title}</h3>
+                   <h3 className="text-lg font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors line-clamp-2 italic">{post.title}</h3>
                    <div className="mt-3 text-[9px] font-bold text-slate-400 uppercase flex gap-4">
                       <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                       <span>5 min read</span>
@@ -90,6 +93,15 @@ export default async function Home() {
               </Link>
             ))}
           </div>
+        </section>
+
+        {/* --- NEW AUTO-ROLL FEATURED SLIDER --- */}
+        <section className="mb-32">
+           <div className="flex justify-between items-center mb-10">
+              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic">Editor's Choice</h2>
+              <div className="h-px flex-grow bg-slate-100 mx-8"></div>
+           </div>
+           <FeaturedSlider featuredPosts={featuredPosts} />
         </section>
 
         {/* --- TAG CLOUD --- */}
@@ -120,8 +132,8 @@ export default async function Home() {
                     <img src={urlFor(post.mainImage).width(1280).height(720).url()} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt="" />
                   )}
                   <div className="absolute bottom-8 left-8 right-8 z-20">
-                     <span className="text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/10 backdrop-blur rounded mb-4 inline-block">TRENDING</span>
-                     <h3 className={`text-white font-black leading-tight ${i === 0 ? "text-3xl" : "text-lg"} group-hover:text-[#f08554] transition-colors`}>{post.title}</h3>
+                     <span className="text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/10 backdrop-blur rounded mb-4 inline-block uppercase">TRENDING</span>
+                     <h3 className={`text-white font-black leading-tight ${i === 0 ? "text-3xl" : "text-lg"} group-hover:text-[#f08554] transition-colors italic`}>{post.title}</h3>
                   </div>
                 </Link>
              ))}
@@ -145,7 +157,7 @@ export default async function Home() {
                 </div>
                 <div className="p-8">
                    <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-4 inline-block">TUTORIAL</span>
-                   <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-6">{post.title}</h3>
+                   <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-6 italic">{post.title}</h3>
                    <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">
                      {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                    </div>
@@ -155,10 +167,10 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* --- GLOBAL CTA SECTION (Repurposed from Newsletter) --- */}
+        {/* --- GLOBAL CTA SECTION --- */}
         <section className="bg-[#4a4a55] rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden">
            <div className="relative z-10 max-w-2xl mx-auto">
-             <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-8">
+             <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-8 italic">
                {settings?.ctaTitle || "Master AI with our curated directory"}
              </h2>
              <p className="text-slate-300 mb-12 text-lg font-medium leading-relaxed">
