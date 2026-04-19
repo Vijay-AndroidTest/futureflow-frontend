@@ -12,53 +12,57 @@
 }
 
 /* Base Styles */
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #f9f9fb;
-  color: #2d2d35;
-  -webkit-font-smoothing: antialiased;
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f9f9fb;
+    color: #2d2d35;
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
-/* Editorial Typography */
-.italic-header {
+/* Editorial Typography Utility */
+@utility italic-header {
   font-family: 'Instrument Serif', serif;
   font-style: italic;
   letter-spacing: -0.02em;
 }
 
 /* Ensure 16:9 Thumbnails Everywhere */
-.thumbnail-16-9 {
+@utility thumbnail-16-9 {
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
   position: relative;
-}
 
-.thumbnail-16-9 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 /* Custom Swiper Styles */
-.swiper-pagination-bullet {
-  background: #cbd5e1 !important;
-  opacity: 1 !important;
-}
+@layer components {
+  .swiper-pagination-bullet {
+    background: #cbd5e1 !important;
+    opacity: 1 !important;
+  }
 
-.swiper-pagination-bullet-active {
-  background: #f08554 !important;
-}
+  .swiper-pagination-bullet-active {
+    background: #f08554 !important;
+  }
 
-/* Prose / Article Content Styling */
-.prose h2 {
-  @apply text-3xl font-black mt-12 mb-6 tracking-tighter italic-header uppercase border-l-4 border-brand-orange pl-6;
-}
+  /* Prose / Article Content Styling */
+  .prose h2 {
+    @apply text-3xl font-black mt-12 mb-6 tracking-tighter italic-header uppercase border-l-4 border-brand-orange pl-6;
+  }
 
-.prose p {
-  @apply text-lg leading-relaxed mb-6 text-slate-600 font-medium;
-}
+  .prose p {
+    @apply text-lg leading-relaxed mb-6 text-slate-600 font-medium;
+  }
 
-.prose img {
-  @apply rounded-3xl shadow-2xl my-12 border border-slate-100 aspect-video object-cover;
+  .prose img {
+    @apply rounded-3xl shadow-2xl my-12 border border-slate-100 aspect-video object-cover;
+  }
 }
