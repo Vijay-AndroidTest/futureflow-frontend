@@ -54,7 +54,7 @@ export default async function RootLayout({ children }) {
                 <img src={urlFor(config.logo).height(40).url()} alt="Logo" className="h-10 w-auto object-contain" />
               ) : (
                 <span className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
-                  {config?.siteName || "FutureFlow"} <span className="text-[#f08554]">AI</span>
+                  {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#f08554]">AI</span>
                 </span>
               )}
             </Link>
