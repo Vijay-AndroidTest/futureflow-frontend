@@ -16,9 +16,9 @@ export default async function Home() {
 
   // Split posts for the editorial layout
   const heroPost = posts?.[0];
-  const sidePosts = posts?.slice(1, 3);
-  const storyGridPosts = posts?.slice(3, 7);
-  const latestArticles = posts?.slice(7, 11);
+  const sidePosts = posts?.slice(1, 4); // Fetch 3 images/posts for sidebar as requested
+  const storyGridPosts = posts?.slice(4, 8);
+  const latestArticles = posts?.slice(8, 12);
 
   return (
     <div className="min-h-screen bg-[#f9f9fb]">
@@ -40,40 +40,39 @@ export default async function Home() {
                 The best AI tools, battle-tested prompts, and SEO workflows — curated weekly for creators and marketers.
               </p>
               <div className="flex gap-4">
-                <button className="bg-white text-slate-900 px-8 py-3 rounded-lg font-bold text-sm hover:bg-slate-100 transition-all">Explore tools</button>
-                <button className="bg-white/10 backdrop-blur text-white px-8 py-3 rounded-lg font-bold text-sm hover:bg-white/20 transition-all border border-white/10">Browse all guides</button>
+                <button className="bg-white text-slate-900 px-8 py-3 rounded-lg font-bold text-sm hover:bg-slate-100 transition-all uppercase tracking-widest">Explore tools</button>
+                <button className="bg-white/10 backdrop-blur text-white px-8 py-3 rounded-lg font-bold text-sm hover:bg-white/20 transition-all border border-white/10 uppercase tracking-widest">Browse all guides</button>
               </div>
 
               <div className="flex gap-12 mt-16 pt-10 border-t border-white/10">
                  <div>
-                   <div className="text-2xl font-black">142</div>
+                   <div className="text-2xl font-black italic tracking-tighter">142</div>
                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">PROMPTS OPS</div>
                  </div>
                  <div>
-                   <div className="text-2xl font-black">48</div>
+                   <div className="text-2xl font-black italic tracking-tighter">48</div>
                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TOOL REVIEWS</div>
                  </div>
                  <div>
-                   <div className="text-2xl font-black">31K</div>
+                   <div className="text-2xl font-black italic tracking-tighter">31K</div>
                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">READERS</div>
                  </div>
               </div>
             </div>
-            {/* Background Image Overlay (Placeholder for post mainImage) */}
             {heroPost?.mainImage && (
-              <img src={urlFor(heroPost.mainImage).width(1200).url()} className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-1000" alt="" />
+              <img src={urlFor(heroPost.mainImage).width(1280).height(720).url()} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-1000" alt="" />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
           </div>
 
-          {/* Sidebar Featured Stories */}
+          {/* Sidebar Featured Stories (3 Post Auto Roll Area) */}
           <div className="lg:col-span-5 flex flex-col gap-8">
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Featured THIS WEEK</h4>
             {sidePosts?.map((post: any) => (
-              <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex gap-6 p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-xl transition-all h-full">
+              <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex gap-6 p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-xl transition-all h-full overflow-hidden">
                 <div className="w-1/3 aspect-[1280/720] overflow-hidden rounded-xl bg-slate-100">
                   {post.mainImage && (
-                    <img src={urlFor(post.mainImage).width(400).url()} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
+                    <img src={urlFor(post.mainImage).width(640).height(360).url()} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
                   )}
                 </div>
                 <div className="w-2/3 flex flex-col justify-center">
@@ -105,7 +104,7 @@ export default async function Home() {
                 >
                   <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-80"></div>
                   {post.mainImage && (
-                    <img src={urlFor(post.mainImage).width(800).url()} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt="" />
+                    <img src={urlFor(post.mainImage).width(1280).height(720).url()} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt="" />
                   )}
                   <div className="absolute bottom-8 left-8 right-8 z-20">
                      <span className="text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/10 backdrop-blur rounded mb-4 inline-block">Category</span>
@@ -137,7 +136,7 @@ export default async function Home() {
               <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex flex-col h-full bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all">
                 <div className="aspect-[1280/720] overflow-hidden bg-slate-100">
                   {post.mainImage && (
-                    <img src={urlFor(post.mainImage).width(600).url()} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
+                    <img src={urlFor(post.mainImage).width(1280).height(720).url()} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
                   )}
                 </div>
                 <div className="p-8">

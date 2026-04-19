@@ -40,11 +40,6 @@ export default async function RootLayout({ children }) {
                   {item}
                 </Link>
               ))}
-              <div className="h-4 w-px bg-slate-200 mx-2"></div>
-              <Link href="#" className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Sign In</Link>
-              <Link href="#" className="bg-[#f08554] text-white px-6 py-2.5 rounded-lg text-[10px] font-black hover:brightness-110 transition-all shadow-lg shadow-orange-100 uppercase tracking-[0.2em]">
-                Subscribe Free
-              </Link>
             </div>
           </div>
         </nav>
@@ -78,11 +73,6 @@ export default async function RootLayout({ children }) {
 
              <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">© 2026 FUTUREFLOW AI — ALL RIGHTS RESERVED</p>
-               <div className="flex gap-10 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                 <span>Next JS</span>
-                 <span>Sanity</span>
-                 <span>Cloudflare</span>
-               </div>
              </div>
           </div>
         </footer>
