@@ -155,20 +155,34 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* --- NEWSLETTER CALLOUT --- */}
+        {/* --- GLOBAL CTA SECTION (Repurposed from Newsletter) --- */}
         <section className="bg-[#4a4a55] rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden">
            <div className="relative z-10 max-w-2xl mx-auto">
              <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-8">
-               Stay ahead of <span className="text-slate-400">every AI shift</span>
+               {settings?.ctaTitle || "Master AI with our curated directory"}
              </h2>
              <p className="text-slate-300 mb-12 text-lg font-medium leading-relaxed">
-               One email a week. The best AI tools, prompts, and SEO moves — curated, not AI-generated. Trusted by 31,000+ creators.
+               {settings?.ctaSubtitle || "Access the world's most comprehensive database of AI tools, prompts, and SEO workflows. Updated daily by our experts."}
              </p>
-             <form className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
-               <input type="email" placeholder="your@email.com" className="flex-grow px-8 py-4 rounded-xl bg-white text-slate-900 font-bold focus:outline-none focus:ring-4 focus:ring-orange-500/20" />
-               <button className="bg-[#f08554] text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-orange-950/20">Subscribe</button>
-             </form>
-             <p className="mt-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">NO SPAM. UNLOCK EXCLUSIVE CONTENT. FREE FOREVER.</p>
+
+             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+               <Link
+                href={settings?.ctaLink || "/tools"}
+                className="bg-[#f08554] text-white px-10 py-5 rounded-xl font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-orange-950/20 text-sm"
+               >
+                 {settings?.ctaButtonText || "Explore All Tools →"}
+               </Link>
+               <Link
+                href="/guides"
+                className="bg-white/10 backdrop-blur text-white px-10 py-5 rounded-xl font-bold uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10 text-sm"
+               >
+                 View Guides
+               </Link>
+             </div>
+
+             <p className="mt-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                {settings?.ctaFooterText || "50+ New Tools Added This Week"}
+             </p>
            </div>
            <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500 opacity-10 blur-[150px] -mr-48 -mt-48"></div>
            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500 opacity-10 blur-[150px] -ml-48 -mb-48"></div>
