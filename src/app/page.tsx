@@ -21,7 +21,6 @@ export default async function Home() {
 
   const { home, latestPosts } = data;
 
-  // Use homepage settings for primary sections
   const heroPost = home?.featuredPosts?.[0] || latestPosts?.[0];
   const sidePosts = home?.featuredPosts?.slice(1, 4) || latestPosts?.slice(1, 4);
   const tray1 = home?.traySection1 || latestPosts?.slice(4, 8);
@@ -37,7 +36,7 @@ export default async function Home() {
           {/* Main Hero Story */}
           <div className="lg:col-span-7 bg-[#4a4a55] rounded-3xl p-10 md:p-16 text-white relative overflow-hidden flex flex-col justify-end min-h-[600px] group">
             <div className="relative z-10 max-w-lg">
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8 italic">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8 italic-header">
                 {home?.heroHeadline || "Master AI. Rank faster. Build more."}
               </h1>
               <p className="text-slate-300 text-lg mb-10 font-medium leading-relaxed">
@@ -50,15 +49,15 @@ export default async function Home() {
 
               <div className="flex gap-12 mt-16 pt-10 border-t border-white/10">
                  <div>
-                   <div className="text-2xl font-black italic tracking-tighter">142</div>
+                   <div className="text-2xl font-black italic-header tracking-tighter italic">142</div>
                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">PROMPTS OPS</div>
                  </div>
                  <div>
-                   <div className="text-2xl font-black italic tracking-tighter">48</div>
+                   <div className="text-2xl font-black italic-header tracking-tighter italic">48</div>
                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TOOL REVIEWS</div>
                  </div>
                  <div>
-                   <div className="text-2xl font-black italic tracking-tighter">{home?.statsReaders || "31K"}</div>
+                   <div className="text-2xl font-black italic-header tracking-tighter italic">{home?.statsReaders || "31K"}</div>
                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">READERS</div>
                  </div>
               </div>
@@ -78,7 +77,7 @@ export default async function Home() {
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Featured THIS WEEK</h4>
             {sidePosts?.map((post: any) => (
               <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex gap-6 p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-xl transition-all h-full overflow-hidden">
-                <div className="w-1/3 aspect-[1280/720] overflow-hidden rounded-xl bg-slate-100">
+                <div className="w-1/3 aspect-video overflow-hidden rounded-xl bg-slate-100">
                   {post.mainImage && (
                     <img
                         src={urlFor(post.mainImage).width(640).height(360).url()}
@@ -89,7 +88,7 @@ export default async function Home() {
                 </div>
                 <div className="w-2/3 flex flex-col justify-center">
                    <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-2">FEATURED</span>
-                   <h3 className="text-lg font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors line-clamp-2 italic">{post.title}</h3>
+                   <h3 className="text-lg font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors line-clamp-2 italic-header italic uppercase">{post.title}</h3>
                    <div className="mt-3 text-[9px] font-bold text-slate-400 uppercase flex gap-4">
                       <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                       <span>{post.readTime || 5} min read</span>
@@ -109,19 +108,19 @@ export default async function Home() {
           ))}
         </div>
 
-        {/* --- TRAY SECTION 1 (Slider logic) --- */}
+        {/* --- EDITOR'S CHOICE SLIDER --- */}
         <section className="mb-32">
            <div className="flex justify-between items-center mb-10">
-              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic">Editor's Choice</h2>
+              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">Editor's Choice</h2>
               <div className="h-px flex-grow bg-slate-100 mx-8"></div>
            </div>
            <FeaturedSlider featuredPosts={tray1} />
         </section>
 
-        {/* --- TRAY SECTION 2 (Grid Layout) --- */}
+        {/* --- TOP STORIES GRID --- */}
         <section className="mb-32">
           <div className="flex justify-between items-center mb-12">
-            <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic">Top stories</h2>
+            <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">Top stories</h2>
             <Link href="#" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Read All →</Link>
           </div>
 
@@ -142,7 +141,7 @@ export default async function Home() {
                   )}
                   <div className="absolute bottom-8 left-8 right-8 z-20">
                      <span className="text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/10 backdrop-blur rounded mb-4 inline-block uppercase">TRENDING</span>
-                     <h3 className={`text-white font-black leading-tight ${i === 0 ? "text-3xl" : "text-lg"} group-hover:text-[#f08554] transition-colors italic`}>{post.title}</h3>
+                     <h3 className={`text-white font-black leading-tight ${i === 0 ? "text-3xl" : "text-lg"} group-hover:text-[#f08554] transition-colors italic-header italic uppercase`}>{post.title}</h3>
                   </div>
                 </Link>
              ))}
@@ -152,14 +151,14 @@ export default async function Home() {
         {/* --- LATEST ARTICLES --- */}
         <section className="pb-24">
            <div className="flex justify-between items-center mb-12">
-            <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic">Latest articles</h2>
+            <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">Latest articles</h2>
             <Link href="#" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Archive →</Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {latestPosts?.slice(0, 4).map((post: any) => (
               <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex flex-col h-full bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all">
-                <div className="aspect-[1280/720] overflow-hidden bg-slate-100">
+                <div className="aspect-video overflow-hidden bg-slate-100">
                   {post.mainImage && (
                     <img
                         src={urlFor(post.mainImage).width(1280).height(720).url()}
@@ -170,7 +169,7 @@ export default async function Home() {
                 </div>
                 <div className="p-8">
                    <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-4 inline-block">TUTORIAL</span>
-                   <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-6 italic line-clamp-2">{post.title}</h3>
+                   <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-6 italic-header italic uppercase line-clamp-2">{post.title}</h3>
                    <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">
                      {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} — {post.readTime || 5} MIN READ
                    </div>
