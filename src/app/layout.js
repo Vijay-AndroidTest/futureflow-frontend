@@ -15,14 +15,14 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }) {
-  // Fetch Singletons
-  const nav = await client.fetch(`*[_type == "navigationSettings"][0]`);
-  const config = await client.fetch(`*[_type == "siteSettings"][0]`);
+  // Fetch Singletons with revalidation to avoid empty states
+  const nav = await client.fetch(`*[_type == "navigationSettings"][0]`, {}, { next: { revalidate: 60 } });
+  const config = await client.fetch(`*[_type == "siteSettings"][0]`, {}, { next: { revalidate: 60 } });
 
   return (
     <html lang="en">
       <body className="min-h-screen">
-        {/* Announcement Bar - NEW LOCATION */}
+        {/* Announcement Bar */}
         {nav?.showAnnouncement && (
           <div className="bg-[#f08554] text-white py-2 text-center text-[10px] font-black uppercase tracking-[0.2em]">
             {nav.announcementBar}
@@ -59,7 +59,7 @@ export default async function RootLayout({ children }) {
               )}
             </Link>
 
-            {/* Main Menu with Dropdowns */}
+            {/* Desktop Menu */}
             <div className="hidden lg:flex items-center gap-10">
               {nav?.navItems?.map((item, idx) => (
                 <div key={idx} className="relative group/menu">
@@ -70,11 +70,12 @@ export default async function RootLayout({ children }) {
                     )}
                   </Link>
 
+                  {/* Dropdown Menu */}
                   {item.dropdown && item.dropdown.length > 0 && (
-                    <div className="absolute top-full left-0 pt-4 hidden group-hover/menu:block min-w-[200px]">
-                      <div className="bg-white border border-slate-100 shadow-xl rounded-xl p-4 flex flex-col gap-3">
+                    <div className="absolute top-full left-0 pt-4 hidden group-hover/menu:block min-w-[200px] z-50">
+                      <div className="bg-white border border-slate-100 shadow-2xl rounded-xl p-4 flex flex-col gap-3">
                         {item.dropdown.map((sub, sIdx) => (
-                          <Link key={sIdx} href={sub.link || "#"} className="text-[10px] font-bold text-slate-400 hover:text-[#f08554] uppercase tracking-widest transition-colors">
+                          <Link key={sIdx} href={sub.link || "#"} className="text-[10px] font-bold text-slate-400 hover:text-[#f08554] uppercase tracking-widest transition-colors block py-1">
                             {sub.label}
                           </Link>
                         ))}
@@ -95,6 +96,7 @@ export default async function RootLayout({ children }) {
 
         <main>{children}</main>
 
+        {/* Footer */}
         <footer className="bg-[#2d2d35] text-white py-24 px-6 mt-32">
           <div className="max-w-7xl mx-auto">
              <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
@@ -103,11 +105,11 @@ export default async function RootLayout({ children }) {
                     {config?.siteName || "FutureFlow"} <span className="text-[#f08554]">AI</span>
                  </span>
                  <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium">
-                   {config?.footerTagline || config?.siteTagline}
+                   {config?.footerTagline || config?.siteTagline || "Your daily source for AI mastery."}
                  </p>
                </div>
                <div className="col-span-1">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8">Links</h4>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8">Navigation</h4>
                   <ul className="space-y-4 text-xs font-bold text-slate-300">
                     {config?.footerLinks?.map((link, idx) => (
                       <li key={idx} className="hover:text-[#f08554] transition-colors">
@@ -119,7 +121,7 @@ export default async function RootLayout({ children }) {
              </div>
              <div className="pt-12 border-t border-white/5">
                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                 {config?.footerCopyright || `© ${new Date().getFullYear()} FUTUREFLOW AI`}
+                 {config?.footerCopyright || `© ${new Date().getFullYear()} FUTUREFLOW AI — ALL RIGHTS RESERVED`}
                </p>
              </div>
           </div>
