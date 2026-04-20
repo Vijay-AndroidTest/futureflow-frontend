@@ -22,24 +22,11 @@ const postFields = `
 export default async function Home() {
   const data = await client.fetch(`{
     "home": *[_type == "homepageSettings"][0]{
-      heroHeadline,
-      heroSubtext,
-      readAllLink,
-      archiveLink,
-      featuredPosts[]->{ ${postFields} },
-      traySection1[]->{ ${postFields} },
-      showTray2,
-      tray2Title,
-      showTray3,
-      tray3Title,
-      tray3Posts[]->{ ${postFields} },
-      tray3MoreLabel,
-      tray3MoreLink,
-      showTray4,
-      tray4Title,
-      tray4Posts[]->{ ${postFields} },
-      tray4MoreLabel,
-      tray4MoreLink,
+      heroSection,
+      tray1,
+      tray2,
+      tray3,
+      tray4,
       tickerItems,
       statsReaders
     },
@@ -50,9 +37,9 @@ export default async function Home() {
 
   const { home, latestPosts } = data;
 
-  // Logic for Dynamic Trays
-  const heroPost = home?.featuredPosts?.[0] || latestPosts?.[0];
-  const tray1Posts = home?.traySection1 || latestPosts?.slice(0, 4);
+  // Logic for Dynamic Sections
+  const heroPost = home?.heroSection?.featuredPost?.[0] || latestPosts?.[0];
+  const tray1Posts = home?.tray1?.posts || latestPosts?.slice(0, 4);
   const tray2Posts = latestPosts?.slice(0, 6); // Latest 6 for automatic Tray 2
 
   const PostCard = ({ post, size = "md" }: { post: any, size?: "sm" | "md" | "lg" }) => {
@@ -104,14 +91,18 @@ export default async function Home() {
               <div className="lg:col-span-6 flex flex-col justify-center order-2 lg:order-1">
                 <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">The Future of Intelligence</span>
                 <h1 className="text-4xl md:text-6xl font-black text-white leading-[0.95] mb-8 italic-header italic uppercase tracking-tighter">
-                  {home?.heroHeadline || "Master AI. Rank faster. Build more."}
+                  {home?.heroSection?.headline || "Master AI. Rank faster. Build more."}
                 </h1>
                 <p className="text-slate-400 text-lg mb-10 font-medium leading-relaxed max-w-lg">
-                  {home?.heroSubtext || "The best AI tools, battle-tested prompts, and SEO workflows curated for you."}
+                  {home?.heroSection?.subtext || "The best AI tools, battle-tested prompts, and SEO workflows curated for you."}
                 </p>
                 <div className="flex flex-wrap gap-4 mb-12">
-                  <Link href={home?.readAllLink || "/post"} className="bg-[#f08554] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:brightness-110 transition-all uppercase tracking-widest shadow-lg shadow-orange-500/20">Explore tools</Link>
-                  <Link href={home?.archiveLink || "/post"} className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest">Browse guides</Link>
+                  <Link href={home?.heroSection?.primaryCtaLink || "/post"} className="bg-[#f08554] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:brightness-110 transition-all uppercase tracking-widest shadow-lg shadow-orange-500/20">
+                    {home?.heroSection?.primaryCtaLabel || "Explore tools"}
+                  </Link>
+                  <Link href={home?.heroSection?.secondaryCtaLink || "/post"} className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest">
+                    {home?.heroSection?.secondaryCtaLabel || "Browse guides"}
+                  </Link>
                 </div>
                 <div className="flex gap-10 pt-10 border-t border-white/5">
                    <div><div className="text-2xl font-black text-white italic-header italic">142</div><div className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">PROMPTS</div></div>
@@ -141,19 +132,22 @@ export default async function Home() {
         </div>
 
         {/* --- TRAY 1: Editor's Choice (Manual) --- */}
-        <section className="mb-32">
-           <div className="flex justify-between items-center mb-10 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">Editor's Choice</h2>
-              <div className="h-px flex-grow bg-slate-200 mx-8"></div>
-           </div>
-           <FeaturedSlider featuredPosts={tray1Posts} />
-        </section>
+        {home?.tray1?.enabled && (
+            <section className="mb-32">
+            <div className="flex justify-between items-center mb-10 px-4">
+                <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home.tray1.title || "Editor's Choice"}</h2>
+                <div className="h-px flex-grow bg-slate-200 mx-8"></div>
+                {home.tray1.moreLink && <Link href={home.tray1.moreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">{home.tray1.moreLabel || "View All →"}</Link>}
+            </div>
+            <FeaturedSlider featuredPosts={home.tray1.posts || tray1Posts} />
+            </section>
+        )}
 
         {/* --- TRAY 2: Automatic Latest Posts --- */}
-        {home?.showTray2 && (
+        {home?.tray2?.enabled && (
           <section className="mb-32">
             <div className="flex justify-between items-center mb-12 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray2Title || "Latest Stories"}</h2>
+              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray2?.title || "Latest Stories"}</h2>
               <Link href="/post" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">View All →</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -163,29 +157,29 @@ export default async function Home() {
         )}
 
         {/* --- TRAY 3: Manual / Optional --- */}
-        {home?.showTray3 && home?.tray3Posts && (
+        {home?.tray3?.enabled && (
           <section className="mb-32">
             <div className="flex justify-between items-center mb-12 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray3Title || "Must Read"}</h2>
+              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray3?.title || "Must Read"}</h2>
               <div className="h-px flex-grow bg-slate-100 mx-8"></div>
-              {home?.tray3MoreLink && <Link href={home.tray3MoreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">{home.tray3MoreLabel || "Explore →"}</Link>}
+              {home?.tray3?.moreLink && <Link href={home.tray3.moreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">{home.tray3.moreLabel || "Explore →"}</Link>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-               {home.tray3Posts.map((post: any) => <PostCard key={post._id} post={post} size="sm" />)}
+               {(home.tray3.posts || []).map((post: any) => <PostCard key={post._id} post={post} size="sm" />)}
             </div>
           </section>
         )}
 
         {/* --- TRAY 4: Manual / Optional --- */}
-        {home?.showTray4 && home?.tray4Posts && (
+        {home?.tray4?.enabled && (
           <section className="mb-32">
             <div className="flex justify-between items-center mb-12 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray4Title || "Deep Dives"}</h2>
+              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray4?.title || "Deep Dives"}</h2>
               <div className="h-px flex-grow bg-slate-100 mx-8"></div>
-              {home?.tray4MoreLink && <Link href={home.tray4MoreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">{home.tray4MoreLabel || "Explore →"}</Link>}
+              {home?.tray4?.moreLink && <Link href={home.tray4.moreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">{home.tray4.moreLabel || "Explore →"}</Link>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-               {home.tray4Posts.map((post: any) => <PostCard key={post._id} post={post} size="sm" />)}
+               {(home.tray4.posts || []).map((post: any) => <PostCard key={post._id} post={post} size="sm" />)}
             </div>
           </section>
         )}
