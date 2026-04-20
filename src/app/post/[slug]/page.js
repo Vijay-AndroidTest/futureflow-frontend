@@ -52,6 +52,13 @@ const myPortableTextComponents = {
   },
 };
 
+export async function generateStaticParams() {
+  const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`);
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await client.fetch(
