@@ -17,11 +17,25 @@ export async function generateMetadata() {
 export default async function RootLayout({ children }) {
   // Fetch Singletons with revalidation to avoid empty states
   const nav = await client.fetch(`*[_type == "navigationSettings"][0]`, {}, { next: { revalidate: 60 } });
-  const config = await client.fetch(`*[_type == "siteSettings"][0]`, {}, { next: { revalidate: 60 } });
+  const config = await client.fetch(`*[_type == "siteSettings"][0]{
+    siteName,
+    logo,
+    favicon,
+    showAnnouncement,
+    announcementBar,
+    footerTagline,
+    siteTagline,
+    footerLinks,
+    footerCopyright,
+    googleAnalyticsId
+  }`, {}, { next: { revalidate: 60 } });
+
+  const faviconUrl = config?.favicon ? urlFor(config.favicon).width(32).height(32).auto('format').url() : "/favicon.ico";
 
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href={faviconUrl} />
         {config?.googleAnalyticsId && (
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}`} />

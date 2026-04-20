@@ -10,14 +10,68 @@ export default async function Home() {
       heroSubtext,
       readAllLink,
       archiveLink,
-      featuredPosts[]->{ _id, title, mainImage, slug, publishedAt, description, readTime },
-      traySection1[]->{ _id, title, mainImage, slug, publishedAt, description, readTime },
-      traySection2[]->{ _id, title, mainImage, slug, publishedAt, description, readTime },
+      featuredPosts[]->{
+        _id,
+        title,
+        mainImage {
+          ...,
+          asset->{
+            ...,
+            metadata
+          }
+        },
+        slug,
+        publishedAt,
+        description,
+        readTime
+      },
+      traySection1[]->{
+        _id,
+        title,
+        mainImage {
+          ...,
+          asset->{
+            ...,
+            metadata
+          }
+        },
+        slug,
+        publishedAt,
+        description,
+        readTime
+      },
+      traySection2[]->{
+        _id,
+        title,
+        mainImage {
+          ...,
+          asset->{
+            ...,
+            metadata
+          }
+        },
+        slug,
+        publishedAt,
+        description,
+        readTime
+      },
       tickerItems,
       statsReaders
     },
     "latestPosts": *[_type == "post"] | order(publishedAt desc) [0...12] {
-      _id, title, mainImage, slug, publishedAt, description, readTime
+      _id,
+      title,
+      mainImage {
+        ...,
+        asset->{
+          ...,
+          metadata
+        }
+      },
+      slug,
+      publishedAt,
+      description,
+      readTime
     }
   }`);
 
@@ -83,9 +137,14 @@ export default async function Home() {
                   <div className="aspect-video rounded-3xl overflow-hidden bg-slate-800 border-4 border-white/5 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
                     {heroPost?.mainImage && (
                       <img
-                        src={urlFor(heroPost.mainImage).width(1280).height(720).url()}
+                        src={urlFor(heroPost.mainImage).width(1280).height(720).auto('format').url()}
                         alt={heroPost.mainImage.alt || heroPost.title}
                         className="w-full h-full object-cover"
+                        loading="eager"
+                        style={{
+                          backgroundImage: `url(${heroPost.mainImage.asset?.metadata?.lqip})`,
+                          backgroundSize: 'cover'
+                        }}
                       />
                     )}
                   </div>
@@ -139,9 +198,14 @@ export default async function Home() {
                   <div className="aspect-video w-full overflow-hidden bg-slate-100">
                     {post.mainImage && (
                       <img
-                          src={urlFor(post.mainImage).width(1280).height(720).url()}
+                          src={urlFor(post.mainImage).width(800).height(450).auto('format').url()}
                           alt={post.mainImage.alt || post.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          loading="lazy"
+                          style={{
+                            backgroundImage: `url(${post.mainImage.asset?.metadata?.lqip})`,
+                            backgroundSize: 'cover'
+                          }}
                       />
                     )}
                   </div>
@@ -173,9 +237,14 @@ export default async function Home() {
                 <div className="aspect-video overflow-hidden bg-slate-100">
                   {post.mainImage && (
                     <img
-                        src={urlFor(post.mainImage).width(1280).height(720).url()}
+                        src={urlFor(post.mainImage).width(600).height(338).auto('format').url()}
                         alt={post.mainImage.alt || post.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        loading="lazy"
+                        style={{
+                          backgroundImage: `url(${post.mainImage.asset?.metadata?.lqip})`,
+                          backgroundSize: 'cover'
+                        }}
                     />
                   )}
                 </div>
