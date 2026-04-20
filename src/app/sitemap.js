@@ -1,5 +1,7 @@
 import { client } from "../sanity/client";
 
+export const dynamic = "force-static";
+
 export default async function sitemap() {
   const baseUrl = "https://futureflow.ai";
 
