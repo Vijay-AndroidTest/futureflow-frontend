@@ -22,13 +22,12 @@ const postFields = `
 export default async function Home() {
   const data = await client.fetch(`{
     "home": *[_type == "homepageSettings"][0]{
-      heroSection,
-      tray1,
+      ...,
+      heroSection { ..., featuredPosts[]->{ ${postFields} } },
+      tray1 { ..., posts[]->{ ${postFields} } },
       tray2,
-      tray3,
-      tray4,
-      tickerItems,
-      statsReaders
+      tray3 { ..., posts[]->{ ${postFields} } },
+      tray4 { ..., posts[]->{ ${postFields} } }
     },
     "latestPosts": *[_type == "post"] | order(publishedAt desc) [0...12] {
       ${postFields}
@@ -38,7 +37,7 @@ export default async function Home() {
   const { home, latestPosts } = data;
 
   // Logic for Dynamic Sections
-  const heroPost = home?.heroSection?.featuredPost?.[0] || latestPosts?.[0];
+  const heroPost = home?.heroSection?.featuredPosts?.[0] || latestPosts?.[0];
   const tray1Posts = home?.tray1?.posts || latestPosts?.slice(0, 4);
   const tray2Posts = latestPosts?.slice(0, 6); // Latest 6 for automatic Tray 2
 
