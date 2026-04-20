@@ -51,11 +51,27 @@ const myPortableTextComponents = {
   },
 };
 
-export async function generateStaticParams() {
-  const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`);
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const post = await client.fetch(
+    `*[_type == "post" && slug.current == $slug][0]{
+      title,
+      seoTitle,
+      seoDescription,
+      mainImage
+    }`,
+    { slug }
+  );
+
+  const siteConfig = await client.fetch(`*[_type == "siteSettings"][0]{ siteName, defaultSeoTitle, defaultSeoDescription }`);
+
+  return {
+    title: post?.seoTitle || post?.title || siteConfig?.defaultSeoTitle || siteConfig?.siteName,
+    description: post?.seoDescription || siteConfig?.defaultSeoDescription,
+    openGraph: {
+      images: post?.mainImage ? [urlFor(post.mainImage).width(1200).height(630).url()] : [],
+    },
+  };
 }
 
 export default async function PostPage({ params }) {
@@ -68,7 +84,8 @@ export default async function PostPage({ params }) {
       mainImage,
       publishedAt,
       readTime,
-      description
+      description,
+      seoTitle
     }`,
     { slug: slug }
   );
@@ -136,11 +153,28 @@ export default async function PostPage({ params }) {
         <div className="mt-32 pt-16 border-t border-slate-100 text-center">
             <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">Share this story</h4>
             <div className="flex justify-center gap-4">
-                {['Twitter', 'LinkedIn', 'Copy Link'].map(platform => (
-                    <button key={platform} className="px-6 py-2 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-slate-900 transition-colors">
-                        {platform}
-                    </button>
-                ))}
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://futureflow.ai/post/${slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-2 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-slate-900 transition-colors"
+                >
+                    Twitter
+                </a>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://futureflow.ai/post/${slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-2 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-slate-900 transition-colors"
+                >
+                    LinkedIn
+                </a>
+                <button
+                  onClick="navigator.clipboard.writeText(window.location.href)"
+                  className="px-6 py-2 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-slate-900 transition-colors"
+                >
+                    Copy Link
+                </button>
             </div>
         </div>
       </article>

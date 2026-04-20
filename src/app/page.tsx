@@ -8,6 +8,8 @@ export default async function Home() {
     "home": *[_type == "homepageSettings"][0]{
       heroHeadline,
       heroSubtext,
+      readAllLink,
+      archiveLink,
       featuredPosts[]->{ _id, title, mainImage, slug, publishedAt, description, readTime },
       traySection1[]->{ _id, title, mainImage, slug, publishedAt, description, readTime },
       traySection2[]->{ _id, title, mainImage, slug, publishedAt, description, readTime },
@@ -50,12 +52,12 @@ export default async function Home() {
                 </p>
 
                 <div className="flex flex-wrap gap-4 mb-12">
-                  <button className="bg-[#f08554] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:brightness-110 transition-all uppercase tracking-widest shadow-lg shadow-orange-500/20">
+                  <Link href={home?.readAllLink || "/post"} className="bg-[#f08554] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:brightness-110 transition-all uppercase tracking-widest shadow-lg shadow-orange-500/20">
                     Explore tools
-                  </button>
-                  <button className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest">
+                  </Link>
+                  <Link href={home?.archiveLink || "/post"} className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest">
                     Browse guides
-                  </button>
+                  </Link>
                 </div>
 
                 {/* Hero Stats */}
@@ -124,7 +126,7 @@ export default async function Home() {
         <section className="mb-32">
           <div className="flex justify-between items-center mb-12 px-4">
             <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">Top stories</h2>
-            <Link href="#" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Read All →</Link>
+            <Link href={home?.readAllLink || "/post"} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Read All →</Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -162,7 +164,7 @@ export default async function Home() {
         <section className="pb-24">
            <div className="flex justify-between items-center mb-12 px-4">
             <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">Latest articles</h2>
-            <Link href="#" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Archive →</Link>
+            <Link href={home?.archiveLink || "/post"} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">Archive →</Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

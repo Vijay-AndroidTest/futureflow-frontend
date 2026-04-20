@@ -21,6 +21,23 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        {config?.googleAnalyticsId && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}`} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${config.googleAnalyticsId}');
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body className="min-h-screen">
         {/* Announcement Bar */}
         {nav?.showAnnouncement && (
