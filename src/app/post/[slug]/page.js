@@ -72,11 +72,31 @@ export async function generateMetadata({ params }) {
   );
 
   const siteConfig = await client.fetch(`*[_type == "siteSettings"][0]{ siteName, defaultSeoTitle, defaultSeoDescription }`);
+  const baseUrl = "https://futureflowai.in";
 
   return {
     title: post?.seoTitle || post?.title || siteConfig?.defaultSeoTitle || siteConfig?.siteName,
     description: post?.seoDescription || siteConfig?.defaultSeoDescription,
+    alternates: {
+      canonical: `${baseUrl}/post/${slug}`,
+    },
     openGraph: {
+      title: post?.title,
+      description: post?.seoDescription || siteConfig?.defaultSeoDescription,
+      url: `${baseUrl}/post/${slug}`,
+      type: 'article',
+      publishedTime: post?.publishedAt,
+      images: post?.mainImage ? [{
+        url: urlFor(post.mainImage).width(1200).height(630).url(),
+        width: 1200,
+        height: 630,
+        alt: post.title,
+      }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post?.title,
+      description: post?.seoDescription || siteConfig?.defaultSeoDescription,
       images: post?.mainImage ? [urlFor(post.mainImage).width(1200).height(630).url()] : [],
     },
   };

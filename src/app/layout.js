@@ -5,9 +5,31 @@ import { urlFor } from "../sanity/imageBuilder";
 
 export async function generateMetadata() {
   const config = await client.fetch(`*[_type == "siteSettings"][0]{ defaultSeoTitle, defaultSeoDescription, favicon }`);
+  const baseUrl = "https://futureflowai.in";
+
   return {
-    title: config?.defaultSeoTitle || "FutureFlow AI",
+    metadataBase: new URL(baseUrl),
+    title: {
+      default: config?.defaultSeoTitle || "FutureFlow AI",
+      template: `%s | ${config?.siteName || "FutureFlow AI"}`
+    },
     description: config?.defaultSeoDescription,
+    alternates: {
+      canonical: "./",
+    },
+    openGraph: {
+      title: config?.defaultSeoTitle || "FutureFlow AI",
+      description: config?.defaultSeoDescription,
+      url: baseUrl,
+      siteName: config?.siteName || "FutureFlow AI",
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: config?.defaultSeoTitle || "FutureFlow AI",
+      description: config?.defaultSeoDescription,
+    },
     icons: {
       icon: config?.favicon ? urlFor(config.favicon).url() : "/favicon.ico",
     },
