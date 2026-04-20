@@ -5,6 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import ShareButtons from "../../../components/ShareButtons";
 import { PromptBox, AffiliateCard } from "../../../components/EditorialBlocks";
+import RelatedPosts from "../../../components/RelatedPosts";
 
 const myPortableTextComponents = {
   types: {
