@@ -2,6 +2,7 @@ import "./globals.css";
 import Link from "next/link";
 import { client } from "../sanity/client";
 import { urlFor } from "../sanity/imageBuilder";
+import MobileMenu from "../components/MobileMenu";
 
 export async function generateMetadata() {
   const config = await client.fetch(`*[_type == "siteSettings"][0]{ defaultSeoTitle, defaultSeoDescription, favicon }`);
@@ -153,6 +154,9 @@ export default async function RootLayout({ children }) {
                 </Link>
               )}
             </div>
+
+            {/* Mobile Menu */}
+            <MobileMenu nav={nav} categories={categories} />
           </div>
         </nav>
 

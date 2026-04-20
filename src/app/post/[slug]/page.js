@@ -4,6 +4,7 @@ import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ShareButtons from "../../../components/ShareButtons";
+import { PromptBox, AffiliateCard } from "../../../components/EditorialBlocks";
 
 const myPortableTextComponents = {
   types: {
@@ -18,6 +19,19 @@ const myPortableTextComponents = {
         </div>
         {value.caption && <p className="text-center text-xs font-bold text-slate-400 mt-4 uppercase tracking-widest">{value.caption}</p>}
       </div>
+    ),
+    promptBox: ({ value }) => (
+      <PromptBox prompt={value.prompt} title={value.title} />
+    ),
+    affiliateCard: ({ value }) => (
+      <AffiliateCard
+        name={value.name}
+        rating={value.rating}
+        pros={value.pros}
+        link={value.link}
+        description={value.description}
+        image={value.image ? urlFor(value.image).width(200).url() : null}
+      />
     ),
     table: ({ value }) => {
       if (!value?.rows) return null;
