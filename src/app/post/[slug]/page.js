@@ -160,7 +160,7 @@ export default async function PostPage({ params }) {
         {/* Article Footer */}
         <div className="mt-32 pt-16 border-t border-slate-100 text-center">
             <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">Share this story</h4>
-            <ShareButtons title={post.title} url={`https://futureflow.ai/post/${slug}`} />
+            <ShareButtons title={post.title} url={`https://futureflowai.in/post/${slug}`} />
         </div>
       </article>
     </main>
