@@ -30,8 +30,28 @@ const myPortableTextComponents = {
         pros={value.pros}
         link={value.link}
         description={value.description}
-        image={value.image ? urlFor(value.image).width(200).url() : null}
+        image={value.image ? urlFor(value.image).width(400).url() : null}
       />
+    ),
+    authorCredits: ({ value }) => (
+      <div className="my-16 p-10 bg-slate-50 rounded-[2.5rem] border border-slate-100 flex flex-col md:flex-row items-center gap-10">
+        {value.author?.image && (
+          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
+            <img
+              src={urlFor(value.author.image).width(200).height(200).url()}
+              alt={value.author.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        <div>
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block">Written By</span>
+          <h4 className="text-2xl font-black italic-header italic uppercase mb-4 text-slate-900">{value.author?.name}</h4>
+          <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xl">
+            {value.authorBio || value.author?.bio || "Expert contributor at FutureFlow AI specializing in automation and digital transformation."}
+          </p>
+        </div>
+      </div>
     ),
     table: ({ value }) => {
       if (!value?.rows) return null;
@@ -122,7 +142,17 @@ export default async function PostPage({ params }) {
   const post = await client.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
       title,
-      body,
+      body[]{
+        ...,
+        _type == "authorCredits" => {
+          ...,
+          author->{
+            name,
+            image,
+            bio
+          }
+        }
+      },
       mainImage,
       publishedAt,
       readTime,
