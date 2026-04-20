@@ -1,6 +1,7 @@
 import { client } from "../../sanity/client";
 import { urlFor } from "../../sanity/imageBuilder";
 import Link from "next/link";
+import LoadMoreGrid from "../../components/LoadMoreGrid";
 
 export async function generateMetadata() {
   const config = await client.fetch(`*[_type == "siteSettings"][0]{ siteName, siteTagline }`);
@@ -74,32 +75,7 @@ export default async function PostIndex() {
       {/* Grid of all posts */}
       <section>
         <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-12">Latest Insights</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-          {posts.map((post) => (
-            <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex flex-col h-full bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all">
-              <div className="aspect-video overflow-hidden bg-slate-100">
-                {post.mainImage && (
-                  <img
-                      src={urlFor(post.mainImage).width(800).height(450).url()}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                )}
-              </div>
-              <div className="p-8">
-                 <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-4 italic-header italic uppercase line-clamp-2">
-                    {post.title}
-                 </h3>
-                 <p className="text-slate-500 text-sm font-medium line-clamp-2 mb-6">
-                    {post.description}
-                 </p>
-                 <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">
-                   {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — {post.readTime || 5} MIN READ
-                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <LoadMoreGrid initialPosts={posts} postsPerPage={30} />
       </section>
     </main>
   );

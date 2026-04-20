@@ -37,7 +37,8 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }) {
-  // Fetch Singletons with revalidation to avoid empty states
+  // Fetch Singletons and Categories
+  const categories = await client.fetch(`*[_type == "category"] | order(title asc) { title, slug }`);
   const nav = await client.fetch(`*[_type == "navigationSettings"][0]`, {}, { next: { revalidate: 60 } });
   const config = await client.fetch(`*[_type == "siteSettings"][0]{
     siteName,
@@ -84,7 +85,7 @@ export default async function RootLayout({ children }) {
 
         {/* Top Link Nav */}
         <div className="bg-white border-b border-slate-100 py-2 hidden md:block">
-           <div className="max-w-7xl mx-auto px-6 flex justify-start gap-8">
+           <div className="max-w-7xl mx-auto px-6 flex justify-start items-center gap-8">
              {nav?.topNavItems ? nav.topNavItems.map((item, idx) => (
                <Link key={idx} href={item.link || "#"} className="text-[10px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-900">
                  {item.label}
@@ -95,6 +96,14 @@ export default async function RootLayout({ children }) {
                  <Link href="/post" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer hover:text-slate-900">Article</Link>
                </>
              )}
+
+             {/* Dynamic Categories in Top Nav */}
+             <div className="h-4 w-px bg-slate-100 mx-2"></div>
+             {categories.map((cat, idx) => (
+                <Link key={idx} href={`/category/${cat.slug.current}`} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest hover:text-slate-900 transition-colors">
+                    {cat.title}
+                </Link>
+             ))}
            </div>
         </div>
 
@@ -150,32 +159,71 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
 
         {/* Footer */}
-        <footer className="bg-[#2d2d35] text-white py-24 px-6 mt-32">
-          <div className="max-w-7xl mx-auto">
-             <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
-               <div className="col-span-1 md:col-span-2">
-                 <span className="text-2xl font-black italic-header italic tracking-tighter uppercase mb-6 block">
-                    {config?.siteName || "FutureFlow"} <span className="text-[#f08554]">AI</span>
-                 </span>
-                 <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium">
-                   {config?.footerTagline || config?.siteTagline || "Your daily source for AI mastery."}
+        <footer className="bg-[#2d2d35] text-white py-32 px-6 mt-32 relative overflow-hidden">
+          {/* Decorative Background Element */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#f08554]/5 rounded-full blur-[120px] -mr-48 -mt-48"></div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
+             <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
+               {/* Brand Column */}
+               <div className="md:col-span-4">
+                 <Link href="/" className="inline-block mb-8">
+                    <span className="text-3xl font-black italic-header italic tracking-tighter uppercase block">
+                        {config?.siteName || "FutureFlow"} <span className="text-[#f08554]">AI</span>
+                    </span>
+                 </Link>
+                 <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium mb-10">
+                   {config?.footerTagline || config?.siteTagline || "The definitive source for AI strategy, automation, and future-proof digital workflows."}
                  </p>
+                 <div className="flex gap-4">
+                    {/* Placeholder for social icons or newsletter signup */}
+                    <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-[#f08554] transition-colors cursor-pointer text-[10px] font-black">TW</div>
+                    <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-[#f08554] transition-colors cursor-pointer text-[10px] font-black">LI</div>
+                 </div>
                </div>
-               <div className="col-span-1">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8">Navigation</h4>
-                  <ul className="space-y-4 text-xs font-bold text-slate-300">
-                    {config?.footerLinks?.map((link, idx) => (
-                      <li key={idx} className="hover:text-[#f08554] transition-colors">
-                        <Link href={link.url || "#"}>{link.label}</Link>
+
+               {/* Categories Column */}
+               <div className="md:col-span-3 md:col-start-6">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-10">Topic Library</h4>
+                  <ul className="space-y-4">
+                    {categories.map((cat, idx) => (
+                      <li key={idx}>
+                        <Link href={`/category/${cat.slug.current}`} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
+                            {cat.title}
+                        </Link>
                       </li>
                     ))}
                   </ul>
                </div>
+
+               {/* Navigation Column */}
+               <div className="md:col-span-3">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-10">Organization</h4>
+                  <ul className="space-y-4">
+                    {config?.footerLinks?.map((link, idx) => (
+                      <li key={idx}>
+                        <Link href={link.url || "#"} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
+                            {link.label}
+                        </Link>
+                      </li>
+                    )) || (
+                        <>
+                            <li><Link href="/about" className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">About Us</Link></li>
+                            <li><Link href="/contact" className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">Contact</Link></li>
+                        </>
+                    )}
+                  </ul>
+               </div>
              </div>
-             <div className="pt-12 border-t border-white/5">
-               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+
+             {/* Bottom Bar */}
+             <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+               <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
                  {config?.footerCopyright || `© ${new Date().getFullYear()} FUTUREFLOW AI — ALL RIGHTS RESERVED`}
                </p>
+               <div className="flex gap-10">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.3em]">Built for the AI Era</span>
+               </div>
              </div>
           </div>
         </footer>

@@ -177,6 +177,15 @@ export default async function PostPage({ params }) {
           <PortableText value={post.body} components={myPortableTextComponents} />
         </div>
 
+        {/* You May Also Like Section */}
+        <div className="mt-24 pt-16 border-t border-slate-100">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#f08554] mb-12 text-center">You may also like</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* We'll fetch 2 related posts here in the next step, for now showing a placeholder logic */}
+                <RelatedPosts currentSlug={slug} />
+            </div>
+        </div>
+
         {/* Article Footer */}
         <div className="mt-32 pt-16 border-t border-slate-100 text-center">
             <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">Share this story</h4>

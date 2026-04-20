@@ -25,7 +25,9 @@
 @utility italic-header {
   font-family: 'Instrument Serif', serif;
   font-style: italic;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em; /* Tighter for better magazine feel */
+  line-height: 0.9;
+  font-weight: 500;
 }
 
 /* Ensure 16:9 Thumbnails Everywhere */
