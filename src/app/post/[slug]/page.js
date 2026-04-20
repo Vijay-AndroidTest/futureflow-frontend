@@ -3,6 +3,7 @@ import { client } from "../../../sanity/client";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import ShareButtons from "../../../components/ShareButtons";
 
 const myPortableTextComponents = {
   types: {
@@ -152,30 +153,7 @@ export default async function PostPage({ params }) {
         {/* Article Footer */}
         <div className="mt-32 pt-16 border-t border-slate-100 text-center">
             <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">Share this story</h4>
-            <div className="flex justify-center gap-4">
-                <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://futureflow.ai/post/${slug}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-2 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-slate-900 transition-colors"
-                >
-                    Twitter
-                </a>
-                <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://futureflow.ai/post/${slug}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-2 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-slate-900 transition-colors"
-                >
-                    LinkedIn
-                </a>
-                <button
-                  onClick="navigator.clipboard.writeText(window.location.href)"
-                  className="px-6 py-2 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-slate-900 transition-colors"
-                >
-                    Copy Link
-                </button>
-            </div>
+            <ShareButtons title={post.title} url={`https://futureflow.ai/post/${slug}`} />
         </div>
       </article>
     </main>
