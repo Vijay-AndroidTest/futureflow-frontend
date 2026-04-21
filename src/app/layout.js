@@ -3,6 +3,7 @@ import Link from "next/link";
 import { client } from "../sanity/client";
 import { urlFor } from "../sanity/imageBuilder";
 import MobileMenu from "../components/MobileMenu";
+import SearchBar from "../components/SearchBar";
 
 export async function generateMetadata() {
   const config = await client.fetch(`*[_type == "siteSettings"][0]{ defaultSeoTitle, defaultSeoDescription, favicon }`);
@@ -131,8 +132,11 @@ export default async function RootLayout({ children }) {
               )}
             </div>
 
-            {/* Mobile Menu */}
-            <MobileMenu nav={nav} categories={categories} />
+            <div className="flex items-center gap-4">
+              <SearchBar />
+              {/* Mobile Menu */}
+              <MobileMenu nav={nav} categories={categories} />
+            </div>
           </div>
         </nav>
 

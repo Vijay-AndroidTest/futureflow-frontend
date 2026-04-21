@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
+
+# Sitemaps
 Sitemap: https://futureflowai.in/sitemap.xml
+
+# Block search and internal tags
+Disallow: /api/
+Disallow: /_next/
+Disallow: /search?*
