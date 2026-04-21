@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -8,7 +8,7 @@
   --color-brand-bg: #f9f9fb;
 
   --font-sans: 'Plus Jakarta Sans', sans-serif;
-  --font-serif: 'Instrument Serif', serif;
+  --font-header: 'Bricolage Grotesque', sans-serif;
 }
 
 /* Base Styles */
@@ -23,11 +23,11 @@
 
 /* Editorial Typography Utility */
 @utility italic-header {
-  font-family: 'Instrument Serif', serif;
-  font-style: italic;
-  letter-spacing: -0.04em; /* Tighter for better magazine feel */
-  line-height: 0.9;
-  font-weight: 500;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+  text-transform: uppercase;
 }
 
 /* Ensure 16:9 Thumbnails Everywhere */
@@ -57,7 +57,7 @@
 
   /* Prose / Article Content Styling */
   .prose h2 {
-    @apply text-3xl font-black mt-12 mb-6 tracking-tighter italic-header uppercase border-l-4 border-brand-orange pl-6;
+    @apply text-3xl font-black mt-12 mb-6 tracking-tighter italic-header border-l-4 border-brand-orange pl-6;
   }
 
   .prose p {
