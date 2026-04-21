@@ -150,7 +150,7 @@ export default async function RootLayout({ children }) {
           <div className="max-w-7xl mx-auto relative z-10">
              <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
                {/* Brand Column */}
-               <div className="md:col-span-4">
+               <div className="md:col-span-5">
                  <Link href="/" className="inline-block mb-8">
                     <span className="text-3xl font-black italic-header italic tracking-tighter uppercase block">
                         {config?.siteName || "FutureFlow"} <span className="text-[#f08554]">AI</span>
@@ -159,11 +159,6 @@ export default async function RootLayout({ children }) {
                  <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium mb-10">
                    {config?.footerTagline || config?.siteTagline || "The definitive source for AI strategy, automation, and future-proof digital workflows."}
                  </p>
-                 <div className="flex gap-4">
-                    {/* Placeholder for social icons or newsletter signup */}
-                    <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-[#f08554] transition-colors cursor-pointer text-[10px] font-black">TW</div>
-                    <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-[#f08554] transition-colors cursor-pointer text-[10px] font-black">LI</div>
-                 </div>
                </div>
 
                {/* Categories Column */}
