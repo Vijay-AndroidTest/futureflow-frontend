@@ -101,11 +101,8 @@ export default async function Home() {
                   <Link href={home?.heroSection?.primaryCtaLink || "/post"} className="bg-[#f08554] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:brightness-110 transition-all uppercase tracking-widest shadow-lg shadow-orange-500/20">
                     {home?.heroSection?.primaryCtaLabel || "Explore tools"}
                   </Link>
-                  <Link href={home?.heroSection?.secondaryCtaLink || "/post"} className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest">
-                    {home?.heroSection?.secondaryCtaLabel || "Browse guides"}
-                  </Link>
-                  <Link href="https://seo.futureflowai.in/" target="_blank" className="bg-white/5 border border-white/10 text-[#f08554] px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest flex items-center gap-2">
-                    SEO Solutions ↗
+                  <Link href="https://seo.futureflowai.in/" target="_blank" className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest flex items-center gap-2">
+                    Free SEO Audit ↗
                   </Link>
                 </div>
                 <div className="flex gap-10 pt-10 border-t border-white/5">
@@ -126,28 +123,6 @@ export default async function Home() {
               </div>
             </div>
           </div>
-        </section>
-
-        {/* --- SEO PROMO SECTION --- */}
-        <section className="mb-20">
-          <Link href="https://seo.futureflowai.in/" target="_blank" className="group block relative overflow-hidden rounded-[3rem] bg-[#2d2d35] border border-white/5 p-8 md:p-12 transition-all hover:border-[#f08554]/30">
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="max-w-xl">
-                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Specialized Services</span>
-                <h2 className="text-2xl md:text-3xl font-black text-white italic-header italic uppercase mb-4">
-                  Boost Your Search Visibility with <span className="text-[#f08554]">FutureFlow SEO</span>
-                </h2>
-                <p className="text-slate-400 font-medium">
-                  We combine AI-driven insights with expert strategy to help your brand dominate search results.
-                </p>
-              </div>
-              <div className="bg-[#f08554] text-white px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:scale-105 transition-transform shadow-xl shadow-orange-500/20 shrink-0">
-                Explore SEO Services →
-              </div>
-            </div>
-            {/* Background Accent */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#f08554]/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-colors group-hover:bg-[#f08554]/20"></div>
-          </Link>
         </section>
 
         {/* --- DYNAMIC LIVE MARQUEE --- */}
@@ -186,6 +161,28 @@ export default async function Home() {
             </div>
           </section>
         )}
+
+        {/* --- SEO PROMO SECTION (Mid-Page Break) --- */}
+        <section className="mb-32">
+          <Link href="https://seo.futureflowai.in/" target="_blank" className="group block relative overflow-hidden rounded-[3rem] bg-[#2d2d35] border border-white/5 p-8 md:p-12 transition-all hover:border-[#f08554]/30">
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="max-w-xl">
+                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Specialized Services</span>
+                <h2 className="text-2xl md:text-3xl font-black text-white italic-header italic uppercase mb-4">
+                  Boost Your Search Visibility with <span className="text-[#f08554]">FutureFlow SEO</span>
+                </h2>
+                <p className="text-slate-400 font-medium text-lg leading-relaxed">
+                  We combine AI-driven insights with expert strategy to help your brand dominate search results. Get a comprehensive site audit today.
+                </p>
+              </div>
+              <div className="bg-[#f08554] text-white px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:scale-105 transition-transform shadow-xl shadow-orange-500/20 shrink-0">
+                Get Free SEO Audit →
+              </div>
+            </div>
+            {/* Background Accent */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#f08554]/10 rounded-full blur-[100px] -mr-48 -mt-48 transition-colors group-hover:bg-[#f08554]/20"></div>
+          </Link>
+        </section>
 
         {/* --- TRAY 3: Manual / Optional --- */}
         {home?.tray3?.enabled && (
