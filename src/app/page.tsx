@@ -162,26 +162,6 @@ export default async function Home() {
           </section>
         )}
 
-        {/* --- NEWSLETTER MAGNET --- */}
-        <section className="mb-32">
-            <div className="bg-[#f08554] rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-orange-200">
-                <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                     <div className="grid grid-cols-6 gap-4 rotate-12 scale-150">
-                        {[...Array(24)].map((_, i) => <div key={i} className="aspect-square bg-white rounded-full"></div>)}
-                     </div>
-                </div>
-                <div className="relative z-10 max-w-2xl mx-auto">
-                    <span className="text-white text-[10px] font-black uppercase tracking-[0.5em] mb-6 block">Join the inner circle</span>
-                    <h2 className="text-4xl md:text-5xl font-black text-white italic-header italic uppercase mb-8 leading-tight">Master AI before it masters you.</h2>
-                    <p className="text-orange-50/80 text-lg font-medium mb-12">Weekly deep dives into automation, SEO workflows, and futuristic tools.</p>
-                    <div className="flex flex-col md:flex-row gap-4">
-                        <input type="email" placeholder="Your best email..." className="flex-grow bg-white px-8 py-5 rounded-2xl font-bold text-sm outline-none focus:ring-4 ring-orange-400 transition-all shadow-xl" />
-                        <button className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-black transition-all shadow-xl">Join Now</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         {/* --- TRAY 3: Manual / Optional --- */}
         {home?.tray3?.enabled && (
           <section className="mb-32">
