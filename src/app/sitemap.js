@@ -31,5 +31,12 @@ export default async function sitemap() {
     priority: 1.0,
   }));
 
-  return [...routes, ...postUrls, ...categoryUrls];
+  const seoService = {
+    url: "https://seo.futureflowai.in",
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  };
+
+  return [...routes, seoService, ...postUrls, ...categoryUrls];
 }

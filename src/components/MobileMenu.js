@@ -85,8 +85,16 @@ export default function MobileMenu({ nav, categories }) {
           </div>
 
           {/* CTA */}
-          {nav?.ctaLabel && (
-            <div className="mt-auto pb-12">
+          <div className="mt-auto pb-12 flex flex-col gap-4">
+            <Link
+              href="https://seo.futureflowai.in/"
+              target="_blank"
+              onClick={() => setIsOpen(false)}
+              className="block w-full bg-slate-900 text-white text-center py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl border border-white/10"
+            >
+              Free SEO Audit ↗
+            </Link>
+            {nav?.ctaLabel && (
               <Link
                 href={nav.ctaLink || "#"}
                 onClick={() => setIsOpen(false)}
@@ -94,8 +102,8 @@ export default function MobileMenu({ nav, categories }) {
               >
                 {nav.ctaLabel}
               </Link>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </div>

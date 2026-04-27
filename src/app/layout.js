@@ -179,6 +179,11 @@ export default async function RootLayout({ children }) {
                <div className="md:col-span-3">
                   <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-10">Organization</h4>
                   <ul className="space-y-4">
+                    <li>
+                      <Link href="https://seo.futureflowai.in/" target="_blank" className="text-xs font-bold text-[#f08554] hover:brightness-110 transition-colors uppercase tracking-widest flex items-center gap-2">
+                          SEO Audit Tool <span className="text-[10px]">↗</span>
+                      </Link>
+                    </li>
                     {config?.footerLinks?.map((link, idx) => (
                       <li key={idx}>
                         <Link href={link.url || "#"} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
