@@ -64,6 +64,18 @@
     @apply text-lg leading-relaxed mb-6 text-slate-600 font-medium;
   }
 
+  .prose ul {
+    @apply list-disc pl-8 mb-8 space-y-2;
+  }
+
+  .prose ol {
+    @apply list-decimal pl-8 mb-8 space-y-2;
+  }
+
+  .prose li {
+    @apply text-lg text-slate-600 font-medium leading-relaxed;
+  }
+
   .prose img {
     @apply rounded-3xl shadow-2xl my-12 border border-slate-100 aspect-video object-cover;
   }

@@ -23,6 +23,14 @@ const myPortableTextComponents = {
     h3: ({ children }) => <h3 className="text-2xl font-black mt-12 mb-6 tracking-tight italic-header italic uppercase">{children}</h3>,
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-8 text-slate-600 font-medium">{children}</p>,
   },
+  list: {
+    bullet: ({ children }) => <ul className="list-disc pl-8 mb-8 space-y-4">{children}</ul>,
+    number: ({ children }) => <ol className="list-decimal pl-8 mb-8 space-y-4">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="text-lg text-slate-600 font-medium leading-relaxed">{children}</li>,
+    number: ({ children }) => <li className="text-lg text-slate-600 font-medium leading-relaxed">{children}</li>,
+  },
 };
 
 export async function generateStaticParams() {

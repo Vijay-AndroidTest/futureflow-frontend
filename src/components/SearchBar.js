@@ -94,7 +94,7 @@ export default function SearchBar() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Find articles, tools, or prompts..."
-                className="w-full bg-transparent border-b-2 border-slate-900 py-4 text-2xl md:text-4xl font-black italic-header italic uppercase outline-none placeholder:text-slate-100 text-slate-900"
+                className="w-full bg-transparent border-b-2 border-slate-900 py-4 text-2xl md:text-4xl font-black italic-header italic uppercase outline-none placeholder:text-slate-200 text-slate-900"
               />
             </form>
 

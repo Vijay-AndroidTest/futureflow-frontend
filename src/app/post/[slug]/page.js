@@ -85,6 +85,14 @@ const myPortableTextComponents = {
         </blockquote>
     ),
   },
+  list: {
+    bullet: ({ children }) => <ul className="list-disc pl-8 mb-8 space-y-4">{children}</ul>,
+    number: ({ children }) => <ol className="list-decimal pl-8 mb-8 space-y-4">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="text-lg text-slate-600 font-medium leading-relaxed">{children}</li>,
+    number: ({ children }) => <li className="text-lg text-slate-600 font-medium leading-relaxed">{children}</li>,
+  },
 };
 
 export async function generateStaticParams() {
