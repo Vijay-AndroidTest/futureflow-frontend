@@ -65,15 +65,19 @@
   }
 
   .prose ul {
-    @apply list-disc pl-8 mb-8 space-y-2;
+    @apply list-disc ml-5 mb-8 space-y-2;
   }
 
   .prose ol {
-    @apply list-decimal pl-8 mb-8 space-y-2;
+    @apply list-decimal ml-5 mb-8 space-y-2;
   }
 
   .prose li {
     @apply text-lg text-slate-600 font-medium leading-relaxed;
+  }
+
+  .prose a {
+    @apply text-brand-orange underline font-bold hover:text-brand-dark transition-colors;
   }
 
   .prose img {

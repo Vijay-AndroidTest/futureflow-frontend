@@ -24,12 +24,27 @@ const myPortableTextComponents = {
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-8 text-slate-600 font-medium">{children}</p>,
   },
   list: {
-    bullet: ({ children }) => <ul className="list-disc pl-8 mb-8 space-y-4">{children}</ul>,
-    number: ({ children }) => <ol className="list-decimal pl-8 mb-8 space-y-4">{children}</ol>,
+    bullet: ({ children }) => <ul className="list-disc ml-5 my-8 space-y-4">{children}</ul>,
+    number: ({ children }) => <ol className="list-decimal ml-5 my-8 space-y-4">{children}</ol>,
   },
   listItem: {
     bullet: ({ children }) => <li className="text-lg text-slate-600 font-medium leading-relaxed">{children}</li>,
     number: ({ children }) => <li className="text-lg text-slate-600 font-medium leading-relaxed">{children}</li>,
+  },
+  marks: {
+    link: ({ children, value }) => {
+      const rel = !value.href.startsWith("/") ? "noreferrer noopener" : undefined;
+      return (
+        <a
+          href={value.href}
+          rel={rel}
+          target={!value.href.startsWith("/") ? "_blank" : undefined}
+          className="text-[#f08554] underline font-bold hover:text-slate-900 transition-colors"
+        >
+          {children}
+        </a>
+      );
+    },
   },
 };
 
