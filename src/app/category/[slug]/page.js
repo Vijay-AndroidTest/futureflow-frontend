@@ -3,6 +3,7 @@ import { urlFor } from "../../../sanity/imageBuilder";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import LoadMoreGrid from "../../../components/LoadMoreGrid";
+import { Suspense } from "react";
 
 export async function generateStaticParams() {
   const categories = await client.fetch(`*[_type == "category"]{ "slug": slug.current }`);
@@ -51,14 +52,16 @@ export default async function CategoryPage({ params }) {
         )}
       </div>
 
-      {data.posts && data.posts.length > 0 ? (
-        <LoadMoreGrid initialPosts={data.posts} postsPerPage={30} />
-      ) : (
-        <div className="py-20 text-center">
-          <p className="text-slate-400 font-bold uppercase tracking-widest">No articles found in this category.</p>
-          <Link href="/" className="mt-8 inline-block bg-[#f08554] text-white px-8 py-3 rounded-lg font-black text-[10px] uppercase tracking-widest">Back to Home</Link>
-        </div>
-      )}
+      <Suspense fallback={<div className="py-20 text-center text-slate-400 font-bold uppercase tracking-widest text-xs">Loading articles...</div>}>
+        {data.posts && data.posts.length > 0 ? (
+          <LoadMoreGrid initialPosts={data.posts} postsPerPage={30} />
+        ) : (
+          <div className="py-20 text-center">
+            <p className="text-slate-400 font-bold uppercase tracking-widest">No articles found in this category.</p>
+            <Link href="/" className="mt-8 inline-block bg-[#f08554] text-white px-8 py-3 rounded-lg font-black text-[10px] uppercase tracking-widest">Back to Home</Link>
+          </div>
+        )}
+      </Suspense>
     </main>
   );
 }
