@@ -41,7 +41,7 @@ export default async function Home() {
   const tray1Posts = home?.tray1?.posts || latestPosts?.slice(0, 4);
   const tray2Posts = latestPosts?.slice(0, 6); // Latest 6 for automatic Tray 2
 
-  const tickerItems = home?.tickerItems || ['AI Tools', 'Prompts', 'SEO & Growth', 'Make Money', 'Guides', 'Automation', 'Future Tech', 'AI Strategy'];
+  const tickerItems = home?.tickerItems || ['AI Tools', 'Prompts', 'AI SEO SOLUTIONS', 'Make Money', 'Guides', 'Automation', 'Future Tech', 'AI Strategy'];
 
   const PostCard = ({ post, size = "md" }: { post: any, size?: "sm" | "md" | "lg" }) => {
     const width = size === "lg" ? 1280 : size === "md" ? 800 : 600;
@@ -104,6 +104,9 @@ export default async function Home() {
                   <Link href={home?.heroSection?.secondaryCtaLink || "/post"} className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest">
                     {home?.heroSection?.secondaryCtaLabel || "Browse guides"}
                   </Link>
+                  <Link href="https://seo.futureflowai.in/" target="_blank" className="bg-white/5 border border-white/10 text-[#f08554] px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest flex items-center gap-2">
+                    SEO Solutions ↗
+                  </Link>
                 </div>
                 <div className="flex gap-10 pt-10 border-t border-white/5">
                    <div><div className="text-2xl font-black text-white italic-header italic">142</div><div className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">PROMPTS</div></div>
@@ -123,6 +126,28 @@ export default async function Home() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* --- SEO PROMO SECTION --- */}
+        <section className="mb-20">
+          <Link href="https://seo.futureflowai.in/" target="_blank" className="group block relative overflow-hidden rounded-[3rem] bg-[#2d2d35] border border-white/5 p-8 md:p-12 transition-all hover:border-[#f08554]/30">
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="max-w-xl">
+                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Specialized Services</span>
+                <h2 className="text-2xl md:text-3xl font-black text-white italic-header italic uppercase mb-4">
+                  Boost Your Search Visibility with <span className="text-[#f08554]">FutureFlow SEO</span>
+                </h2>
+                <p className="text-slate-400 font-medium">
+                  We combine AI-driven insights with expert strategy to help your brand dominate search results.
+                </p>
+              </div>
+              <div className="bg-[#f08554] text-white px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:scale-105 transition-transform shadow-xl shadow-orange-500/20 shrink-0">
+                Explore SEO Services →
+              </div>
+            </div>
+            {/* Background Accent */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#f08554]/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-colors group-hover:bg-[#f08554]/20"></div>
+          </Link>
         </section>
 
         {/* --- DYNAMIC LIVE MARQUEE --- */}
