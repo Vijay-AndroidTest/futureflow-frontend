@@ -181,7 +181,9 @@ export default async function PostPage({ params }) {
       publishedAt,
       readTime,
       description,
-      seoTitle
+      seoTitle,
+      categories[]->{ title, slug },
+      category->{ title, slug }
     }`,
     { slug: slug }
   );
@@ -189,6 +191,8 @@ export default async function PostPage({ params }) {
   if (!post) {
     redirect('/');
   }
+
+  const category = post.categories?.[0] || post.category;
 
   return (
     <main className="min-h-screen bg-white">
@@ -215,7 +219,13 @@ export default async function PostPage({ params }) {
             </div>
             <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Topic</span>
-                <span className="text-xs font-black text-[#f08554] uppercase">AI Strategy</span>
+                {category ? (
+                  <Link href={`/category/${category.slug?.current}`} className="text-xs font-black text-[#f08554] uppercase hover:underline">
+                    {category.title}
+                  </Link>
+                ) : (
+                  <span className="text-xs font-black text-[#f08554] uppercase">Digital Marketing</span>
+                )}
             </div>
         </div>
 

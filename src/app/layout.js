@@ -155,25 +155,45 @@ export default async function RootLayout({ children }) {
                <div className="md:col-span-5">
                  <Link href="/" className="inline-block mb-8">
                     <span className="text-3xl font-black italic-header italic tracking-tighter uppercase block">
-                        {config?.siteName || "FutureFlow"} <span className="text-[#f08554]">AI</span>
+                        {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#f08554]">AI</span>
                     </span>
                  </Link>
                  <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium mb-10">
-                   {config?.footerTagline || config?.siteTagline || "The definitive source for AI strategy, automation, and future-proof digital workflows."}
+                   {config?.footerTagline || config?.siteTagline || "Practical SEO insights, digital marketing strategies, AI search research, and real-world experiments to help websites grow visibility, traffic, and conversions."}
                  </p>
                </div>
 
-               {/* Categories Column */}
+               {/* Navigation / Topic Library Column */}
                <div className="md:col-span-3 md:col-start-6">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-10">Topic Library</h4>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-10">
+                    {nav?.navItems && nav.navItems.length > 0 ? "Navigation" : "Topic Library"}
+                  </h4>
                   <ul className="space-y-4">
-                    {categories.map((cat, idx) => (
-                      <li key={idx}>
-                        <Link href={`/category/${cat.slug.current}`} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
-                            {cat.title}
-                        </Link>
-                      </li>
-                    ))}
+                    {nav?.navItems && nav.navItems.length > 0 ? (
+                      nav.navItems.flatMap((item, idx) => {
+                        const items = [{ key: `nav-${idx}`, label: item.label, link: item.link || "#" }];
+                        if (item.dropdown && item.dropdown.length > 0) {
+                          item.dropdown.forEach((sub, sIdx) => {
+                            items.push({ key: `sub-${idx}-${sIdx}`, label: sub.label, link: sub.link || "#" });
+                          });
+                        }
+                        return items;
+                      }).map((linkItem) => (
+                        <li key={linkItem.key}>
+                          <Link href={linkItem.link} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
+                              {linkItem.label}
+                          </Link>
+                        </li>
+                      ))
+                    ) : (
+                      categories.map((cat, idx) => (
+                        <li key={idx}>
+                          <Link href={`/category/${cat.slug.current}`} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
+                              {cat.title}
+                          </Link>
+                        </li>
+                      ))
+                    )}
                   </ul>
                </div>
 

@@ -49,7 +49,7 @@ function ArchiveContent({ posts, featured }) {
           The Archive
         </h1>
         <p className="text-slate-500 text-xl font-medium max-w-2xl">
-          Deep dives into AI strategy, automation workflows, and the future of digital creation.
+          Deep dives into digital marketing, SEO strategies, AI search research, and online growth.
         </p>
       </div>
 

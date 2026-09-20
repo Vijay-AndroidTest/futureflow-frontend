@@ -41,7 +41,7 @@ export default async function Home() {
   const tray1Posts = home?.tray1?.posts || latestPosts?.slice(0, 4);
   const tray2Posts = latestPosts?.slice(0, 6); // Latest 6 for automatic Tray 2
 
-  const tickerItems = home?.tickerItems || ['AI Tools', 'Prompts', 'AI SEO SOLUTIONS', 'Make Money', 'Guides', 'Automation', 'Future Tech', 'AI Strategy'];
+  const tickerItems = home?.tickerItems || ['SEO Strategy', 'Digital Marketing', 'AI Search & GEO', 'Conversion Optimization', 'Content Strategy', 'Growth Marketing', 'Search Visibility'];
 
   const PostCard = ({ post, size = "md" }: { post: any, size?: "sm" | "md" | "lg" }) => {
     const width = size === "lg" ? 1280 : size === "md" ? 800 : 600;
@@ -90,16 +90,16 @@ export default async function Home() {
           <div className="bg-[#2d2d35] rounded-[3rem] overflow-hidden shadow-2xl border border-white/5 p-8 md:p-12 lg:p-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-6 flex flex-col justify-center order-2 lg:order-1">
-                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">The Future of Intelligence</span>
+                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">The Future of Digital Growth</span>
                 <h1 className="text-4xl md:text-6xl font-black text-white leading-[0.95] mb-8 italic-header italic uppercase tracking-tighter">
-                  {home?.heroSection?.headline || "Master AI. Rank faster. Build more."}
+                  {home?.heroSection?.headline || "Master Digital Marketing & AI Search."}
                 </h1>
                 <p className="text-slate-400 text-lg mb-10 font-medium leading-relaxed max-w-lg">
-                  {home?.heroSection?.subtext || "The best AI tools, battle-tested prompts, and SEO workflows curated for you."}
+                  {home?.heroSection?.subtext || "Practical SEO insights, digital marketing strategies, and AI search research to grow visibility."}
                 </p>
                 <div className="flex flex-wrap gap-4 mb-12">
                   <Link href={home?.heroSection?.primaryCtaLink || "/post"} className="bg-[#f08554] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:brightness-110 transition-all uppercase tracking-widest shadow-lg shadow-orange-500/20">
-                    {home?.heroSection?.primaryCtaLabel || "Explore tools"}
+                    {home?.heroSection?.primaryCtaLabel || "Explore Insights"}
                   </Link>
                   <Link href="https://seo.futureflowai.in/" target="_blank" className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest flex items-center gap-2">
                     Free SEO Audit ↗
