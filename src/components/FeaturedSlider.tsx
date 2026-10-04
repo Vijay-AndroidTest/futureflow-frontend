@@ -61,7 +61,7 @@ export default function FeaturedSlider({ featuredPosts }: { featuredPosts: any[]
                 </h2>
 
                 <p className="text-slate-500 text-sm lg:text-base leading-relaxed mb-8 line-clamp-3 font-medium">
-                  {post.description || "Deep dive into the latest AI breakthroughs and technical workflows."}
+                  {post.description || "Deep dive into proven digital marketing strategies, SEO insights, and growth workflows."}
                 </p>
 
                 <div className="flex items-center gap-4 group/btn mt-auto lg:mt-0">
