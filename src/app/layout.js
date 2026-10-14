@@ -40,7 +40,7 @@ export async function generateMetadata() {
 
 export default async function RootLayout({ children }) {
   // Fetch Singletons and Categories
-  const categories = await client.fetch(`*[_type == "category"] | order(title asc) { title, slug }`);
+  const categories = await client.fetch(`*[_type == "category" && defined(slug.current) && defined(title)] | order(title asc) { title, slug }`);
   const nav = await client.fetch(`*[_type == "navigationSettings"][0]`, {}, { next: { revalidate: 60 } });
   const config = await client.fetch(`*[_type == "siteSettings"][0]{
     siteName,
@@ -57,10 +57,41 @@ export default async function RootLayout({ children }) {
 
   const faviconUrl = config?.favicon ? urlFor(config.favicon).width(32).height(32).auto('format').url() : "/favicon.ico";
 
+  const rootSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://futureflowai.in/#organization",
+        "name": "FutureFlow AI",
+        "url": "https://futureflowai.in",
+        "logo": "https://futureflowai.in/favicon.ico"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://futureflowai.in/#website",
+        "url": "https://futureflowai.in",
+        "name": "FutureFlow AI",
+        "publisher": {
+          "@id": "https://futureflowai.in/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://futureflowai.in/post?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  };
+
   return (
     <html lang="en">
       <head>
         <link rel="icon" href={faviconUrl} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(rootSchema) }}
+        />
         {config?.googleAnalyticsId && (
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}`} />
@@ -145,27 +176,27 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
 
         {/* Footer */}
-        <footer className="bg-[#2d2d35] text-white py-32 px-6 mt-32 relative overflow-hidden">
+        <footer className="bg-[#2d2d35] text-white py-16 md:py-32 px-6 mt-16 md:mt-32 relative overflow-hidden">
           {/* Decorative Background Element */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#f08554]/5 rounded-full blur-[120px] -mr-48 -mt-48"></div>
 
           <div className="max-w-7xl mx-auto relative z-10">
-             <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
+             <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 mb-12 md:mb-24">
                {/* Brand Column */}
                <div className="md:col-span-5">
-                 <Link href="/" className="inline-block mb-8">
+                 <Link href="/" className="inline-block mb-6 md:mb-8">
                     <span className="text-3xl font-black italic-header italic tracking-tighter uppercase block">
                         {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#f08554]">AI</span>
                     </span>
                  </Link>
-                 <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium mb-10">
+                 <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium mb-8 md:mb-10">
                    {config?.footerTagline || config?.siteTagline || "Practical SEO insights, digital marketing strategies, AI search research, and real-world experiments to help websites grow visibility, traffic, and conversions."}
                  </p>
                </div>
 
                {/* Navigation / Topic Library Column */}
                <div className="md:col-span-3 md:col-start-6">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-10">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-6 md:mb-10">
                     {nav?.navItems && nav.navItems.length > 0 ? "Navigation" : "Topic Library"}
                   </h4>
                   <ul className="space-y-4">
@@ -186,7 +217,7 @@ export default async function RootLayout({ children }) {
                         </li>
                       ))
                     ) : (
-                      categories.map((cat, idx) => (
+                      (categories || []).filter(cat => cat?.slug?.current && cat?.title).map((cat, idx) => (
                         <li key={idx}>
                           <Link href={`/category/${cat.slug.current}`} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
                               {cat.title}

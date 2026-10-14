@@ -182,8 +182,8 @@ export default async function PostPage({ params }) {
       readTime,
       description,
       seoTitle,
-      categories[]->{ title, slug },
-      category->{ title, slug }
+      "categories": categories[defined(@)]->{ title, slug },
+      "category": category->{ title, slug }
     }`,
     { slug: slug }
   );
@@ -192,21 +192,89 @@ export default async function PostPage({ params }) {
     redirect('/');
   }
 
-  const category = post.categories?.[0] || post.category;
+  const validCategories = (post.categories || []).filter(Boolean).filter(c => c?.title && c?.slug?.current);
+  const category = validCategories[0] || (post.category?.title && post.category?.slug?.current ? post.category : null);
+  const baseUrl = "https://futureflowai.in";
+  const postUrl = `${baseUrl}/post/${slug}`;
+  const imageUrl = post.mainImage ? urlFor(post.mainImage).width(1200).height(630).url() : null;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${postUrl}#article`,
+        "headline": post.title,
+        "description": post.description || "",
+        "image": imageUrl ? [imageUrl] : [],
+        "datePublished": post.publishedAt,
+        "dateModified": post.publishedAt,
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": postUrl
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "FutureFlow AI",
+          "url": baseUrl
+        },
+        "articleSection": category?.title || "Digital Marketing"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${postUrl}#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": baseUrl
+          },
+          ...(category ? [{
+            "@type": "ListItem",
+            "position": 2,
+            "name": category.title,
+            "item": `${baseUrl}/category/${category.slug?.current}`
+          }] : []),
+          {
+            "@type": "ListItem",
+            "position": category ? 3 : 2,
+            "name": post.title,
+            "item": postUrl
+          }
+        ]
+      }
+    ]
+  };
 
   return (
     <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Article Header */}
-      <div className="max-w-4xl mx-auto px-6 pt-24 pb-16">
-        <Link href="/" className="text-[10px] font-black text-[#f08554] uppercase tracking-[0.3em] mb-12 inline-block hover:translate-x-[-4px] transition-transform">
-          ← Back to archive
-        </Link>
+      <div className="max-w-4xl mx-auto px-6 pt-12 md:pt-24 pb-8 md:pb-16">
+        {/* Visual Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8 flex-wrap">
+          <Link href="/" className="hover:text-slate-900 transition-colors">Home</Link>
+          <span>/</span>
+          {category && (
+            <>
+              <Link href={`/category/${category.slug?.current}`} className="hover:text-[#f08554] transition-colors text-[#f08554]">
+                {category.title}
+              </Link>
+              <span>/</span>
+            </>
+          )}
+          <span className="text-slate-600 line-clamp-1 max-w-[200px] md:max-w-[300px]">{post.title}</span>
+        </nav>
 
-        <h1 className="text-5xl md:text-7xl font-black mb-10 leading-[0.9] text-slate-900 italic-header italic uppercase tracking-tighter">
+        <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 md:mb-10 leading-[0.95] md:leading-[0.9] text-slate-900 italic-header italic uppercase tracking-tighter">
             {post.title}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-8 py-8 border-y border-slate-50 mb-12">
+        <div className="flex flex-wrap items-center gap-6 md:gap-8 py-6 md:py-8 border-y border-slate-50 mb-8 md:mb-12">
             <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Published</span>
                 <span className="text-xs font-black text-slate-900 uppercase">
@@ -230,16 +298,16 @@ export default async function PostPage({ params }) {
         </div>
 
         {post.description && (
-            <p className="text-xl md:text-2xl text-slate-500 font-medium leading-relaxed mb-16 italic-header italic">
+            <p className="text-lg md:text-2xl text-slate-500 font-medium leading-relaxed mb-10 md:mb-16 italic-header italic">
                 {post.description}
             </p>
         )}
       </div>
 
       {/* Hero Image - Locked to 16:9 */}
-      <div className="max-w-7xl mx-auto px-6 mb-24">
+      <div className="max-w-7xl mx-auto px-6 mb-16 md:mb-24">
         {post.mainImage && (
-            <div className="aspect-video w-full rounded-[3rem] overflow-hidden shadow-2xl border border-slate-50">
+            <div className="aspect-video w-full rounded-2xl md:rounded-[3rem] overflow-hidden shadow-2xl border border-slate-50">
                 <img
                 src={urlFor(post.mainImage).width(1920).height(1080).url()}
                 className="w-full h-full object-cover"

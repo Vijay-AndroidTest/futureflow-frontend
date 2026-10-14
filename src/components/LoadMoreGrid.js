@@ -31,12 +31,12 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
     <>
       {/* Featured Section - Only show if not searching */}
       {!search && featuredPosts.length > 0 && (
-        <section className="mb-32">
-          <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-12">Must Read Stories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <section className="mb-16 md:mb-32">
+          <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8 sm:mb-12">Must Read Stories</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
             {featuredPosts.slice(0, 2).map((post) => (
-              <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex flex-col gap-8">
-                <div className="aspect-video rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]">
+              <Link href={`/post/${post.slug?.current}`} key={post._id} className="group flex flex-col gap-6 sm:gap-8">
+                <div className="aspect-video rounded-2xl sm:rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]">
                   {post.mainImage && (
                     <img
                       src={urlFor(post.mainImage).width(1280).height(720).url()}
@@ -46,7 +46,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                   )}
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black italic-header italic uppercase leading-tight group-hover:text-[#f08554] transition-colors mb-4">
+                  <h3 className="text-2xl sm:text-3xl font-black italic-header italic uppercase leading-tight group-hover:text-[#f08554] transition-colors mb-3 sm:mb-4">
                     {post.title}
                   </h3>
                   <div className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -61,17 +61,17 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
       )}
 
       {/* Results Header */}
-      <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-12">
+      <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8 sm:mb-12">
         {search ? `Search Results for "${search}" (${filteredPosts.length})` : "Latest Insights"}
       </h2>
 
       {filteredPosts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 sm:gap-y-16">
           {visiblePosts.map((post) => (
             <Link
               href={`/post/${post.slug?.current}`}
               key={post._id}
-              className="group flex flex-col h-full bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all"
+              className="group flex flex-col h-full bg-white rounded-2xl sm:rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all"
             >
               <div className="aspect-video overflow-hidden bg-slate-100">
                 {post.mainImage && (
@@ -82,11 +82,11 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                   />
                 )}
               </div>
-              <div className="p-8">
-                <h3 className="text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-4 italic-header italic uppercase line-clamp-2">
+              <div className="p-6 sm:p-8">
+                <h3 className="text-lg sm:text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-3 sm:mb-4 italic-header italic uppercase line-clamp-2">
                   {post.title}
                 </h3>
-                <p className="text-slate-500 text-sm font-medium line-clamp-2 mb-6">
+                <p className="text-slate-500 text-xs sm:text-sm font-medium line-clamp-2 mb-6">
                   {post.description}
                 </p>
                 <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">

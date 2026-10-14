@@ -1,13 +1,13 @@
 import { client } from "../../../sanity/client";
 import { urlFor } from "../../../sanity/imageBuilder";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import LoadMoreGrid from "../../../components/LoadMoreGrid";
 import { Suspense } from "react";
 
 export async function generateStaticParams() {
-  const categories = await client.fetch(`*[_type == "category"]{ "slug": slug.current }`);
-  return categories.map((cat) => ({
+  const categories = await client.fetch(`*[_type == "category" && defined(slug.current)]{ "slug": slug.current }`);
+  return (categories || []).filter(cat => cat?.slug).map((cat) => ({
     slug: cat.slug,
   }));
 }
@@ -15,8 +15,12 @@ export async function generateStaticParams() {
 export default async function CategoryPage({ params }) {
   const { slug } = await params;
 
+  if (!slug) {
+    redirect('/');
+  }
+
   const data = await client.fetch(
-    `*[_type == "category" && slug.current == $slug][0] {
+    `*[_type == "category" && slug.current == $slug && defined(slug.current)][0] {
       title,
       description,
       "posts": *[_type == "post" && references(^._id)] | order(publishedAt desc) {
@@ -32,8 +36,8 @@ export default async function CategoryPage({ params }) {
     { slug: slug }
   );
 
-  if (!data) {
-    redirect('/');
+  if (!data || !data.title) {
+    notFound();
   }
 
   return (
