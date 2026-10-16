@@ -2,7 +2,7 @@ import { urlFor } from "../../sanity/imageBuilder";
 import { client } from "../../sanity/client";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const myPortableTextComponents = {
   types: {
@@ -19,8 +19,8 @@ const myPortableTextComponents = {
     ),
   },
   block: {
-    h2: ({ children }) => <h2 className="text-3xl lg:text-4xl font-black mt-16 mb-8 tracking-tighter italic-header italic uppercase border-l-4 border-[#f08554] pl-8">{children}</h2>,
-    h3: ({ children }) => <h3 className="text-2xl font-black mt-12 mb-6 tracking-tight italic-header italic uppercase">{children}</h3>,
+    h2: ({ children }) => <h2 className="text-3xl lg:text-4xl font-black mt-16 mb-8 tracking-tighter italic-header italic uppercase border-l-4 border-[#0878F9] pl-8 text-[#0B1739]">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-2xl font-black mt-12 mb-6 tracking-tight italic-header italic uppercase text-[#0B1739]">{children}</h3>,
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-8 text-slate-600 font-medium">{children}</p>,
   },
   list: {
@@ -39,7 +39,7 @@ const myPortableTextComponents = {
           href={value.href}
           rel={rel}
           target={!value.href.startsWith("/") ? "_blank" : undefined}
-          className="text-[#f08554] underline font-bold hover:text-slate-900 transition-colors"
+          className="text-[#0878F9] underline font-bold hover:text-[#0B1739] transition-colors"
         >
           {children}
         </a>
@@ -49,17 +49,39 @@ const myPortableTextComponents = {
 };
 
 export async function generateStaticParams() {
-  const pages = await client.fetch(`*[_type == "page"]{ "slug": slug.current }`);
-  return pages.map((page) => ({
+  const pages = await client.fetch(`*[_type == "page" && defined(slug.current)]{ "slug": slug.current }`);
+  return (pages || []).filter(p => p?.slug).map((page) => ({
     slug: page.slug,
   }));
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const page = await client.fetch(
+    `*[_type == "page" && slug.current == $slug && defined(slug.current)][0]{
+      title,
+      description
+    }`,
+    { slug }
+  );
+
+  const siteConfig = await client.fetch(`*[_type == "siteSettings"][0]{ siteName }`);
+  const baseUrl = "https://futureflowai.in";
+
+  return {
+    title: page?.title ? `${page.title} | ${siteConfig?.siteName || "FutureFlow AI"}` : siteConfig?.siteName,
+    description: page?.description,
+    alternates: {
+      canonical: `${baseUrl}/${slug}`,
+    },
+  };
 }
 
 export default async function GenericPage({ params }) {
   const { slug } = await params;
 
   const page = await client.fetch(
-    `*[_type == "page" && slug.current == $slug][0]{
+    `*[_type == "page" && slug.current == $slug && defined(slug.current)][0]{
       title,
       body,
       mainImage,
@@ -68,14 +90,14 @@ export default async function GenericPage({ params }) {
     { slug: slug }
   );
 
-  if (!page) {
-    redirect('/');
+  if (!page || !page.title) {
+    notFound();
   }
 
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-6 pt-24 pb-16">
-        <h1 className="text-5xl md:text-7xl font-black mb-10 leading-[0.9] text-slate-900 italic-header italic uppercase tracking-tighter">
+        <h1 className="text-5xl md:text-7xl font-black mb-10 leading-[0.9] text-[#0B1739] italic-header italic uppercase tracking-tighter">
             {page.title}
         </h1>
 

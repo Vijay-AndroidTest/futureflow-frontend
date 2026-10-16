@@ -66,7 +66,7 @@ export default function SearchBar() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-slate-400 hover:text-slate-900 transition-colors"
+        className="p-2 text-slate-400 hover:text-[#0B1739] transition-colors"
         aria-label="Search"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@ export default function SearchBar() {
         <div className="fixed inset-0 z-[200] bg-white flex flex-col p-6 md:p-12 overflow-y-auto">
           <button
             onClick={() => setIsOpen(false)}
-            className="self-end p-4 text-slate-900 hover:rotate-90 transition-transform duration-300"
+            className="self-end p-4 text-[#0B1739] hover:rotate-90 transition-transform duration-300"
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -87,14 +87,14 @@ export default function SearchBar() {
 
           <div className="max-w-4xl mx-auto w-full pt-10">
             <form onSubmit={handleSearch} className="w-full">
-              <span className="text-[10px] font-black text-[#f08554] uppercase tracking-[0.5em] mb-4 block">Quick Search</span>
+              <span className="text-[10px] font-black text-[#0878F9] uppercase tracking-[0.5em] mb-4 block">Quick Search</span>
               <input
                 ref={inputRef}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Find articles, tools, or prompts..."
-                className="w-full bg-transparent border-b-2 border-slate-900 py-4 text-2xl md:text-4xl font-black italic-header italic uppercase outline-none placeholder:text-slate-200 text-slate-900"
+                placeholder="Search digital marketing guides, SEO strategies, or research..."
+                className="w-full bg-transparent border-b-2 border-[#0B1739] py-4 text-2xl md:text-4xl font-black italic-header italic uppercase outline-none placeholder:text-slate-200 text-[#0B1739]"
               />
             </form>
 
@@ -108,7 +108,7 @@ export default function SearchBar() {
                         {results.map((post) => (
                             <Link
                                 key={post._id}
-                                href={`/post/${post.slug.current}`}
+                                href={`/post/${post.slug?.current}`}
                                 onClick={() => setIsOpen(false)}
                                 className="group flex items-center gap-6"
                             >
@@ -121,14 +121,14 @@ export default function SearchBar() {
                                         />
                                     )}
                                 </div>
-                                <h3 className="text-lg md:text-xl font-black italic-header italic uppercase text-slate-900 group-hover:text-[#f08554] transition-colors line-clamp-1">
+                                <h3 className="text-lg md:text-xl font-black italic-header italic uppercase text-[#0B1739] group-hover:text-[#0878F9] transition-colors line-clamp-1">
                                     {post.title}
                                 </h3>
                             </Link>
                         ))}
                         <button
                             onClick={handleSearch}
-                            className="mt-4 text-[10px] font-black text-[#f08554] uppercase tracking-widest hover:underline text-left"
+                            className="mt-4 text-[10px] font-black text-[#0878F9] uppercase tracking-widest hover:underline text-left"
                         >
                             View all results for "{query}" →
                         </button>

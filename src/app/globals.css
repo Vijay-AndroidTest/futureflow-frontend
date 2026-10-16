@@ -2,10 +2,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-orange: #f08554;
+  --color-brand-blue: #0878F9;
+  --color-brand-cyan: #00C7E8;
+  --color-brand-navy: #0B1739;
   --color-brand-dark: #2d2d35;
   --color-brand-muted: #4a4a55;
   --color-brand-bg: #f9f9fb;
+  --color-brand-coolwhite: #f4f7fc;
 
   --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-header: 'Bricolage Grotesque', sans-serif;
@@ -16,7 +19,7 @@
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: #f9f9fb;
-    color: #2d2d35;
+    color: #0B1739;
     -webkit-font-smoothing: antialiased;
   }
 }
@@ -52,12 +55,12 @@
   }
 
   .swiper-pagination-bullet-active {
-    background: #f08554 !important;
+    background: #0878F9 !important;
   }
 
   /* Prose / Article Content Styling */
   .prose h2 {
-    @apply text-3xl font-black mt-12 mb-6 tracking-tighter italic-header border-l-4 border-brand-orange pl-6;
+    @apply text-3xl font-black mt-12 mb-6 tracking-tighter italic-header border-l-4 border-[#0878F9] pl-6;
   }
 
   .prose p {
@@ -77,7 +80,7 @@
   }
 
   .prose a {
-    @apply text-brand-orange underline font-bold hover:text-brand-dark transition-colors;
+    @apply text-[#0878F9] underline font-bold hover:text-[#0B1739] transition-colors;
   }
 
   .prose img {

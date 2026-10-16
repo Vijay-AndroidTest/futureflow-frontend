@@ -13,12 +13,12 @@ export function PromptBox({ prompt, title = "Optimized Prompt" }) {
   };
 
   return (
-    <div className="my-10 bg-slate-900 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+    <div className="my-10 bg-[#0B1739] rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
       <div className="px-8 py-4 bg-white/5 border-b border-white/5 flex justify-between items-center">
-        <span className="text-[10px] font-black text-[#f08554] uppercase tracking-[0.3em]">{title}</span>
+        <span className="text-[10px] font-black text-[#00C7E8] uppercase tracking-[0.3em]">{title}</span>
         <button
             onClick={copy}
-            className="text-[9px] font-black text-white uppercase tracking-widest hover:text-[#f08554] transition-colors"
+            className="text-[9px] font-black text-white uppercase tracking-widest hover:text-[#00C7E8] transition-colors"
         >
             {copied ? "✓ Copied" : "Copy Prompt"}
         </button>
@@ -33,8 +33,8 @@ export function PromptBox({ prompt, title = "Optimized Prompt" }) {
 // 2. High-Conversion Affiliate Card
 export function AffiliateCard({ name, rating, pros, link, image, description }) {
   return (
-    <div className="my-12 bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 md:p-12 shadow-xl hover:border-[#f08554] transition-all relative overflow-hidden group">
-      <div className="absolute top-0 right-0 bg-[#f08554] text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest rounded-bl-2xl">
+    <div className="my-12 bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 md:p-12 shadow-xl hover:border-[#0878F9] transition-all relative overflow-hidden group">
+      <div className="absolute top-0 right-0 bg-[#0878F9] text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest rounded-bl-2xl">
         Editor's Choice
       </div>
 
@@ -46,8 +46,8 @@ export function AffiliateCard({ name, rating, pros, link, image, description }) 
         )}
         <div className="flex-grow">
             <div className="flex items-center gap-4 mb-2">
-                <h3 className="text-2xl font-black italic-header italic uppercase tracking-tighter">{name}</h3>
-                <div className="flex text-[#f08554] text-xs">
+                <h3 className="text-2xl font-black italic-header italic uppercase tracking-tighter text-[#0B1739]">{name}</h3>
+                <div className="flex text-[#0878F9] text-xs">
                     {[...Array(5)].map((_, i) => (
                         <span key={i}>{i < rating ? "★" : "☆"}</span>
                     ))}
@@ -57,7 +57,7 @@ export function AffiliateCard({ name, rating, pros, link, image, description }) 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 {pros?.map((pro, i) => (
                     <div key={i} className="flex items-center gap-2 text-[10px] font-bold text-slate-700 uppercase tracking-widest">
-                        <span className="text-[#f08554]">✓</span> {pro}
+                        <span className="text-[#0878F9]">✓</span> {pro}
                     </div>
                 ))}
             </div>
@@ -65,7 +65,7 @@ export function AffiliateCard({ name, rating, pros, link, image, description }) 
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-slate-900 text-white px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#f08554] transition-all shadow-xl shadow-slate-200"
+                className="inline-block bg-[#0878F9] text-white px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#0660c8] transition-all shadow-xl shadow-blue-500/20"
             >
                 Get Started with {name} →
             </a>

@@ -43,10 +43,10 @@ export default async function CategoryPage({ params }) {
   return (
     <main className="max-w-7xl mx-auto px-6 py-20">
       <div className="mb-20 border-b border-slate-100 pb-16">
-        <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
+        <span className="text-[#0878F9] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
           Category Archive
         </span>
-        <h1 className="text-5xl md:text-7xl font-black italic-header italic uppercase tracking-tighter mb-6 text-slate-900">
+        <h1 className="text-5xl md:text-7xl font-black italic-header italic uppercase tracking-tighter mb-6 text-[#0B1739]">
           {data.title}
         </h1>
         {data.description && (
@@ -62,7 +62,7 @@ export default async function CategoryPage({ params }) {
         ) : (
           <div className="py-20 text-center">
             <p className="text-slate-400 font-bold uppercase tracking-widest">No articles found in this category.</p>
-            <Link href="/" className="mt-8 inline-block bg-[#f08554] text-white px-8 py-3 rounded-lg font-black text-[10px] uppercase tracking-widest">Back to Home</Link>
+            <Link href="/" className="mt-8 inline-block bg-[#0878F9] hover:bg-[#0660c8] text-white px-8 py-3 rounded-lg font-black text-[10px] uppercase tracking-widest transition-colors">Back to Home</Link>
           </div>
         )}
       </Suspense>

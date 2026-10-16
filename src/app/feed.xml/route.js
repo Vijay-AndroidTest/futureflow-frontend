@@ -28,8 +28,8 @@ export async function GET() {
   <rss version="2.0">
     <channel>
       <title>FutureFlow AI</title>
-      <link>${baseUrl}</link>
-      <description>Master AI. Rank faster. Build more.</description>
+      <link>${baseUrl}/</link>
+      <description>Practical SEO guides and digital marketing strategies covering content, social media, paid advertising, analytics, and website growth.</description>
       <language>en-us</language>
       ${items}
     </channel>

@@ -68,8 +68,8 @@ export default async function Home() {
           )}
         </div>
         <div className="p-6 sm:p-8 flex flex-col flex-grow">
-           <span className="text-[#f08554] text-[9px] font-black uppercase tracking-widest mb-3 sm:mb-4 inline-block">INSIGHT</span>
-           <h3 className={`${size === "sm" ? "text-lg" : "text-xl"} font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors italic-header italic uppercase line-clamp-2 mb-4`}>
+           <span className="text-[#0878F9] text-[9px] font-black uppercase tracking-widest mb-3 sm:mb-4 inline-block">INSIGHT</span>
+           <h3 className={`${size === "sm" ? "text-lg" : "text-xl"} font-black leading-tight text-[#0B1739] group-hover:text-[#0878F9] transition-colors italic-header italic uppercase line-clamp-2 mb-4`}>
               {post.title}
            </h3>
            <div className="mt-auto flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">
@@ -87,28 +87,28 @@ export default async function Home() {
         
         {/* --- HERO SECTION --- */}
         <section className="mb-12 md:mb-20">
-          <div className="bg-[#2d2d35] rounded-3xl sm:rounded-[3rem] overflow-hidden shadow-2xl border border-white/5 p-6 sm:p-10 md:p-12 lg:p-16">
+          <div className="bg-[#0B1739] rounded-3xl sm:rounded-[3rem] overflow-hidden shadow-2xl border border-white/5 p-6 sm:p-10 md:p-12 lg:p-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
               <div className="lg:col-span-6 flex flex-col justify-center order-2 lg:order-1">
-                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-4 sm:mb-6 block">The Future of Digital Growth</span>
+                <span className="text-[#00C7E8] text-[10px] font-black uppercase tracking-[0.4em] mb-4 sm:mb-6 block">The Future of Digital Growth</span>
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-[0.95] mb-6 sm:mb-8 italic-header italic uppercase tracking-tighter">
                   {home?.heroSection?.headline || "Master Digital Marketing & AI Search."}
                 </h1>
-                <p className="text-slate-400 text-base sm:text-lg mb-8 sm:mb-10 font-medium leading-relaxed max-w-lg">
+                <p className="text-slate-300 text-base sm:text-lg mb-8 sm:mb-10 font-medium leading-relaxed max-w-lg">
                   {home?.heroSection?.subtext || "Practical SEO insights, digital marketing strategies, and AI search research to grow visibility."}
                 </p>
                 <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-12">
-                  <Link href={home?.heroSection?.primaryCtaLink || "/post"} className="bg-[#f08554] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:brightness-110 transition-all uppercase tracking-widest shadow-lg shadow-orange-500/20 text-center">
+                  <Link href={home?.heroSection?.primaryCtaLink || "/post"} className="bg-[#0878F9] text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-[#0660c8] transition-all uppercase tracking-widest shadow-lg shadow-blue-500/20 text-center">
                     {home?.heroSection?.primaryCtaLabel || "Explore Insights"}
                   </Link>
                   <Link href="https://seo.futureflowai.in/" target="_blank" className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-[10px] hover:bg-white/10 transition-all uppercase tracking-widest flex items-center justify-center gap-2 text-center">
                     Free SEO Audit ↗
                   </Link>
                 </div>
-                <div className="flex gap-8 sm:gap-10 pt-6 sm:pt-10 border-t border-white/5">
-                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">142</div><div className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">PROMPTS</div></div>
-                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">48</div><div className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">REVIEWS</div></div>
-                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">{home?.statsReaders || "31K"}</div><div className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">READERS</div></div>
+                <div className="flex gap-8 sm:gap-10 pt-6 sm:pt-10 border-t border-white/10">
+                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">142</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">PROMPTS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">48</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">REVIEWS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">{home?.statsReaders || "31K"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">READERS</div></div>
                 </div>
               </div>
               <div className="lg:col-span-6 order-1 lg:order-2">
@@ -118,7 +118,7 @@ export default async function Home() {
                       <img src={urlFor(heroPost.mainImage).width(1280).height(720).auto('format').url()} alt={heroPost.mainImage.alt || heroPost.title} className="w-full h-full object-cover" loading="eager" style={{ backgroundImage: `url(${heroPost.mainImage.asset?.metadata?.lqip})`, backgroundSize: 'cover' }} />
                     )}
                   </div>
-                  {heroPost && <div className="mt-4 sm:mt-6 flex justify-between items-center px-1 sm:px-2"><span className="text-white font-black text-xs uppercase italic-header italic group-hover:text-[#f08554] transition-colors line-clamp-1">Featured: {heroPost.title}</span><span className="text-[9px] font-black text-slate-500 uppercase tracking-widest shrink-0 ml-4">Read Story →</span></div>}
+                  {heroPost && <div className="mt-4 sm:mt-6 flex justify-between items-center px-1 sm:px-2"><span className="text-white font-black text-xs uppercase italic-header italic group-hover:text-[#00C7E8] transition-colors line-clamp-1">Featured: {heroPost.title}</span><span className="text-[9px] font-black text-slate-400 uppercase tracking-widest shrink-0 ml-4">Read Story →</span></div>}
                 </Link>
               </div>
             </div>
@@ -129,8 +129,8 @@ export default async function Home() {
         <div className="mb-16 md:mb-32 overflow-hidden bg-white border-y border-slate-100 py-4 sm:py-6 rounded-xl sm:rounded-2xl">
             <div className="animate-marquee whitespace-nowrap">
                 {[...tickerItems, ...tickerItems].map((tag, idx) => (
-                    <span key={idx} className="mx-6 sm:mx-10 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] sm:tracking-[0.4em] flex items-center gap-3 sm:gap-4 inline-flex">
-                        <span className="w-1.5 h-1.5 bg-[#f08554] rounded-full"></span>
+                    <span key={idx} className="mx-6 sm:mx-10 text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] sm:tracking-[0.4em] flex items-center gap-3 sm:gap-4 inline-flex">
+                        <span className="w-1.5 h-1.5 bg-[#0878F9] rounded-full"></span>
                         {tag}
                     </span>
                 ))}
@@ -141,9 +141,9 @@ export default async function Home() {
         {home?.tray1?.enabled && (
             <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-8 sm:mb-10 px-2 sm:px-4">
-                <h2 className="text-xl sm:text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home.tray1.title || "Editor's Choice"}</h2>
+                <h2 className="text-xl sm:text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home.tray1.title || "Editor's Choice"}</h2>
                 <div className="h-px flex-grow bg-slate-200 mx-4 sm:mx-8"></div>
-                {home.tray1.moreLink && <Link href={home.tray1.moreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest shrink-0">{home.tray1.moreLabel || "View All →"}</Link>}
+                {home.tray1.moreLink && <Link href={home.tray1.moreLink} className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest shrink-0 hover:underline">{home.tray1.moreLabel || "View All →"}</Link>}
             </div>
             <FeaturedSlider featuredPosts={home.tray1.posts || tray1Posts} />
             </section>
@@ -153,8 +153,8 @@ export default async function Home() {
         {home?.tray2?.enabled && (
           <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-8 sm:mb-12 px-2 sm:px-4">
-              <h2 className="text-xl sm:text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray2?.title || "Latest Stories"}</h2>
-              <Link href="/post" className="text-[10px] font-black text-[#f08554] uppercase tracking-widest shrink-0">View All →</Link>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home?.tray2?.title || "Latest Stories"}</h2>
+              <Link href="/post" className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest shrink-0 hover:underline">View All →</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                {tray2Posts?.map((post: any) => <PostCard key={post._id} post={post} />)}
@@ -164,33 +164,33 @@ export default async function Home() {
 
         {/* --- SEO PROMO SECTION (Mid-Page Break) --- */}
         <section className="mb-16 md:mb-32">
-          <Link href="https://seo.futureflowai.in/" target="_blank" className="group block relative overflow-hidden rounded-3xl sm:rounded-[3rem] bg-[#2d2d35] border border-white/5 p-6 sm:p-10 md:p-12 transition-all hover:border-[#f08554]/30">
+          <Link href="https://seo.futureflowai.in/" target="_blank" className="group block relative overflow-hidden rounded-3xl sm:rounded-[3rem] bg-[#0B1739] border border-white/5 p-6 sm:p-10 md:p-12 transition-all hover:border-[#0878F9]/30">
             <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8">
               <div className="max-w-xl">
-                <span className="text-[#f08554] text-[10px] font-black uppercase tracking-[0.4em] mb-3 sm:mb-4 block">Specialized Services</span>
+                <span className="text-[#00C7E8] text-[10px] font-black uppercase tracking-[0.4em] mb-3 sm:mb-4 block">Specialized Services</span>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white italic-header italic uppercase mb-3 sm:mb-4">
-                  Boost Your Search Visibility with <span className="text-[#f08554]">FutureFlow SEO</span>
+                  Boost Your Search Visibility with <span className="text-[#00C7E8]">FutureFlow SEO</span>
                 </h2>
-                <p className="text-slate-400 font-medium text-sm sm:text-lg leading-relaxed">
+                <p className="text-slate-300 font-medium text-sm sm:text-lg leading-relaxed">
                   We combine AI-driven insights with expert strategy to help your brand dominate search results. Get a comprehensive site audit today.
                 </p>
               </div>
-              <div className="bg-[#f08554] text-white px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:scale-105 transition-transform shadow-xl shadow-orange-500/20 shrink-0 w-full md:w-auto text-center">
+              <div className="bg-[#0878F9] text-white px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] group-hover:scale-105 transition-transform shadow-xl shadow-blue-500/20 shrink-0 w-full md:w-auto text-center">
                 Get Free SEO Audit →
               </div>
             </div>
             {/* Background Accent */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-[#f08554]/10 rounded-full blur-[100px] -mr-48 -mt-48 transition-colors group-hover:bg-[#f08554]/20"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#00C7E8]/10 rounded-full blur-[100px] -mr-48 -mt-48 transition-colors group-hover:bg-[#00C7E8]/20"></div>
           </Link>
         </section>
 
         {/* --- TRAY 3: Manual / Optional --- */}
         {home?.tray3?.enabled && (
-          <section className="mb-32">
+          <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-12 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray3?.title || "Must Read"}</h2>
+              <h2 className="text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home?.tray3?.title || "Must Read"}</h2>
               <div className="h-px flex-grow bg-slate-100 mx-8"></div>
-              {home?.tray3?.moreLink && <Link href={home.tray3.moreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">{home.tray3.moreLabel || "Explore →"}</Link>}
+              {home?.tray3?.moreLink && <Link href={home.tray3.moreLink} className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest hover:underline">{home.tray3.moreLabel || "Explore →"}</Link>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                {(home.tray3.posts || []).map((post: any) => <PostCard key={post._id} post={post} size="sm" />)}
@@ -200,11 +200,11 @@ export default async function Home() {
 
         {/* --- TRAY 4: Manual / Optional --- */}
         {home?.tray4?.enabled && (
-          <section className="mb-32">
+          <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-12 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic-header italic">{home?.tray4?.title || "Deep Dives"}</h2>
+              <h2 className="text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home?.tray4?.title || "Deep Dives"}</h2>
               <div className="h-px flex-grow bg-slate-100 mx-8"></div>
-              {home?.tray4?.moreLink && <Link href={home.tray4.moreLink} className="text-[10px] font-black text-[#f08554] uppercase tracking-widest">{home.tray4.moreLabel || "Explore →"}</Link>}
+              {home?.tray4?.moreLink && <Link href={home.tray4.moreLink} className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest hover:underline">{home.tray4.moreLabel || "Explore →"}</Link>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                {(home.tray4.posts || []).map((post: any) => <PostCard key={post._id} post={post} size="sm" />)}

@@ -47,9 +47,9 @@ const myPortableTextComponents = {
         )}
         <div>
           <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block">Written By</span>
-          <h4 className="text-2xl font-black italic-header italic uppercase mb-4 text-slate-900">{value.author?.name}</h4>
+          <h4 className="text-2xl font-black italic-header italic uppercase mb-4 text-[#0B1739]">{value.author?.name}</h4>
           <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xl">
-            {value.authorBio || value.author?.bio || "Expert contributor at FutureFlow AI specializing in automation and digital transformation."}
+            {value.authorBio || value.author?.bio || "Expert contributor at FutureFlow AI specializing in SEO and digital growth strategies."}
           </p>
         </div>
       </div>
@@ -76,11 +76,11 @@ const myPortableTextComponents = {
     },
   },
   block: {
-    h2: ({ children }) => <h2 className="text-3xl lg:text-4xl font-black mt-16 mb-8 tracking-tighter italic-header italic uppercase border-l-4 border-[#f08554] pl-8">{children}</h2>,
-    h3: ({ children }) => <h3 className="text-2xl font-black mt-12 mb-6 tracking-tight italic-header italic uppercase">{children}</h3>,
+    h2: ({ children }) => <h2 className="text-3xl lg:text-4xl font-black mt-16 mb-8 tracking-tighter italic-header italic uppercase border-l-4 border-[#0878F9] pl-8 text-[#0B1739]">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-2xl font-black mt-12 mb-6 tracking-tight italic-header italic uppercase text-[#0B1739]">{children}</h3>,
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-8 text-slate-600 font-medium">{children}</p>,
     blockquote: ({ children }) => (
-        <blockquote className="bg-slate-50 rounded-2xl p-10 border-l-4 border-slate-900 my-12 italic-header italic text-2xl text-slate-800">
+        <blockquote className="bg-slate-50 rounded-2xl p-10 border-l-4 border-[#0B1739] my-12 italic-header italic text-2xl text-[#0B1739]">
             {children}
         </blockquote>
     ),
@@ -101,7 +101,7 @@ const myPortableTextComponents = {
           href={value.href}
           rel={rel}
           target={!value.href.startsWith("/") ? "_blank" : undefined}
-          className="text-[#f08554] underline font-bold hover:text-slate-900 transition-colors"
+          className="text-[#0878F9] underline font-bold hover:text-[#0B1739] transition-colors"
         >
           {children}
         </a>
@@ -257,11 +257,11 @@ export default async function PostPage({ params }) {
       <div className="max-w-4xl mx-auto px-6 pt-12 md:pt-24 pb-8 md:pb-16">
         {/* Visual Breadcrumbs */}
         <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8 flex-wrap">
-          <Link href="/" className="hover:text-slate-900 transition-colors">Home</Link>
+          <Link href="/" className="hover:text-[#0B1739] transition-colors">Home</Link>
           <span>/</span>
           {category && (
             <>
-              <Link href={`/category/${category.slug?.current}`} className="hover:text-[#f08554] transition-colors text-[#f08554]">
+              <Link href={`/category/${category.slug?.current}`} className="hover:text-[#0878F9] transition-colors text-[#0878F9]">
                 {category.title}
               </Link>
               <span>/</span>
@@ -270,29 +270,29 @@ export default async function PostPage({ params }) {
           <span className="text-slate-600 line-clamp-1 max-w-[200px] md:max-w-[300px]">{post.title}</span>
         </nav>
 
-        <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 md:mb-10 leading-[0.95] md:leading-[0.9] text-slate-900 italic-header italic uppercase tracking-tighter">
+        <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 md:mb-10 leading-[0.95] md:leading-[0.9] text-[#0B1739] italic-header italic uppercase tracking-tighter">
             {post.title}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-6 md:gap-8 py-6 md:py-8 border-y border-slate-50 mb-8 md:mb-12">
+        <div className="flex flex-wrap items-center gap-6 md:gap-8 py-6 md:py-8 border-y border-slate-100 mb-8 md:mb-12">
             <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Published</span>
-                <span className="text-xs font-black text-slate-900 uppercase">
+                <span className="text-xs font-black text-[#0B1739] uppercase">
                     {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                 </span>
             </div>
             <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Reading time</span>
-                <span className="text-xs font-black text-slate-900 uppercase">{post.readTime || 5} Minutes</span>
+                <span className="text-xs font-black text-[#0B1739] uppercase">{post.readTime || 5} Minutes</span>
             </div>
             <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Topic</span>
                 {category ? (
-                  <Link href={`/category/${category.slug?.current}`} className="text-xs font-black text-[#f08554] uppercase hover:underline">
+                  <Link href={`/category/${category.slug?.current}`} className="text-xs font-black text-[#0878F9] uppercase hover:underline">
                     {category.title}
                   </Link>
                 ) : (
-                  <span className="text-xs font-black text-[#f08554] uppercase">Digital Marketing</span>
+                  <span className="text-xs font-black text-[#0878F9] uppercase">Digital Marketing</span>
                 )}
             </div>
         </div>
@@ -325,9 +325,8 @@ export default async function PostPage({ params }) {
 
         {/* You May Also Like Section */}
         <div className="mt-24 pt-16 border-t border-slate-100">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#f08554] mb-12 text-center">You may also like</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0878F9] mb-12 text-center">You may also like</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* We'll fetch 2 related posts here in the next step, for now showing a placeholder logic */}
                 <RelatedPosts currentSlug={slug} />
             </div>
         </div>

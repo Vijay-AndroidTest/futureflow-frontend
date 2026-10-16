@@ -19,7 +19,7 @@ export default function MobileMenu({ nav, categories }) {
       {/* Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-slate-900 focus:outline-none"
+        className="p-2 text-[#0B1739] focus:outline-none"
         aria-label="Toggle Menu"
       >
         {isOpen ? (
@@ -38,12 +38,12 @@ export default function MobileMenu({ nav, categories }) {
         <div className="fixed inset-0 z-[100] bg-white flex flex-col overflow-y-auto animate-in fade-in duration-200">
           {/* Header Bar */}
           <div className="sticky top-0 bg-white/95 backdrop-blur-md px-6 h-20 border-b border-slate-100 flex items-center justify-between shrink-0 z-10">
-            <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
-              FUTUREFLOW <span className="text-[#f08554]">AI</span>
+            <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-black tracking-tighter text-[#0B1739] uppercase italic">
+              FUTUREFLOW <span className="text-[#0878F9]">AI</span>
             </Link>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-2.5 text-slate-900 hover:bg-slate-100 rounded-full transition-colors"
+              className="p-2.5 text-[#0B1739] hover:bg-slate-100 rounded-full transition-colors"
               aria-label="Close Menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +61,7 @@ export default function MobileMenu({ nav, categories }) {
                   <Link
                     href={item.link || "#"}
                     onClick={() => setIsOpen(false)}
-                    className="text-2xl font-black italic-header italic uppercase text-slate-900 hover:text-[#f08554] transition-colors"
+                    className="text-2xl font-black italic-header italic uppercase text-[#0B1739] hover:text-[#0878F9] transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -72,7 +72,7 @@ export default function MobileMenu({ nav, categories }) {
                           key={sIdx}
                           href={sub.link || "#"}
                           onClick={() => setIsOpen(false)}
-                          className="text-xs font-bold text-slate-500 hover:text-[#f08554] uppercase tracking-widest py-1"
+                          className="text-xs font-bold text-slate-500 hover:text-[#0878F9] uppercase tracking-widest py-1"
                         >
                           {sub.label}
                         </Link>
@@ -93,7 +93,7 @@ export default function MobileMenu({ nav, categories }) {
                       key={idx}
                       href={`/category/${cat.slug.current}`}
                       onClick={() => setIsOpen(false)}
-                      className="text-[10px] font-black text-[#f08554] uppercase tracking-widest bg-orange-50/80 hover:bg-orange-100/80 px-4 py-3 rounded-xl text-center transition-colors"
+                      className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest bg-blue-50/80 hover:bg-blue-100/80 px-4 py-3 rounded-xl text-center transition-colors"
                     >
                       {cat.title}
                     </Link>
@@ -108,7 +108,7 @@ export default function MobileMenu({ nav, categories }) {
                 href="https://seo.futureflowai.in/"
                 target="_blank"
                 onClick={() => setIsOpen(false)}
-                className="block w-full bg-slate-900 text-white text-center py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl border border-white/10 active:scale-[0.98] transition-transform"
+                className="block w-full bg-[#0B1739] text-white text-center py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl border border-white/10 active:scale-[0.98] transition-transform"
               >
                 Free SEO Audit ↗
               </Link>
@@ -116,7 +116,7 @@ export default function MobileMenu({ nav, categories }) {
                 <Link
                   href={nav.ctaLink || "#"}
                   onClick={() => setIsOpen(false)}
-                  className="block w-full bg-[#f08554] text-white text-center py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-orange-100/50 active:scale-[0.98] transition-transform"
+                  className="block w-full bg-[#0878F9] text-white text-center py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-blue-500/20 active:scale-[0.98] transition-transform"
                 >
                   {nav.ctaLabel}
                 </Link>

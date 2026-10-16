@@ -1,10 +1,27 @@
+# Default Crawler Rules
 User-agent: *
 Allow: /
-
-# Sitemaps
-Sitemap: https://futureflowai.in/sitemap.xml
-
-# Block search and internal tags
 Disallow: /api/
-Disallow: /_next/
 Disallow: /search?*
+
+# Explicitly Allow AI Search Engines for AI Citation & GEO
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemap
+Sitemap: https://futureflowai.in/sitemap.xml

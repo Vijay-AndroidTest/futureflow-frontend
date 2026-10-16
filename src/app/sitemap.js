@@ -25,7 +25,7 @@ export default async function sitemap() {
 
   // 3. Static Pages (Homepage)
   const routes = ["", "/post", "/category"].map((route) => ({
-    url: `${baseUrl}${route}`,
+    url: route === "" ? `${baseUrl}/` : `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'daily',
     priority: 1.0,

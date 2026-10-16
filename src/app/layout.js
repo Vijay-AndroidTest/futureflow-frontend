@@ -6,34 +6,38 @@ import MobileMenu from "../components/MobileMenu";
 import SearchBar from "../components/SearchBar";
 
 export async function generateMetadata() {
-  const config = await client.fetch(`*[_type == "siteSettings"][0]{ defaultSeoTitle, defaultSeoDescription, favicon }`);
+  const config = await client.fetch(`*[_type == "siteSettings"][0]{ defaultSeoTitle, defaultSeoDescription, favicon, siteName, "faviconUrl": favicon.asset->url }`);
   const baseUrl = "https://futureflowai.in";
+
+  const title = config?.defaultSeoTitle || "SEO & Digital Marketing Strategies | FutureFlow AI";
+  const description = config?.defaultSeoDescription || "Practical SEO guides and digital marketing strategies covering content, social media, paid advertising, analytics, and website growth.";
+  const iconUrl = config?.faviconUrl || (config?.favicon ? urlFor(config.favicon).url() : "/favicon.ico");
 
   return {
     metadataBase: new URL(baseUrl),
     title: {
-      default: config?.defaultSeoTitle || "FutureFlow AI",
+      default: title,
       template: `%s | ${config?.siteName || "FutureFlow AI"}`
     },
-    description: config?.defaultSeoDescription,
+    description: description,
     alternates: {
-      canonical: "./",
+      canonical: "https://futureflowai.in/",
     },
     openGraph: {
-      title: config?.defaultSeoTitle || "FutureFlow AI",
-      description: config?.defaultSeoDescription,
-      url: baseUrl,
+      title: title,
+      description: description,
+      url: "https://futureflowai.in/",
       siteName: config?.siteName || "FutureFlow AI",
       locale: 'en_US',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: config?.defaultSeoTitle || "FutureFlow AI",
-      description: config?.defaultSeoDescription,
+      title: title,
+      description: description,
     },
     icons: {
-      icon: config?.favicon ? urlFor(config.favicon).url() : "/favicon.ico",
+      icon: iconUrl,
     },
   };
 }
@@ -44,18 +48,22 @@ export default async function RootLayout({ children }) {
   const nav = await client.fetch(`*[_type == "navigationSettings"][0]`, {}, { next: { revalidate: 60 } });
   const config = await client.fetch(`*[_type == "siteSettings"][0]{
     siteName,
+    siteTagline,
+    "logoUrl": logo.asset->url,
+    "logoDarkUrl": logoDark.asset->url,
+    "faviconUrl": favicon.asset->url,
     logo,
     favicon,
     showAnnouncement,
     announcementBar,
     footerTagline,
-    siteTagline,
     footerLinks,
     footerCopyright,
     googleAnalyticsId
   }`, {}, { next: { revalidate: 60 } });
 
-  const faviconUrl = config?.favicon ? urlFor(config.favicon).width(32).height(32).auto('format').url() : "/favicon.ico";
+  const faviconUrl = config?.faviconUrl || (config?.favicon ? urlFor(config.favicon).width(32).height(32).auto('format').url() : "/favicon.ico");
+  const logoUrl = config?.logoDarkUrl || config?.logoUrl || (config?.logo ? urlFor(config.logo).url() : "https://futureflowai.in/favicon.ico");
 
   const rootSchema = {
     "@context": "https://schema.org",
@@ -64,20 +72,26 @@ export default async function RootLayout({ children }) {
         "@type": "Organization",
         "@id": "https://futureflowai.in/#organization",
         "name": "FutureFlow AI",
-        "url": "https://futureflowai.in",
-        "logo": "https://futureflowai.in/favicon.ico"
+        "url": "https://futureflowai.in/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": logoUrl
+        }
       },
       {
         "@type": "WebSite",
         "@id": "https://futureflowai.in/#website",
-        "url": "https://futureflowai.in",
+        "url": "https://futureflowai.in/",
         "name": "FutureFlow AI",
         "publisher": {
           "@id": "https://futureflowai.in/#organization"
         },
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "https://futureflowai.in/post?search={search_term_string}",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://futureflowai.in/post?search={search_term_string}"
+          },
           "query-input": "required name=search_term_string"
         }
       }
@@ -113,7 +127,7 @@ export default async function RootLayout({ children }) {
       <body className="min-h-screen">
         {/* Announcement Bar */}
         {nav?.showAnnouncement && (
-          <div className="bg-[#f08554] text-white py-2 text-center text-[10px] font-black uppercase tracking-[0.2em]">
+          <div className="bg-[#0878F9] text-white py-2 text-center text-[10px] font-black uppercase tracking-[0.2em]">
             {nav.announcementBar}
           </div>
         )}
@@ -123,11 +137,11 @@ export default async function RootLayout({ children }) {
           <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              {config?.logo ? (
-                <img src={urlFor(config.logo).height(40).url()} alt="Logo" className="h-10 w-auto object-contain" />
+              {config?.logoUrl || config?.logo ? (
+                <img src={config?.logoUrl || urlFor(config.logo).height(40).url()} alt={config?.siteName || "Logo"} className="h-10 w-auto object-contain" />
               ) : (
                 <span className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
-                  {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#f08554]">AI</span>
+                  {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#0878F9]">AI</span>
                 </span>
               )}
             </Link>
@@ -148,7 +162,7 @@ export default async function RootLayout({ children }) {
                     <div className="absolute top-full left-0 pt-4 hidden group-hover/menu:block min-w-[200px] z-50">
                       <div className="bg-white border border-slate-100 shadow-2xl rounded-xl p-4 flex flex-col gap-3">
                         {item.dropdown.map((sub, sIdx) => (
-                          <Link key={sIdx} href={sub.link || "#"} className="text-[10px] font-bold text-slate-400 hover:text-[#f08554] uppercase tracking-widest transition-colors block py-1">
+                          <Link key={sIdx} href={sub.link || "#"} className="text-[10px] font-bold text-slate-400 hover:text-[#0878F9] uppercase tracking-widest transition-colors block py-1">
                             {sub.label}
                           </Link>
                         ))}
@@ -159,7 +173,7 @@ export default async function RootLayout({ children }) {
               ))}
 
               {nav?.ctaLabel && (
-                <Link href={nav.ctaLink || "#"} className="bg-[#f08554] text-white px-6 py-2.5 rounded-lg text-[10px] font-black hover:brightness-110 transition-all shadow-lg shadow-orange-100 uppercase tracking-[0.2em]">
+                <Link href={nav.ctaLink || "#"} className="bg-[#0878F9] text-white px-6 py-2.5 rounded-lg text-[10px] font-black hover:bg-[#0660c8] transition-all shadow-lg shadow-blue-500/20 uppercase tracking-[0.2em]">
                   {nav.ctaLabel}
                 </Link>
               )}
@@ -176,18 +190,22 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
 
         {/* Footer */}
-        <footer className="bg-[#2d2d35] text-white py-16 md:py-32 px-6 mt-16 md:mt-32 relative overflow-hidden">
+        <footer className="bg-[#0B1739] text-white py-16 md:py-32 px-6 mt-16 md:mt-32 relative overflow-hidden">
           {/* Decorative Background Element */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#f08554]/5 rounded-full blur-[120px] -mr-48 -mt-48"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#00C7E8]/10 rounded-full blur-[120px] -mr-48 -mt-48"></div>
 
           <div className="max-w-7xl mx-auto relative z-10">
              <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 mb-12 md:mb-24">
                {/* Brand Column */}
                <div className="md:col-span-5">
                  <Link href="/" className="inline-block mb-6 md:mb-8">
-                    <span className="text-3xl font-black italic-header italic tracking-tighter uppercase block">
-                        {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#f08554]">AI</span>
-                    </span>
+                    {config?.logoDarkUrl || config?.logoUrl || config?.logo ? (
+                      <img src={config?.logoDarkUrl || config?.logoUrl || urlFor(config.logo).height(40).url()} alt={config?.siteName || "Logo"} className="h-10 w-auto object-contain" />
+                    ) : (
+                      <span className="text-3xl font-black italic-header italic tracking-tighter uppercase block">
+                          {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#0878F9]">AI</span>
+                      </span>
+                    )}
                  </Link>
                  <p className="text-sm text-slate-400 leading-relaxed max-w-sm font-medium mb-8 md:mb-10">
                    {config?.footerTagline || config?.siteTagline || "Practical SEO insights, digital marketing strategies, AI search research, and real-world experiments to help websites grow visibility, traffic, and conversions."}
@@ -211,7 +229,7 @@ export default async function RootLayout({ children }) {
                         return items;
                       }).map((linkItem) => (
                         <li key={linkItem.key}>
-                          <Link href={linkItem.link} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
+                          <Link href={linkItem.link} className="text-xs font-bold text-slate-300 hover:text-[#0878F9] transition-colors uppercase tracking-widest">
                               {linkItem.label}
                           </Link>
                         </li>
@@ -219,7 +237,7 @@ export default async function RootLayout({ children }) {
                     ) : (
                       (categories || []).filter(cat => cat?.slug?.current && cat?.title).map((cat, idx) => (
                         <li key={idx}>
-                          <Link href={`/category/${cat.slug.current}`} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
+                          <Link href={`/category/${cat.slug.current}`} className="text-xs font-bold text-slate-300 hover:text-[#0878F9] transition-colors uppercase tracking-widest">
                               {cat.title}
                           </Link>
                         </li>
@@ -233,20 +251,20 @@ export default async function RootLayout({ children }) {
                   <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-10">Organization</h4>
                   <ul className="space-y-4">
                     <li>
-                      <Link href="https://seo.futureflowai.in/" target="_blank" className="text-xs font-bold text-[#f08554] hover:brightness-110 transition-colors uppercase tracking-widest flex items-center gap-2">
+                      <Link href="https://seo.futureflowai.in/" target="_blank" className="text-xs font-bold text-[#00C7E8] hover:text-[#0878F9] transition-colors uppercase tracking-widest flex items-center gap-2">
                           SEO Audit Tool <span className="text-[10px]">↗</span>
                       </Link>
                     </li>
                     {config?.footerLinks?.map((link, idx) => (
                       <li key={idx}>
-                        <Link href={link.url || "#"} className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">
+                        <Link href={link.url || "#"} className="text-xs font-bold text-slate-300 hover:text-[#0878F9] transition-colors uppercase tracking-widest">
                             {link.label}
                         </Link>
                       </li>
                     )) || (
                         <>
-                            <li><Link href="/about" className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">About Us</Link></li>
-                            <li><Link href="/contact" className="text-xs font-bold text-slate-300 hover:text-[#f08554] transition-colors uppercase tracking-widest">Contact</Link></li>
+                            <li><Link href="/about" className="text-xs font-bold text-slate-300 hover:text-[#0878F9] transition-colors uppercase tracking-widest">About Us</Link></li>
+                            <li><Link href="/contact" className="text-xs font-bold text-slate-300 hover:text-[#0878F9] transition-colors uppercase tracking-widest">Contact</Link></li>
                         </>
                     )}
                   </ul>

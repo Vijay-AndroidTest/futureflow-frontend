@@ -46,7 +46,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                   )}
                 </div>
                 <div>
-                  <h3 className="text-2xl sm:text-3xl font-black italic-header italic uppercase leading-tight group-hover:text-[#f08554] transition-colors mb-3 sm:mb-4">
+                  <h3 className="text-2xl sm:text-3xl font-black italic-header italic uppercase leading-tight text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4">
                     {post.title}
                   </h3>
                   <div className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -71,7 +71,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
             <Link
               href={`/post/${post.slug?.current}`}
               key={post._id}
-              className="group flex flex-col h-full bg-white rounded-2xl sm:rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all"
+              className="group flex flex-col h-full bg-white rounded-2xl sm:rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:border-[#0878F9]/30 transition-all"
             >
               <div className="aspect-video overflow-hidden bg-slate-100">
                 {post.mainImage && (
@@ -83,7 +83,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                 )}
               </div>
               <div className="p-6 sm:p-8">
-                <h3 className="text-lg sm:text-xl font-black leading-tight text-slate-900 group-hover:text-[#f08554] transition-colors mb-3 sm:mb-4 italic-header italic uppercase line-clamp-2">
+                <h3 className="text-lg sm:text-xl font-black leading-tight text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4 italic-header italic uppercase line-clamp-2">
                   {post.title}
                 </h3>
                 <p className="text-slate-500 text-xs sm:text-sm font-medium line-clamp-2 mb-6">
@@ -99,7 +99,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
       ) : (
         <div className="py-20 text-center border-2 border-dashed border-slate-100 rounded-[3rem]">
           <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">No articles found matching "{search}".</p>
-          <Link href="/post" className="text-[#f08554] font-black text-[10px] uppercase tracking-widest mt-6 inline-block hover:underline">View all articles →</Link>
+          <Link href="/post" className="text-[#0878F9] font-black text-[10px] uppercase tracking-widest mt-6 inline-block hover:underline">View all articles →</Link>
         </div>
       )}
 
@@ -108,7 +108,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
             <div className="w-full h-px bg-slate-100 mb-8"></div>
             <button
                 onClick={loadMore}
-                className="px-12 py-4 border-2 border-slate-900 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-slate-900 hover:text-white transition-all shadow-xl shadow-slate-100"
+                className="px-12 py-4 border-2 border-[#0B1739] rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#0878F9] hover:border-[#0878F9] hover:text-white transition-all shadow-xl shadow-slate-100"
             >
                 Load more articles
             </button>
