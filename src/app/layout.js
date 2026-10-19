@@ -11,7 +11,7 @@ export async function generateMetadata() {
 
   const title = config?.defaultSeoTitle || "SEO & Digital Marketing Strategies | FutureFlow AI";
   const description = config?.defaultSeoDescription || "Practical SEO guides and digital marketing strategies covering content, social media, paid advertising, analytics, and website growth.";
-  const iconUrl = config?.faviconUrl || (config?.favicon ? urlFor(config.favicon).url() : "/favicon.ico");
+  const faviconUrl = config?.faviconUrl || (config?.favicon ? urlFor(config.favicon).url() : "/favicon.ico");
 
   return {
     metadataBase: new URL(baseUrl),
@@ -37,7 +37,20 @@ export async function generateMetadata() {
       description: description,
     },
     icons: {
-      icon: iconUrl,
+      icon: [
+        {
+          url: faviconUrl,
+          type: "image/png",
+          sizes: "any",
+        },
+      ],
+      shortcut: [
+        {
+          url: faviconUrl,
+          type: "image/png",
+        },
+      ],
+      apple: faviconUrl,
     },
   };
 }
@@ -101,7 +114,9 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href={faviconUrl} />
+        <link rel="icon" href={faviconUrl} type="image/png" sizes="any" />
+        <link rel="shortcut icon" href={faviconUrl} type="image/png" />
+        <link rel="apple-touch-icon" href={faviconUrl} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(rootSchema) }}
