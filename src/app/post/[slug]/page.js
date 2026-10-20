@@ -10,16 +10,17 @@ import RelatedPosts from "../../../components/RelatedPosts";
 const myPortableTextComponents = {
   types: {
     image: ({ value }) => (
-      <div className="my-12">
-        <div className="aspect-video rounded-3xl overflow-hidden shadow-2xl border border-slate-100">
-            <img
-            src={urlFor(value).width(1280).height(720).url()}
+      <figure className="my-10 w-full">
+        <div className="rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-slate-100 bg-slate-50">
+          <img
+            src={urlFor(value).width(1400).fit('max').auto('format').url()}
             alt={value.alt || "Article Image"}
-            className="w-full h-full object-cover"
-            />
+            className="w-full h-auto max-w-full object-contain mx-auto"
+            loading="lazy"
+          />
         </div>
-        {value.caption && <p className="text-center text-xs font-bold text-slate-400 mt-4 uppercase tracking-widest">{value.caption}</p>}
-      </div>
+        {value.caption && <figcaption className="text-center text-xs font-bold text-slate-400 mt-4 uppercase tracking-widest">{value.caption}</figcaption>}
+      </figure>
     ),
     promptBox: ({ value }) => (
       <PromptBox prompt={value.prompt} title={value.title} />

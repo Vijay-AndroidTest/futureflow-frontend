@@ -84,7 +84,7 @@
   }
 
   .prose img {
-    @apply rounded-3xl shadow-2xl my-12 border border-slate-100 aspect-video object-cover;
+    @apply rounded-2xl md:rounded-3xl shadow-xl my-10 border border-slate-100 w-full h-auto max-w-full object-contain mx-auto;
   }
 
   /* Infinite Marquee Animation */
