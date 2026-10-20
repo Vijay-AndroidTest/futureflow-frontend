@@ -9,19 +9,24 @@ import RelatedPosts from "../../../components/RelatedPosts";
 
 const myPortableTextComponents = {
   types: {
-    image: ({ value }) => (
-      <figure className="my-10 w-full">
-        <div className="rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-slate-100 bg-slate-50">
+    image: ({ value }) => {
+      const imageUrl = urlFor(value).width(1400).fit('max').auto('format').url();
+      return (
+        <figure className="my-8 w-full flex flex-col items-center bg-transparent p-0 border-0 shadow-none">
           <img
-            src={urlFor(value).width(1400).fit('max').auto('format').url()}
-            alt={value.alt || "Article Image"}
-            className="w-full h-auto max-w-full object-contain mx-auto"
+            src={imageUrl}
+            alt={value.alt || 'Article Image'}
+            className="w-full h-auto max-w-full object-contain rounded-xl shadow-sm"
             loading="lazy"
           />
-        </div>
-        {value.caption && <figcaption className="text-center text-xs font-bold text-slate-400 mt-4 uppercase tracking-widest">{value.caption}</figcaption>}
-      </figure>
-    ),
+          {value.caption && (
+            <figcaption className="mt-3 text-center text-xs font-bold text-slate-400 uppercase tracking-widest">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
     promptBox: ({ value }) => (
       <PromptBox prompt={value.prompt} title={value.title} />
     ),
