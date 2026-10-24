@@ -52,7 +52,7 @@ export default function FeaturedSlider({ featuredPosts }: { featuredPosts: any[]
                   INSIGHT REPORT
                 </span>
 
-                <h2 className="text-xl sm:text-2xl lg:text-4xl font-black leading-tight mb-4 sm:mb-6 text-[#0B1739] tracking-tighter italic uppercase">
+                <h2 className="text-xl sm:text-2xl lg:text-4xl font-black leading-snug mb-4 sm:mb-6 text-[#0B1739] brand-header tracking-tight">
                   {post.title}
                 </h2>
 
@@ -69,13 +69,13 @@ export default function FeaturedSlider({ featuredPosts }: { featuredPosts: any[]
 
                 <div className="mt-6 sm:mt-10 pt-4 sm:pt-6 border-t border-slate-50 flex gap-6 sm:gap-8">
                    <div>
-                     <div className="text-base sm:text-lg font-black text-[#0B1739] italic tracking-tighter">
+                     <div className="text-base sm:text-lg font-black text-[#0B1739] brand-header">
                         {new Date(post.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                      </div>
                      <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">PUBLISHED</div>
                    </div>
                    <div>
-                     <div className="text-base sm:text-lg font-black text-[#0B1739] italic tracking-tighter">
+                     <div className="text-base sm:text-lg font-black text-[#0B1739] brand-header">
                         {post.readTime || 5} MIN
                      </div>
                      <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">READ TIME</div>

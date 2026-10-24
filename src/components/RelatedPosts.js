@@ -36,7 +36,7 @@ export default async function RelatedPosts({ currentSlug }) {
           </div>
           <div className="p-6 flex flex-col flex-grow">
             <span className="text-[#0878F9] text-[8px] font-black uppercase tracking-widest mb-3 inline-block">Recommended</span>
-            <h3 className="text-lg font-black leading-tight text-[#0B1739] group-hover:text-[#0878F9] transition-colors italic-header italic uppercase line-clamp-2">
+            <h3 className="text-lg font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors brand-header line-clamp-2">
               {post.title}
             </h3>
           </div>

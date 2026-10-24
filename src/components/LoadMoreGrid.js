@@ -46,7 +46,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                   )}
                 </div>
                 <div>
-                  <h3 className="text-2xl sm:text-3xl font-black italic-header italic uppercase leading-tight text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4">
+                  <h3 className="text-2xl sm:text-3xl font-black brand-header leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4">
                     {post.title}
                   </h3>
                   <div className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -83,7 +83,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                 )}
               </div>
               <div className="p-6 sm:p-8">
-                <h3 className="text-lg sm:text-xl font-black leading-tight text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4 italic-header italic uppercase line-clamp-2">
+                <h3 className="text-lg sm:text-xl font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4 brand-header line-clamp-2">
                   {post.title}
                 </h3>
                 <p className="text-slate-500 text-xs sm:text-sm font-medium line-clamp-2 mb-6">

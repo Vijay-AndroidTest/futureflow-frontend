@@ -94,7 +94,7 @@ export default function SearchBar() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search digital marketing guides, SEO strategies, or research..."
-                className="w-full bg-transparent border-b-2 border-[#0B1739] py-4 text-2xl md:text-4xl font-black italic-header italic uppercase outline-none placeholder:text-slate-200 text-[#0B1739]"
+                className="w-full bg-transparent border-b-2 border-[#0B1739] py-4 text-2xl md:text-4xl font-black brand-header outline-none placeholder:text-slate-200 text-[#0B1739]"
               />
             </form>
 
@@ -121,7 +121,7 @@ export default function SearchBar() {
                                         />
                                     )}
                                 </div>
-                                <h3 className="text-lg md:text-xl font-black italic-header italic uppercase text-[#0B1739] group-hover:text-[#0878F9] transition-colors line-clamp-1">
+                                <h3 className="text-lg md:text-xl font-black brand-header text-[#0B1739] group-hover:text-[#0878F9] transition-colors line-clamp-1">
                                     {post.title}
                                 </h3>
                             </Link>
