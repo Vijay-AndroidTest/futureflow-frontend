@@ -106,8 +106,8 @@ export default async function Home() {
                   </Link>
                 </div>
                 <div className="flex gap-8 sm:gap-10 pt-6 sm:pt-10 border-t border-white/10">
-                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">142</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">PROMPTS</div></div>
-                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">48</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">REVIEWS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsGuides || "150+"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">GUIDES</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsStrategies || "50+"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">STRATEGIES</div></div>
                    <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsReaders || "31K"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">READERS</div></div>
                 </div>
               </div>
