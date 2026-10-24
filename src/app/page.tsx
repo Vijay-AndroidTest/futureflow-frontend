@@ -69,7 +69,7 @@ export default async function Home() {
         </div>
         <div className="p-6 sm:p-8 flex flex-col flex-grow">
            <span className="text-[#0878F9] text-[9px] font-black uppercase tracking-widest mb-3 sm:mb-4 inline-block">INSIGHT</span>
-           <h3 className={`${size === "sm" ? "text-lg" : "text-xl"} font-black leading-tight text-[#0B1739] group-hover:text-[#0878F9] transition-colors italic-header italic uppercase line-clamp-2 mb-4`}>
+           <h3 className={`${size === "sm" ? "text-lg" : "text-xl"} font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors brand-header line-clamp-2 mb-4`}>
               {post.title}
            </h3>
            <div className="mt-auto flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase tracking-widest border-t pt-4">
@@ -91,8 +91,8 @@ export default async function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
               <div className="lg:col-span-6 flex flex-col justify-center order-2 lg:order-1">
                 <span className="text-[#00C7E8] text-[10px] font-black uppercase tracking-[0.4em] mb-4 sm:mb-6 block">The Future of Digital Growth</span>
-                <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-[0.95] mb-6 sm:mb-8 italic-header italic uppercase tracking-tighter">
-                  {home?.heroSection?.headline || "Master Digital Marketing & AI Search."}
+                <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-[1.02] mb-6 sm:mb-8 brand-header tracking-tight">
+                  {home?.heroSection?.headline || "Master Digital Marketing & AI Search"}
                 </h1>
                 <p className="text-slate-300 text-base sm:text-lg mb-8 sm:mb-10 font-medium leading-relaxed max-w-lg">
                   {home?.heroSection?.subtext || "Practical SEO insights, digital marketing strategies, and AI search research to grow visibility."}
@@ -106,9 +106,9 @@ export default async function Home() {
                   </Link>
                 </div>
                 <div className="flex gap-8 sm:gap-10 pt-6 sm:pt-10 border-t border-white/10">
-                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">142</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">PROMPTS</div></div>
-                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">48</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">REVIEWS</div></div>
-                   <div><div className="text-xl sm:text-2xl font-black text-white italic-header italic">{home?.statsReaders || "31K"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">READERS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">142</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">PROMPTS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">48</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">REVIEWS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsReaders || "31K"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">READERS</div></div>
                 </div>
               </div>
               <div className="lg:col-span-6 order-1 lg:order-2">
@@ -118,7 +118,7 @@ export default async function Home() {
                       <img src={urlFor(heroPost.mainImage).width(1280).height(720).auto('format').url()} alt={heroPost.mainImage.alt || heroPost.title} className="w-full h-full object-cover" loading="eager" style={{ backgroundImage: `url(${heroPost.mainImage.asset?.metadata?.lqip})`, backgroundSize: 'cover' }} />
                     )}
                   </div>
-                  {heroPost && <div className="mt-4 sm:mt-6 flex justify-between items-center px-1 sm:px-2"><span className="text-white font-black text-xs uppercase italic-header italic group-hover:text-[#00C7E8] transition-colors line-clamp-1">Featured: {heroPost.title}</span><span className="text-[9px] font-black text-slate-400 uppercase tracking-widest shrink-0 ml-4">Read Story →</span></div>}
+                  {heroPost && <div className="mt-4 sm:mt-6 flex justify-between items-center px-1 sm:px-2"><span className="text-white font-black text-sm brand-header group-hover:text-[#00C7E8] transition-colors line-clamp-1">Featured: {heroPost.title}</span><span className="text-[9px] font-black text-slate-400 uppercase tracking-widest shrink-0 ml-4">Read Story →</span></div>}
                 </Link>
               </div>
             </div>
@@ -141,7 +141,7 @@ export default async function Home() {
         {home?.tray1?.enabled && (
             <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-8 sm:mb-10 px-2 sm:px-4">
-                <h2 className="text-xl sm:text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home.tray1.title || "Editor's Choice"}</h2>
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#0B1739] brand-header">{home.tray1.title || "Editor's Choice"}</h2>
                 <div className="h-px flex-grow bg-slate-200 mx-4 sm:mx-8"></div>
                 {home.tray1.moreLink && <Link href={home.tray1.moreLink} className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest shrink-0 hover:underline">{home.tray1.moreLabel || "View All →"}</Link>}
             </div>
@@ -153,7 +153,7 @@ export default async function Home() {
         {home?.tray2?.enabled && (
           <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-8 sm:mb-12 px-2 sm:px-4">
-              <h2 className="text-xl sm:text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home?.tray2?.title || "Latest Stories"}</h2>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#0B1739] brand-header">{home?.tray2?.title || "Latest Stories"}</h2>
               <Link href="/post" className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest shrink-0 hover:underline">View All →</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -168,7 +168,7 @@ export default async function Home() {
             <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8">
               <div className="max-w-xl">
                 <span className="text-[#00C7E8] text-[10px] font-black uppercase tracking-[0.4em] mb-3 sm:mb-4 block">Specialized Services</span>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white italic-header italic uppercase mb-3 sm:mb-4">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white brand-header tracking-tight mb-3 sm:mb-4">
                   Boost Your Search Visibility with <span className="text-[#00C7E8]">FutureFlow SEO</span>
                 </h2>
                 <p className="text-slate-300 font-medium text-sm sm:text-lg leading-relaxed">
@@ -188,7 +188,7 @@ export default async function Home() {
         {home?.tray3?.enabled && (
           <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-12 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home?.tray3?.title || "Must Read"}</h2>
+              <h2 className="text-2xl font-black tracking-tight text-[#0B1739] brand-header">{home?.tray3?.title || "Must Read"}</h2>
               <div className="h-px flex-grow bg-slate-100 mx-8"></div>
               {home?.tray3?.moreLink && <Link href={home.tray3.moreLink} className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest hover:underline">{home.tray3.moreLabel || "Explore →"}</Link>}
             </div>
@@ -202,7 +202,7 @@ export default async function Home() {
         {home?.tray4?.enabled && (
           <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-12 px-4">
-              <h2 className="text-2xl font-black tracking-tighter text-[#0B1739] uppercase italic-header italic">{home?.tray4?.title || "Deep Dives"}</h2>
+              <h2 className="text-2xl font-black tracking-tight text-[#0B1739] brand-header">{home?.tray4?.title || "Deep Dives"}</h2>
               <div className="h-px flex-grow bg-slate-100 mx-8"></div>
               {home?.tray4?.moreLink && <Link href={home.tray4.moreLink} className="text-[10px] font-black text-[#0878F9] uppercase tracking-widest hover:underline">{home.tray4.moreLabel || "Explore →"}</Link>}
             </div>

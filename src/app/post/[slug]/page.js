@@ -276,7 +276,7 @@ export default async function PostPage({ params }) {
           <span className="text-slate-600 line-clamp-1 max-w-[200px] md:max-w-[300px]">{post.title}</span>
         </nav>
 
-        <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 md:mb-10 leading-[0.95] md:leading-[0.9] text-[#0B1739] italic-header italic uppercase tracking-tighter">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-8 md:mb-10 leading-[1.05] text-[#0B1739] brand-header tracking-tight">
             {post.title}
         </h1>
 
@@ -304,7 +304,7 @@ export default async function PostPage({ params }) {
         </div>
 
         {post.description && (
-            <p className="text-lg md:text-2xl text-slate-500 font-medium leading-relaxed mb-10 md:mb-16 italic-header italic">
+            <p className="text-lg md:text-2xl text-slate-500 font-medium leading-relaxed mb-10 md:mb-16">
                 {post.description}
             </p>
         )}
@@ -331,7 +331,7 @@ export default async function PostPage({ params }) {
 
         {/* You May Also Like Section */}
         <div className="mt-24 pt-16 border-t border-slate-100">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0878F9] mb-12 text-center">You may also like</h4>
+            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0878F9] mb-12 text-center">You May Also Like</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <RelatedPosts currentSlug={slug} />
             </div>
@@ -339,7 +339,7 @@ export default async function PostPage({ params }) {
 
         {/* Article Footer */}
         <div className="mt-32 pt-16 border-t border-slate-100 text-center">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">Share this story</h4>
+            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">Share This Story</h2>
             <ShareButtons title={post.title} url={`https://futureflowai.in/post/${slug}`} />
         </div>
       </article>

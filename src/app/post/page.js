@@ -9,7 +9,10 @@ export async function generateMetadata() {
 
   return {
     title: `The Archive | ${config?.siteName || "FutureFlow AI"}`,
-    description: config?.siteTagline,
+    description: config?.siteTagline || "Explore practical SEO guides and digital marketing strategies.",
+    alternates: {
+      canonical: "https://futureflowai.in/post",
+    },
   };
 }
 
@@ -33,8 +36,8 @@ export default async function PostIndex() {
   const featured = data.home?.featuredPosts || [];
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-20">
-      <Suspense fallback={<div>Loading Archive...</div>}>
+    <main className="max-w-7xl mx-auto px-6 py-12 md:py-20">
+      <Suspense fallback={<div className="py-20 text-center text-slate-400 font-bold uppercase tracking-widest text-xs">Loading Archive...</div>}>
         <ArchiveContent posts={posts} featured={featured} />
       </Suspense>
     </main>
@@ -44,11 +47,11 @@ export default async function PostIndex() {
 function ArchiveContent({ posts, featured }) {
   return (
     <>
-      <div className="mb-20">
-        <h1 className="text-5xl md:text-7xl font-black italic-header italic uppercase tracking-tighter mb-4 text-slate-900">
+      <div className="mb-12 md:mb-20">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black brand-header tracking-tight mb-4 text-[#0B1739]">
           The Archive
         </h1>
-        <p className="text-slate-500 text-xl font-medium max-w-2xl">
+        <p className="text-slate-500 text-lg md:text-xl font-medium max-w-2xl">
           Deep dives into digital marketing, SEO strategies, AI search research, and online growth.
         </p>
       </div>

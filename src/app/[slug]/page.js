@@ -26,8 +26,8 @@ const myPortableTextComponents = {
     },
   },
   block: {
-    h2: ({ children }) => <h2 className="text-3xl lg:text-4xl font-black mt-16 mb-8 tracking-tighter italic-header italic uppercase border-l-4 border-[#0878F9] pl-8 text-[#0B1739]">{children}</h2>,
-    h3: ({ children }) => <h3 className="text-2xl font-black mt-12 mb-6 tracking-tight italic-header italic uppercase text-[#0B1739]">{children}</h3>,
+    h2: ({ children }) => <h2 className="text-2xl lg:text-3xl font-black mt-12 mb-6 tracking-tight brand-header border-l-4 border-[#0878F9] pl-6 text-[#0B1739]">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-xl lg:text-2xl font-black mt-10 mb-4 tracking-tight brand-header text-[#0B1739]">{children}</h3>,
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-8 text-slate-600 font-medium">{children}</p>,
   },
   list: {
@@ -103,21 +103,21 @@ export default async function GenericPage({ params }) {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 pt-24 pb-16">
-        <h1 className="text-5xl md:text-7xl font-black mb-10 leading-[0.9] text-[#0B1739] italic-header italic uppercase tracking-tighter">
+      <div className="max-w-4xl mx-auto px-6 pt-12 md:pt-24 pb-8 md:pb-16">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black mb-8 md:mb-10 leading-[1.05] text-[#0B1739] brand-header tracking-tight">
             {page.title}
         </h1>
 
         {page.description && (
-            <p className="text-xl md:text-2xl text-slate-500 font-medium leading-relaxed mb-16 italic-header italic">
+            <p className="text-lg md:text-2xl text-slate-500 font-medium leading-relaxed mb-10 md:mb-16">
                 {page.description}
             </p>
         )}
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mb-24">
+      <div className="max-w-7xl mx-auto px-6 mb-16 md:mb-24">
         {page.mainImage && (
-            <div className="aspect-video w-full rounded-[3rem] overflow-hidden shadow-2xl border border-slate-50">
+            <div className="aspect-video w-full rounded-2xl md:rounded-[3rem] overflow-hidden shadow-2xl border border-slate-50">
                 <img
                 src={urlFor(page.mainImage).width(1920).height(1080).url()}
                 className="w-full h-full object-cover"

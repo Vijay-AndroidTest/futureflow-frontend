@@ -7,7 +7,7 @@ export default function NotFound() {
         <span className="text-[#0878F9] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
           404 — Page Not Found
         </span>
-        <h1 className="text-5xl sm:text-7xl font-black italic-header italic uppercase tracking-tighter text-[#0B1739] mb-6">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black brand-header tracking-tight text-[#0B1739] mb-6">
           Lost in the Data?
         </h1>
         <p className="text-slate-500 text-lg font-medium leading-relaxed mb-10 max-w-lg mx-auto">

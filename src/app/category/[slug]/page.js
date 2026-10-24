@@ -41,16 +41,16 @@ export default async function CategoryPage({ params }) {
   }
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-20">
-      <div className="mb-20 border-b border-slate-100 pb-16">
+    <main className="max-w-7xl mx-auto px-6 py-12 md:py-20">
+      <div className="mb-12 md:mb-20 border-b border-slate-100 pb-12 md:pb-16">
         <span className="text-[#0878F9] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
           Category Archive
         </span>
-        <h1 className="text-5xl md:text-7xl font-black italic-header italic uppercase tracking-tighter mb-6 text-[#0B1739]">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black brand-header tracking-tight mb-6 text-[#0B1739]">
           {data.title}
         </h1>
         {data.description && (
-          <p className="text-slate-500 text-xl font-medium max-w-2xl">
+          <p className="text-slate-500 text-lg md:text-xl font-medium max-w-2xl">
             {data.description}
           </p>
         )}
