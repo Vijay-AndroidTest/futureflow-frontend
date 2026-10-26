@@ -4,7 +4,7 @@ import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ShareButtons from "../../../components/ShareButtons";
-import { PromptBox, AffiliateCard } from "../../../components/EditorialBlocks";
+import { CalloutBox, CustomTable, StatCallout, PromptBox, AffiliateCard } from "../../../components/EditorialBlocks";
 import RelatedPosts from "../../../components/RelatedPosts";
 
 const myPortableTextComponents = {
@@ -27,6 +27,15 @@ const myPortableTextComponents = {
         </figure>
       );
     },
+    calloutBox: ({ value }) => (
+      <CalloutBox type={value.type} title={value.title} text={value.text} />
+    ),
+    customTable: ({ value }) => (
+      <CustomTable title={value.title} headers={value.headers} rows={value.rows} />
+    ),
+    statCallout: ({ value }) => (
+      <StatCallout stat={value.stat} label={value.label} description={value.description} />
+    ),
     promptBox: ({ value }) => (
       <PromptBox prompt={value.prompt} title={value.title} />
     ),

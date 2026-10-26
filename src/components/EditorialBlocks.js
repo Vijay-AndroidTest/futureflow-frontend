@@ -2,7 +2,139 @@
 
 import { useState } from 'react';
 
-// 1. Prompt Box with One-Click Copy
+// 1. Callout Box (Strategy / Key Takeaways Box)
+export function CalloutBox({ type = 'takeaway', title, text }) {
+  const getTheme = () => {
+    switch (type) {
+      case 'tip':
+        return {
+          border: 'border-emerald-500 bg-emerald-50/50 text-emerald-950',
+          badge: 'bg-emerald-500 text-white',
+          icon: '💡',
+          label: title || 'Pro Tip'
+        };
+      case 'warning':
+        return {
+          border: 'border-amber-500 bg-amber-50/50 text-amber-950',
+          badge: 'bg-amber-500 text-white',
+          icon: '⚠️',
+          label: title || 'Important Warning'
+        };
+      case 'insight':
+        return {
+          border: 'border-[#00C7E8] bg-[#0B1739] text-white',
+          badge: 'bg-[#00C7E8] text-[#0B1739]',
+          icon: '✨',
+          label: title || 'Key Insight'
+        };
+      case 'takeaway':
+      default:
+        return {
+          border: 'border-[#0878F9] bg-blue-50/50 text-[#0B1739]',
+          badge: 'bg-[#0878F9] text-white',
+          icon: '📌',
+          label: title || 'Key Takeaway'
+        };
+    }
+  };
+
+  const theme = getTheme();
+
+  return (
+    <div className={`my-8 p-6 sm:p-8 rounded-2xl md:rounded-3xl border-l-4 shadow-lg ${theme.border}`}>
+      <div className="flex items-center gap-3 mb-3">
+        <span className="text-xl">{theme.icon}</span>
+        <span className={`text-[10px] font-black uppercase tracking-[0.25em] px-3 py-1 rounded-full ${theme.badge}`}>
+          {theme.label}
+        </span>
+      </div>
+      {text && <p className="text-base sm:text-lg font-medium leading-relaxed mt-2">{text}</p>}
+    </div>
+  );
+}
+
+// 2. Custom Comparison & Metrics Table
+export function CustomTable({ title, headers = [], rows = [] }) {
+  if (!rows || rows.length === 0) return null;
+
+  return (
+    <div className="my-10 overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xl bg-white">
+      {title && (
+        <div className="bg-[#0B1739] px-6 py-4 border-b border-white/10">
+          <h4 className="text-sm font-black uppercase tracking-widest text-[#00C7E8] brand-header">{title}</h4>
+        </div>
+      )}
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-slate-100 text-left">
+          {headers && headers.length > 0 && (
+            <thead className="bg-slate-50 text-[10px] font-black uppercase tracking-widest text-[#0B1739]">
+              <tr>
+                {headers.map((head, idx) => (
+                  <th key={idx} className="px-6 py-4 border-r border-slate-100 last:border-r-0">
+                    {head}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+          )}
+          <tbody className="divide-y divide-slate-100 text-sm font-medium">
+            {rows.map((row, rIdx) => (
+              <tr key={rIdx} className={rIdx % 2 === 0 ? 'bg-white' : 'bg-slate-50/40'}>
+                {row.label && (
+                  <td className="px-6 py-4 font-bold text-[#0B1739] border-r border-slate-100">
+                    {row.label}
+                  </td>
+                )}
+                {row.cells?.map((cell, cIdx) => (
+                  <td key={cIdx} className="px-6 py-4 border-r border-slate-100 last:border-r-0">
+                    {typeof cell === 'object' ? (
+                      cell.highlight ? (
+                        <span className="inline-block bg-blue-100 text-[#0878F9] px-3 py-1 rounded-full text-xs font-bold">
+                          {cell.text}
+                        </span>
+                      ) : (
+                        <span className={cell.isBold ? 'font-bold text-[#0B1739]' : 'text-slate-700'}>
+                          {cell.text}
+                        </span>
+                      )
+                    ) : (
+                      <span className="text-slate-700">{cell}</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// 3. Key Stat Number Callout
+export function StatCallout({ stat, label, description }) {
+  return (
+    <div className="my-10 p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#F4F7FC] to-blue-50/50 border border-blue-100 shadow-xl flex flex-col items-center sm:items-start text-center sm:text-left">
+      {stat && (
+        <span className="text-5xl sm:text-6xl font-black brand-header text-[#0878F9] tracking-tight mb-2">
+          {stat}
+        </span>
+      )}
+      {label && (
+        <h4 className="text-lg sm:text-xl font-bold brand-header text-[#0B1739] mb-2">
+          {label}
+        </h4>
+      )}
+      {description && (
+        <p className="text-slate-600 text-sm sm:text-base font-medium leading-relaxed max-w-xl">
+          {description}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// Legacy Prompt Box Backup
 export function PromptBox({ prompt, title = "Optimized Prompt" }) {
   const [copied, setCopied] = useState(false);
 
@@ -30,7 +162,7 @@ export function PromptBox({ prompt, title = "Optimized Prompt" }) {
   );
 }
 
-// 2. High-Conversion Affiliate Card
+// Legacy Affiliate Card Backup
 export function AffiliateCard({ name, rating, pros, link, image, description }) {
   return (
     <div className="my-12 bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 md:p-12 shadow-xl hover:border-[#0878F9] transition-all relative overflow-hidden group">
@@ -46,7 +178,7 @@ export function AffiliateCard({ name, rating, pros, link, image, description }) 
         )}
         <div className="flex-grow">
             <div className="flex items-center gap-4 mb-2">
-                <h3 className="text-2xl font-black italic-header italic uppercase tracking-tighter text-[#0B1739]">{name}</h3>
+                <h3 className="text-2xl font-black brand-header text-[#0B1739]">{name}</h3>
                 <div className="flex text-[#0878F9] text-xs">
                     {[...Array(5)].map((_, i) => (
                         <span key={i}>{i < rating ? "★" : "☆"}</span>

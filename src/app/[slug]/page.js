@@ -3,6 +3,7 @@ import { client } from "../../sanity/client";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CalloutBox, CustomTable, StatCallout, PromptBox, AffiliateCard } from "../../components/EditorialBlocks";
 
 const myPortableTextComponents = {
   types: {
@@ -24,6 +25,28 @@ const myPortableTextComponents = {
         </figure>
       );
     },
+    calloutBox: ({ value }) => (
+      <CalloutBox type={value.type} title={value.title} text={value.text} />
+    ),
+    customTable: ({ value }) => (
+      <CustomTable title={value.title} headers={value.headers} rows={value.rows} />
+    ),
+    statCallout: ({ value }) => (
+      <StatCallout stat={value.stat} label={value.label} description={value.description} />
+    ),
+    promptBox: ({ value }) => (
+      <PromptBox prompt={value.prompt} title={value.title} />
+    ),
+    affiliateCard: ({ value }) => (
+      <AffiliateCard
+        name={value.name}
+        rating={value.rating}
+        pros={value.pros}
+        link={value.link}
+        description={value.description}
+        image={value.image ? urlFor(value.image).width(400).url() : null}
+      />
+    ),
   },
   block: {
     h2: ({ children }) => <h2 className="text-2xl lg:text-3xl font-black mt-12 mb-6 tracking-tight brand-header border-l-4 border-[#0878F9] pl-6 text-[#0B1739]">{children}</h2>,
