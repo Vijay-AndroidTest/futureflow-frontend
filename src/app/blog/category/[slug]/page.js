@@ -1,7 +1,11 @@
+import { client } from "../../../../sanity/client";
 import { redirect } from 'next/navigation';
 
 export async function generateStaticParams() {
-  return [];
+  const categories = await client.fetch(`*[_type == "category" && defined(slug.current)]{ "slug": slug.current }`);
+  return (categories || []).filter(c => c?.slug).map((cat) => ({
+    slug: cat.slug,
+  }));
 }
 
 export default async function LegacyCategoryRedirect({ params }) {
