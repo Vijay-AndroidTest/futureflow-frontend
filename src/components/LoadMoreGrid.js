@@ -7,7 +7,12 @@ import { useSearchParams } from 'next/navigation';
 
 export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPerPage = 30 }) {
   const searchParams = useSearchParams();
-  const search = searchParams.get('search')?.toLowerCase() || '';
+  const rawSearch = searchParams.get('search')?.toLowerCase() || '';
+
+  // Ignore raw template string placeholders from search bots ({search_term_string})
+  const isTemplate = rawSearch.includes('{search_term_string}') || rawSearch.includes('%7b');
+  const search = isTemplate ? '' : rawSearch.trim();
+
   const [visibleCount, setVisibleCount] = useState(postsPerPage);
 
   // Filter posts based on search query

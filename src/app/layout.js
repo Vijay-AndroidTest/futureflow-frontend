@@ -98,14 +98,6 @@ export default async function RootLayout({ children }) {
         "name": "FutureFlow AI",
         "publisher": {
           "@id": "https://futureflowai.in/#organization"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://futureflowai.in/post?search={search_term_string}"
-          },
-          "query-input": "required name=search_term_string"
         }
       }
     ]

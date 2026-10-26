@@ -3,6 +3,8 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /search?*
+Disallow: /post?search=*
+Disallow: /*?search=*
 
 # Explicitly Allow AI Search Engines for AI Citation & GEO
 User-agent: PerplexityBot
