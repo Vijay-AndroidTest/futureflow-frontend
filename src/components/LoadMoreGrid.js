@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { urlFor } from '../sanity/imageBuilder';
 import { useSearchParams } from 'next/navigation';
@@ -14,6 +14,11 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
   const search = isTemplate ? '' : rawSearch.trim();
 
   const [visibleCount, setVisibleCount] = useState(postsPerPage);
+
+  // Always reset pagination when search query changes
+  useEffect(() => {
+    setVisibleCount(postsPerPage);
+  }, [search, postsPerPage]);
 
   // Filter posts based on search query
   const filteredPosts = useMemo(() => {

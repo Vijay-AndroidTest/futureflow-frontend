@@ -53,13 +53,23 @@ export default function SearchBar() {
     }
   }, [isOpen]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (query.trim()) {
-      router.push(`/post?search=${encodeURIComponent(query.trim())}`);
+  const executeSearch = (searchTerm) => {
+    const trimmed = (searchTerm || query).trim();
+    if (trimmed) {
       setIsOpen(false);
       setQuery('');
+      const targetUrl = `/post?search=${encodeURIComponent(trimmed)}`;
+      if (typeof window !== 'undefined' && window.location.pathname === '/post') {
+        window.location.href = targetUrl;
+      } else {
+        router.push(targetUrl);
+      }
     }
+  };
+
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    executeSearch(query);
   };
 
   return (
@@ -127,7 +137,8 @@ export default function SearchBar() {
                             </Link>
                         ))}
                         <button
-                            onClick={handleSearch}
+                            type="button"
+                            onClick={() => executeSearch(query)}
                             className="mt-4 text-[10px] font-black text-[#0878F9] uppercase tracking-widest hover:underline text-left"
                         >
                             View all results for "{query}" →
