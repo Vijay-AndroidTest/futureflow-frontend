@@ -3,7 +3,7 @@ import { client } from "../../sanity/client";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CalloutBox, CustomTable, StatCallout, PromptBox, AffiliateCard } from "../../components/EditorialBlocks";
+import { CalloutBox, CustomTable, StatCallout, FaqSection, PromptBox, AffiliateCard } from "../../components/EditorialBlocks";
 
 const myPortableTextComponents = {
   types: {
@@ -33,6 +33,9 @@ const myPortableTextComponents = {
     ),
     statCallout: ({ value }) => (
       <StatCallout stat={value.stat} label={value.label} description={value.description} />
+    ),
+    faqSection: ({ value }) => (
+      <FaqSection title={value.title} faqs={value.faqs} />
     ),
     promptBox: ({ value }) => (
       <PromptBox prompt={value.prompt} title={value.title} />

@@ -134,6 +134,82 @@ export function StatCallout({ stat, label, description }) {
   );
 }
 
+// 4. FAQ Accordion Grid with Google FAQPage Schema
+export function FaqSection({ title = "Frequently Asked Questions", faqs = [] }) {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  if (!faqs || faqs.length === 0) return null;
+
+  const toggle = (idx) => {
+    setOpenIndex(openIndex === idx ? null : idx);
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(item => ({
+      "@type": "Question",
+      "name": item.question || item.q || "",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer || item.a || ""
+      }
+    }))
+  };
+
+  return (
+    <div className="my-12 w-full">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="mb-6 border-b border-slate-100 pb-4">
+        <span className="text-[#0878F9] text-[10px] font-black uppercase tracking-[0.4em] block mb-1">Q&A</span>
+        <h3 className="text-2xl sm:text-3xl font-black brand-header text-[#0B1739] tracking-tight">
+          {title}
+        </h3>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        {faqs.map((item, idx) => {
+          const isOpen = openIndex === idx;
+          const question = item.question || item.q || "";
+          const answer = item.answer || item.a || "";
+
+          return (
+            <div
+              key={idx}
+              className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                isOpen ? 'border-[#0878F9] bg-blue-50/20 shadow-md' : 'border-slate-100 bg-white hover:border-slate-200'
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => toggle(idx)}
+                className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 focus:outline-none"
+                aria-expanded={isOpen}
+              >
+                <span className="text-base sm:text-lg font-bold brand-header text-[#0B1739] leading-snug">
+                  {question}
+                </span>
+                <span className={`w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0 transition-transform duration-300 text-xs font-black text-[#0B1739] ${isOpen ? 'rotate-180 bg-[#0878F9] text-white' : ''}`}>
+                  ▼
+                </span>
+              </button>
+
+              {isOpen && (
+                <div className="px-5 sm:px-6 pb-6 pt-1 border-t border-slate-100/60 text-slate-600 font-medium text-base leading-relaxed animate-in fade-in duration-200">
+                  {answer}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // Legacy Prompt Box Backup
 export function PromptBox({ prompt, title = "Optimized Prompt" }) {
   const [copied, setCopied] = useState(false);
