@@ -15,7 +15,7 @@ const myPortableTextComponents = {
         <figure className="my-8 w-full flex flex-col items-center bg-transparent p-0 border-0 shadow-none">
           <img
             src={imageUrl}
-            alt={value.alt || 'Article Image'}
+            alt={value.alt || value.caption || 'Article image'}
             className="w-full h-auto max-w-full object-contain rounded-xl shadow-sm"
             loading="lazy"
           />
@@ -58,7 +58,7 @@ const myPortableTextComponents = {
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
             <img
               src={urlFor(value.author.image).width(200).height(200).url()}
-              alt={value.author.name}
+              alt={value.author.name || 'Article author profile photo'}
               className="w-full h-full object-cover"
             />
           </div>
@@ -163,7 +163,8 @@ export async function generateMetadata({ params }) {
       seoDescription,
       description,
       mainImage,
-      publishedAt
+      publishedAt,
+      author->{ name }
     }`,
     { slug }
   );
@@ -191,7 +192,7 @@ export async function generateMetadata({ params }) {
         url: imageUrl,
         width: 1200,
         height: 630,
-        alt: post?.title || "Article Image",
+        alt: post?.mainImage?.alt || post?.title || "Article social share image",
       }] : [],
     },
     twitter: {
@@ -376,21 +377,31 @@ export default async function PostPage({ params }) {
             </div>
         </div>
 
+        {/* Key Takeaways Callout Box at top of article */}
         {post.description && (
-            <p className="text-lg md:text-2xl text-slate-500 font-medium leading-relaxed mb-10 md:mb-16">
-                {post.description}
+          <div className="my-8 p-6 sm:p-8 rounded-2xl md:rounded-3xl border-l-4 border-[#0878F9] bg-blue-50/50 shadow-md">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-lg">📌</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full bg-[#0878F9] text-white">
+                Key Takeaways / Summary
+              </span>
+            </div>
+            <p className="text-base sm:text-lg font-medium text-[#0B1739] leading-relaxed mt-2">
+              {post.description}
             </p>
+          </div>
         )}
       </div>
 
-      {/* Hero Image - Locked to 16:9 */}
+      {/* Hero Image - Uncropped Locked Aspect Ratio Container */}
       <div className="max-w-7xl mx-auto px-6 mb-16 md:mb-24">
         {post.mainImage && (
-            <div className="aspect-video w-full rounded-2xl md:rounded-[3rem] overflow-hidden shadow-2xl border border-slate-50">
+            <div className="aspect-video w-full rounded-2xl md:rounded-[3rem] overflow-hidden shadow-2xl border border-slate-50 bg-[#0B1739] flex items-center justify-center p-2">
                 <img
-                src={urlFor(post.mainImage).width(1920).height(1080).url()}
-                className="w-full h-full object-cover"
-                alt={post.mainImage.alt || post.title}
+                src={urlFor(post.mainImage).width(1920).fit('max').auto('format').url()}
+                className="w-full h-full object-contain"
+                alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Article hero image'}
+                loading="eager"
                 />
             </div>
         )}
@@ -409,7 +420,7 @@ export default async function PostPage({ params }) {
               <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
                 <img
                   src={urlFor(post.author.image).width(200).height(200).url()}
-                  alt={post.author.name}
+                  alt={post.author.name || 'Article author profile photo'}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -444,6 +455,18 @@ export default async function PostPage({ params }) {
             </div>
           </div>
         )}
+
+        {/* Read Next CTA Card */}
+        <div className="mt-16 p-8 sm:p-10 bg-[#0B1739] text-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-white/10">
+          <div>
+            <span className="text-[#00C7E8] text-[10px] font-black uppercase tracking-[0.3em] block mb-2">Continue Reading</span>
+            <h3 className="text-xl sm:text-2xl font-black brand-header tracking-tight">Ready for More Growth Strategies?</h3>
+            <p className="text-slate-300 text-sm font-medium mt-1">Explore our complete archive of SEO and digital marketing playbooks.</p>
+          </div>
+          <Link href="/post" className="bg-[#0878F9] text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-[#0660c8] transition-colors shrink-0">
+            Browse All Guides →
+          </Link>
+        </div>
 
         {/* You May Also Like Section */}
         <div className="mt-24 pt-16 border-t border-slate-100">

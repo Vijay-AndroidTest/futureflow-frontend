@@ -10,7 +10,9 @@ export default async function RelatedPosts({ currentSlug }) {
       slug,
       mainImage,
       publishedAt,
-      readTime
+      readTime,
+      "category": category->{ title, slug },
+      "categories": categories[defined(@)]->{ title, slug }
     }`,
     { currentSlug }
   );
@@ -19,29 +21,40 @@ export default async function RelatedPosts({ currentSlug }) {
 
   return (
     <>
-      {posts.map((post) => (
-        <Link
-          key={post._id}
-          href={`/post/${post.slug.current}`}
-          className="group flex flex-col bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-xl transition-all"
-        >
-          <div className="aspect-video w-full overflow-hidden bg-slate-100">
-            {post.mainImage && (
-              <img
-                src={urlFor(post.mainImage).width(600).height(338).url()}
-                alt={post.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-            )}
+      {posts.map((post) => {
+        const category = post.category || post.categories?.[0];
+        const categoryTitle = category?.title || "Digital Marketing";
+        const categorySlug = category?.slug?.current || "digital-marketing";
+
+        return (
+          <div
+            key={post._id}
+            className="group flex flex-col bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-xl hover:border-[#0878F9]/30 transition-all"
+          >
+            <Link href={`/post/${post.slug?.current}`} className="aspect-video w-full overflow-hidden bg-slate-100 block">
+              {post.mainImage && (
+                <img
+                  src={urlFor(post.mainImage).width(600).height(338).url()}
+                  alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Related article thumbnail'}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              )}
+            </Link>
+            <div className="p-6 flex flex-col flex-grow">
+              <div className="mb-2">
+                <Link href={`/category/${categorySlug}`} className="text-[#0878F9] text-xs font-black uppercase tracking-widest hover:underline inline-block">
+                  {categoryTitle}
+                </Link>
+              </div>
+              <Link href={`/post/${post.slug?.current}`}>
+                <h3 className="text-lg font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors brand-header line-clamp-2">
+                  {post.title}
+                </h3>
+              </Link>
+            </div>
           </div>
-          <div className="p-6 flex flex-col flex-grow">
-            <span className="text-[#0878F9] text-[8px] font-black uppercase tracking-widest mb-3 inline-block">Recommended</span>
-            <h3 className="text-lg font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors brand-header line-clamp-2">
-              {post.title}
-            </h3>
-          </div>
-        </Link>
-      ))}
+        );
+      })}
     </>
   );
 }
