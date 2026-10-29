@@ -31,10 +31,12 @@ export default async function Home() {
     },
     "latestPosts": *[_type == "post"] | order(publishedAt desc) [0...12] {
       ${postFields}
-    }
+    },
+    "postCount": count(*[_type == "post"]),
+    "categoryCount": count(*[_type == "category"])
   }`);
 
-  const { home, latestPosts } = data;
+  const { home, latestPosts, postCount, categoryCount } = data;
 
   // Logic for Dynamic Sections
   const heroPost = home?.heroSection?.featuredPosts?.[0] || latestPosts?.[0];
@@ -106,9 +108,9 @@ export default async function Home() {
                   </Link>
                 </div>
                 <div className="flex gap-8 sm:gap-10 pt-6 sm:pt-10 border-t border-white/10">
-                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsGuides || "150+"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">GUIDES</div></div>
-                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsStrategies || "50+"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">STRATEGIES</div></div>
-                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsReaders || "31K"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">READERS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{postCount || 10}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">GUIDES</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{categoryCount || 5}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">TOPICS</div></div>
+                   <div><div className="text-xl sm:text-2xl font-black text-white brand-header">{home?.statsReaders || "10K+"}</div><div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">READERS</div></div>
                 </div>
               </div>
               <div className="lg:col-span-6 order-1 lg:order-2">

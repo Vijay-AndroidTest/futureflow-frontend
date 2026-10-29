@@ -53,9 +53,9 @@ const myPortableTextComponents = {
       />
     ),
     authorCredits: ({ value }) => (
-      <div className="my-16 p-10 bg-slate-50 rounded-[2.5rem] border border-slate-100 flex flex-col md:flex-row items-center gap-10">
+      <div className="my-16 p-8 sm:p-10 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center md:items-start gap-8">
         {value.author?.image && (
-          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
             <img
               src={urlFor(value.author.image).width(200).height(200).url()}
               alt={value.author.name}
@@ -63,12 +63,31 @@ const myPortableTextComponents = {
             />
           </div>
         )}
-        <div>
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block">Written By</span>
-          <h4 className="text-2xl font-black italic-header italic uppercase mb-4 text-[#0B1739]">{value.author?.name}</h4>
-          <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xl">
+        <div className="flex-grow text-center md:text-left">
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-2 block">Written By</span>
+          <h3 className="text-xl sm:text-2xl font-black brand-header text-[#0B1739] mb-1">{value.author?.name}</h3>
+          {(value.author?.jobTitle || value.author?.credentials) && (
+            <p className="text-xs font-bold text-[#0878F9] uppercase tracking-wider mb-3">
+              {[value.author?.jobTitle, value.author?.credentials].filter(Boolean).join(" • ")}
+            </p>
+          )}
+          <p className="text-sm text-slate-600 font-medium leading-relaxed max-w-xl mb-4">
             {value.authorBio || value.author?.bio || "Expert contributor at FutureFlow AI specializing in SEO and digital growth strategies."}
           </p>
+          {(value.author?.linkedinUrl || value.author?.twitterUrl) && (
+            <div className="flex items-center justify-center md:justify-start gap-4">
+              {value.author?.linkedinUrl && (
+                <a href={value.author.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-500 hover:text-[#0878F9] uppercase tracking-wider transition-colors">
+                  LinkedIn ↗
+                </a>
+              )}
+              {value.author?.twitterUrl && (
+                <a href={value.author.twitterUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-500 hover:text-[#0878F9] uppercase tracking-wider transition-colors">
+                  Twitter / X ↗
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </div>
     ),
@@ -94,8 +113,8 @@ const myPortableTextComponents = {
     },
   },
   block: {
-    h2: ({ children }) => <h2 className="text-3xl lg:text-4xl font-black mt-16 mb-8 tracking-tighter italic-header italic uppercase border-l-4 border-[#0878F9] pl-8 text-[#0B1739]">{children}</h2>,
-    h3: ({ children }) => <h3 className="text-2xl font-black mt-12 mb-6 tracking-tight italic-header italic uppercase text-[#0B1739]">{children}</h3>,
+    h2: ({ children }) => <h2 className="text-2xl lg:text-3xl font-black mt-12 mb-6 tracking-tight brand-header border-l-4 border-[#0878F9] pl-6 text-[#0B1739]">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-xl lg:text-2xl font-black mt-10 mb-4 tracking-tight brand-header text-[#0B1739]">{children}</h3>,
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-8 text-slate-600 font-medium">{children}</p>,
     blockquote: ({ children }) => (
         <blockquote className="bg-slate-50 rounded-2xl p-10 border-l-4 border-[#0B1739] my-12 italic-header italic text-2xl text-[#0B1739]">
@@ -129,8 +148,8 @@ const myPortableTextComponents = {
 };
 
 export async function generateStaticParams() {
-  const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`);
-  return posts.map((post) => ({
+  const posts = await client.fetch(`*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`);
+  return (posts || []).filter(p => p?.slug).map((post) => ({
     slug: post.slug,
   }));
 }
@@ -138,11 +157,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await client.fetch(
-    `*[_type == "post" && slug.current == $slug][0]{
+    `*[_type == "post" && slug.current == $slug && defined(slug.current)][0]{
       title,
       seoTitle,
       seoDescription,
-      mainImage
+      description,
+      mainImage,
+      publishedAt
     }`,
     { slug }
   );
@@ -150,30 +171,34 @@ export async function generateMetadata({ params }) {
   const siteConfig = await client.fetch(`*[_type == "siteSettings"][0]{ siteName, defaultSeoTitle, defaultSeoDescription }`);
   const baseUrl = "https://futureflowai.in";
 
+  const metaTitle = post?.seoTitle || post?.title || siteConfig?.defaultSeoTitle || siteConfig?.siteName || "FutureFlow AI";
+  const metaDescription = post?.seoDescription || post?.description || siteConfig?.defaultSeoDescription || "Practical SEO guides and digital marketing strategies.";
+  const imageUrl = post?.mainImage ? urlFor(post.mainImage).width(1200).height(630).url() : null;
+
   return {
-    title: post?.seoTitle || post?.title || siteConfig?.defaultSeoTitle || siteConfig?.siteName,
-    description: post?.seoDescription || siteConfig?.defaultSeoDescription,
+    title: metaTitle,
+    description: metaDescription,
     alternates: {
       canonical: `${baseUrl}/post/${slug}`,
     },
     openGraph: {
-      title: post?.title,
-      description: post?.seoDescription || siteConfig?.defaultSeoDescription,
+      title: metaTitle,
+      description: metaDescription,
       url: `${baseUrl}/post/${slug}`,
       type: 'article',
       publishedTime: post?.publishedAt,
-      images: post?.mainImage ? [{
-        url: urlFor(post.mainImage).width(1200).height(630).url(),
+      images: imageUrl ? [{
+        url: imageUrl,
         width: 1200,
         height: 630,
-        alt: post.title,
+        alt: post?.title || "Article Image",
       }] : [],
     },
     twitter: {
       card: 'summary_large_image',
-      title: post?.title,
-      description: post?.seoDescription || siteConfig?.defaultSeoDescription,
-      images: post?.mainImage ? [urlFor(post.mainImage).width(1200).height(630).url()] : [],
+      title: metaTitle,
+      description: metaDescription,
+      images: imageUrl ? [imageUrl] : [],
     },
   };
 }
@@ -182,7 +207,7 @@ export default async function PostPage({ params }) {
   const { slug } = await params;
 
   const post = await client.fetch(
-    `*[_type == "post" && slug.current == $slug][0]{
+    `*[_type == "post" && slug.current == $slug && defined(slug.current)][0]{
       title,
       body[]{
         ...,
@@ -191,7 +216,11 @@ export default async function PostPage({ params }) {
           author->{
             name,
             image,
-            bio
+            bio,
+            jobTitle,
+            credentials,
+            linkedinUrl,
+            twitterUrl
           }
         }
       },
@@ -200,6 +229,16 @@ export default async function PostPage({ params }) {
       readTime,
       description,
       seoTitle,
+      seoDescription,
+      author->{
+        name,
+        image,
+        bio,
+        jobTitle,
+        credentials,
+        linkedinUrl,
+        twitterUrl
+      },
       "categories": categories[defined(@)]->{ title, slug },
       "category": category->{ title, slug }
     }`,
@@ -216,17 +255,29 @@ export default async function PostPage({ params }) {
   const postUrl = `${baseUrl}/post/${slug}`;
   const imageUrl = post.mainImage ? urlFor(post.mainImage).width(1200).height(630).url() : null;
 
+  const postAuthor = post.author?.name ? {
+    "@type": "Person",
+    "name": post.author.name,
+    "jobTitle": post.author.jobTitle || "SEO & Digital Growth Specialist",
+    "sameAs": [post.author.linkedinUrl, post.author.twitterUrl].filter(Boolean)
+  } : {
+    "@type": "Organization",
+    "name": "FutureFlow AI",
+    "url": baseUrl
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Article",
+        "@type": "BlogPosting",
         "@id": `${postUrl}#article`,
         "headline": post.title,
-        "description": post.description || "",
+        "description": post.seoDescription || post.description || "",
         "image": imageUrl ? [imageUrl] : [],
         "datePublished": post.publishedAt,
         "dateModified": post.publishedAt,
+        "author": postAuthor,
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": postUrl
@@ -234,7 +285,11 @@ export default async function PostPage({ params }) {
         "publisher": {
           "@type": "Organization",
           "name": "FutureFlow AI",
-          "url": baseUrl
+          "url": baseUrl,
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${baseUrl}/favicon.ico`
+          }
         },
         "articleSection": category?.title || "Digital Marketing"
       },
@@ -293,6 +348,12 @@ export default async function PostPage({ params }) {
         </h1>
 
         <div className="flex flex-wrap items-center gap-6 md:gap-8 py-6 md:py-8 border-y border-slate-100 mb-8 md:mb-12">
+            {post.author?.name && (
+              <div className="flex flex-col">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Author</span>
+                  <span className="text-xs font-black text-[#0878F9] uppercase">{post.author.name}</span>
+              </div>
+            )}
             <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Published</span>
                 <span className="text-xs font-black text-[#0B1739] uppercase">
@@ -340,6 +401,49 @@ export default async function PostPage({ params }) {
         <div className="prose prose-lg max-w-none prose-slate">
           <PortableText value={post.body} components={myPortableTextComponents} />
         </div>
+
+        {/* Author E-E-A-T Profile Card */}
+        {post.author && (
+          <div className="mt-16 p-8 sm:p-10 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center md:items-start gap-8">
+            {post.author.image && (
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
+                <img
+                  src={urlFor(post.author.image).width(200).height(200).url()}
+                  alt={post.author.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="flex-grow text-center md:text-left">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-2 block">Written By</span>
+              <h3 className="text-xl sm:text-2xl font-black brand-header text-[#0B1739] mb-1">{post.author.name}</h3>
+              {(post.author.jobTitle || post.author.credentials) && (
+                <p className="text-xs font-bold text-[#0878F9] uppercase tracking-wider mb-3">
+                  {[post.author.jobTitle, post.author.credentials].filter(Boolean).join(" • ")}
+                </p>
+              )}
+              {post.author.bio && (
+                <p className="text-sm text-slate-600 font-medium leading-relaxed mb-4 max-w-xl">
+                  {post.author.bio}
+                </p>
+              )}
+              {(post.author.linkedinUrl || post.author.twitterUrl) && (
+                <div className="flex items-center justify-center md:justify-start gap-4">
+                  {post.author.linkedinUrl && (
+                    <a href={post.author.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-500 hover:text-[#0878F9] uppercase tracking-wider transition-colors">
+                      LinkedIn ↗
+                    </a>
+                  )}
+                  {post.author.twitterUrl && (
+                    <a href={post.author.twitterUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-500 hover:text-[#0878F9] uppercase tracking-wider transition-colors">
+                      Twitter / X ↗
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* You May Also Like Section */}
         <div className="mt-24 pt-16 border-t border-slate-100">
