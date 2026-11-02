@@ -376,18 +376,6 @@ export default async function PostPage({ params }) {
                   <span className="text-xs font-black text-[#0878F9] uppercase">Digital Marketing</span>
                 )}
             </div>
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-col">
-                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tags</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {post.tags.map((tag, idx) => (
-                    <span key={idx} className="text-[10px] font-black bg-blue-50/80 text-[#0878F9] border border-blue-100/60 px-2.5 py-0.5 rounded-md uppercase tracking-wider">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
         </div>
 
         {/* Key Takeaways Callout Box at top of article */}
@@ -426,11 +414,11 @@ export default async function PostPage({ params }) {
           <PortableText value={post.body} components={myPortableTextComponents} />
         </div>
 
-        {/* Article Topics & Tools Covered (Clickable Tag Links) */}
+        {/* Clickable Tag Links at Bottom */}
         {post.tags && post.tags.length > 0 && (
           <div className="mt-12 pt-8 border-t border-slate-100">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 block mb-4">
-              Topics & Tools Covered
+              Tags
             </span>
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag, idx) => {
