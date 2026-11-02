@@ -426,6 +426,29 @@ export default async function PostPage({ params }) {
           <PortableText value={post.body} components={myPortableTextComponents} />
         </div>
 
+        {/* Article Topics & Tools Covered (Clickable Tag Links) */}
+        {post.tags && post.tags.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-slate-100">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 block mb-4">
+              Topics & Tools Covered
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag, idx) => {
+                const tagSlug = tag ? tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : '';
+                return (
+                  <Link
+                    key={idx}
+                    href={`/tag/${tagSlug}`}
+                    className="text-xs font-bold bg-blue-50/80 hover:bg-[#0878F9] text-[#0878F9] hover:text-white border border-blue-100/80 px-3.5 py-1.5 rounded-lg uppercase tracking-wider transition-all shadow-sm"
+                  >
+                    #{tag}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Author E-E-A-T Profile Card */}
         {post.author && (
           <div className="mt-16 p-8 sm:p-10 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center md:items-start gap-8">
