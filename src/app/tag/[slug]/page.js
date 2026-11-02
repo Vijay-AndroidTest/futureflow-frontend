@@ -74,10 +74,10 @@ export default async function TagPage({ params }) {
           </span>
         </div>
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black brand-header tracking-tight mb-4 text-[#0B1739]">
-          #{displayTag}
+          {displayTag}
         </h1>
         <p className="text-slate-500 text-lg md:text-xl font-medium max-w-2xl">
-          Showing {posts.length} article{posts.length === 1 ? '' : 's'} tagged with #{displayTag}.
+          Showing {posts.length} article{posts.length === 1 ? '' : 's'} tagged with {displayTag}.
         </p>
       </div>
 

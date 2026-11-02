@@ -441,7 +441,7 @@ export default async function PostPage({ params }) {
                     href={`/tag/${tagSlug}`}
                     className="text-xs font-bold bg-blue-50/80 hover:bg-[#0878F9] text-[#0878F9] hover:text-white border border-blue-100/80 px-3.5 py-1.5 rounded-lg uppercase tracking-wider transition-all shadow-sm"
                   >
-                    #{tag}
+                    {tag}
                   </Link>
                 );
               })}

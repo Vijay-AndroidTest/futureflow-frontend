@@ -62,22 +62,10 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                     )}
                   </Link>
                   <div>
-                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <div className="mb-2">
                       <Link href={`/category/${categorySlug}`} className="text-[#0878F9] text-xs font-black uppercase tracking-widest hover:underline inline-block">
                         {categoryTitle}
                       </Link>
-                      {post.tags && post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5">
-                          {post.tags.slice(0, 2).map((tag, idx) => {
-                            const tagSlug = tag ? tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : '';
-                            return (
-                              <Link key={idx} href={`/tag/${tagSlug}`} className="text-[9px] font-bold bg-blue-50/80 hover:bg-[#0878F9] text-[#0878F9] hover:text-white border border-blue-100/60 px-2 py-0.5 rounded-md uppercase tracking-wider transition-colors">
-                                {tag}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      )}
                     </div>
                     <Link href={`/post/${post.slug?.current}`}>
                       <h3 className="text-2xl sm:text-3xl font-black brand-header leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4">
@@ -124,22 +112,10 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                   )}
                 </Link>
                 <div className="p-6 sm:p-8 flex flex-col flex-grow">
-                  <div className="mb-3 flex flex-wrap items-center gap-2">
+                  <div className="mb-3">
                     <Link href={`/category/${categorySlug}`} className="text-[#0878F9] text-xs font-black uppercase tracking-widest hover:underline inline-block">
                       {categoryTitle}
                     </Link>
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {post.tags.slice(0, 2).map((tag, idx) => {
-                          const tagSlug = tag ? tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : '';
-                          return (
-                            <Link key={idx} href={`/tag/${tagSlug}`} className="text-[9px] font-bold bg-blue-50/80 hover:bg-[#0878F9] text-[#0878F9] hover:text-white border border-blue-100/60 px-2 py-0.5 rounded-md uppercase tracking-wider transition-colors">
-                              {tag}
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    )}
                   </div>
                   <Link href={`/post/${post.slug?.current}`}>
                     <h3 className="text-lg sm:text-xl font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4 brand-header line-clamp-2">
