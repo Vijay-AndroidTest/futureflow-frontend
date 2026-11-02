@@ -20,12 +20,13 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
     setVisibleCount(postsPerPage);
   }, [search, postsPerPage]);
 
-  // Filter posts based on search query
+  // Filter posts based on search query or tags
   const filteredPosts = useMemo(() => {
     if (!search) return initialPosts;
     return initialPosts.filter(post =>
       post.title?.toLowerCase().includes(search) ||
-      post.description?.toLowerCase().includes(search)
+      post.description?.toLowerCase().includes(search) ||
+      post.tags?.some((t) => t.toLowerCase().includes(search))
     );
   }, [search, initialPosts]);
 
@@ -61,10 +62,19 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                     )}
                   </Link>
                   <div>
-                    <div className="mb-2">
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
                       <Link href={`/category/${categorySlug}`} className="text-[#0878F9] text-xs font-black uppercase tracking-widest hover:underline inline-block">
                         {categoryTitle}
                       </Link>
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5">
+                          {post.tags.slice(0, 2).map((tag, idx) => (
+                            <span key={idx} className="text-[9px] font-bold bg-blue-50/80 text-[#0878F9] border border-blue-100/60 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                     <Link href={`/post/${post.slug?.current}`}>
                       <h3 className="text-2xl sm:text-3xl font-black brand-header leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4">
@@ -85,7 +95,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
       )}
 
       {/* Results Header */}
-      <h2 className="text-xs font-black uppercase tracking-[0.3em] text-slate-600 mb-8 sm:mb-12">
+      <h2 className="text-xs font-black uppercase tracking-[0.4em] text-slate-600 mb-8 sm:mb-12">
         {search ? `Search Results for "${search}" (${filteredPosts.length})` : "Latest Insights"}
       </h2>
 
@@ -111,10 +121,19 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
                   )}
                 </Link>
                 <div className="p-6 sm:p-8 flex flex-col flex-grow">
-                  <div className="mb-3">
+                  <div className="mb-3 flex flex-wrap items-center gap-2">
                     <Link href={`/category/${categorySlug}`} className="text-[#0878F9] text-xs font-black uppercase tracking-widest hover:underline inline-block">
                       {categoryTitle}
                     </Link>
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {post.tags.slice(0, 2).map((tag, idx) => (
+                          <span key={idx} className="text-[9px] font-bold bg-blue-50/80 text-[#0878F9] border border-blue-100/60 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <Link href={`/post/${post.slug?.current}`}>
                     <h3 className="text-lg sm:text-xl font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors mb-3 sm:mb-4 brand-header line-clamp-2">
@@ -146,7 +165,7 @@ export default function LoadMoreGrid({ initialPosts, featuredPosts = [], postsPe
             <button
                 type="button"
                 onClick={loadMore}
-                className="px-12 py-4 border-2 border-[#0B1739] rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-[#0878F9] hover:border-[#0878F9] hover:text-white transition-all shadow-xl shadow-slate-100"
+                className="px-12 py-4 border-2 border-[#0B1739] rounded-full text-xs font-black uppercase tracking-[0.3em] hover:bg-[#0878F9] hover:border-[#0878F9] hover:text-white transition-all shadow-xl shadow-slate-100"
             >
                 Load more articles
             </button>

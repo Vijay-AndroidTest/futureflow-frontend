@@ -231,6 +231,7 @@ export default async function PostPage({ params }) {
       description,
       seoTitle,
       seoDescription,
+      tags,
       author->{
         name,
         image,
@@ -375,6 +376,18 @@ export default async function PostPage({ params }) {
                   <span className="text-xs font-black text-[#0878F9] uppercase">Digital Marketing</span>
                 )}
             </div>
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-col">
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tags</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {post.tags.map((tag, idx) => (
+                    <span key={idx} className="text-[10px] font-black bg-blue-50/80 text-[#0878F9] border border-blue-100/60 px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
         </div>
 
         {/* Key Takeaways Callout Box at top of article */}

@@ -17,6 +17,7 @@ const postFields = `
   publishedAt,
   description,
   readTime,
+  tags,
   "category": category->{ title, slug },
   "categories": categories[defined(@)]->{ title, slug }
 `;
@@ -76,13 +77,22 @@ export default async function Home() {
           )}
         </Link>
         <div className="p-6 sm:p-8 flex flex-col flex-grow">
-           <div className="mb-3">
+           <div className="mb-3 flex flex-wrap items-center gap-2">
              <Link
                href={`/category/${categorySlug}`}
                className="text-[#0878F9] text-xs font-black uppercase tracking-widest hover:underline inline-block"
              >
                {categoryTitle}
              </Link>
+             {post.tags && post.tags.length > 0 && (
+               <div className="flex flex-wrap gap-1.5">
+                 {post.tags.slice(0, 2).map((tag: string, idx: number) => (
+                   <span key={idx} className="text-[9px] font-bold bg-blue-50/80 text-[#0878F9] border border-blue-100/60 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                     {tag}
+                   </span>
+                 ))}
+               </div>
+             )}
            </div>
            <Link href={`/post/${post.slug?.current}`}>
              <h3 className={`${size === "sm" ? "text-lg" : "text-xl"} font-black leading-snug text-[#0B1739] group-hover:text-[#0878F9] transition-colors brand-header line-clamp-2 mb-4`}>
