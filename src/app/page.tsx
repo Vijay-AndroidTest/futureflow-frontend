@@ -1,7 +1,9 @@
 import { client } from "../sanity/client";
-import FeaturedSlider from "../components/FeaturedSlider";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { urlFor } from "../sanity/imageBuilder";
+
+const FeaturedSlider = dynamic(() => import("../components/FeaturedSlider"), { ssr: true });
 
 const postFields = `
   _id,
@@ -68,7 +70,7 @@ export default async function Home() {
   ];
 
   const PostCard = ({ post, size = "md" }: { post: any, size?: "sm" | "md" | "lg" }) => {
-    const width = size === "lg" ? 1280 : size === "md" ? 800 : 600;
+    const width = size === "lg" ? 900 : size === "md" ? 600 : 400;
     const height = Math.round(width * (9/16));
 
     const catObj = post.category || post.categories?.[0];
@@ -83,10 +85,11 @@ export default async function Home() {
         <Link href={`/post/${post.slug?.current}`} className="aspect-video w-full overflow-hidden bg-slate-100 block">
           {post.mainImage && (
             <img
-                src={urlFor(post.mainImage).width(width).height(height).auto('format').url()}
+                src={urlFor(post.mainImage).width(width).height(height).quality(80).auto('format').url()}
                 alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Article thumbnail'}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 loading="lazy"
+                decoding="async"
             />
           )}
         </Link>
@@ -162,11 +165,12 @@ export default async function Home() {
                   <div className="aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 border-4 border-white/5 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] flex items-center justify-center p-2">
                     {heroPost?.mainImage && (
                       <img
-                        src={urlFor(heroPost.mainImage).width(1280).fit('max').auto('format').url()}
+                        src={urlFor(heroPost.mainImage).width(1000).quality(85).fit('max').auto('format').url()}
                         alt={heroPost.mainImage.alt || heroPost.mainImage.caption || heroPost.title || 'Featured hero article cover image'}
                         className="w-full h-full object-contain"
                         loading="eager"
                         fetchPriority="high"
+                        decoding="async"
                       />
                     )}
                   </div>

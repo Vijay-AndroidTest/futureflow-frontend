@@ -20,6 +20,7 @@
     background-color: #f9f9fb;
     color: #0B1739;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -96,16 +97,17 @@
     @apply rounded-2xl md:rounded-3xl shadow-xl my-10 border border-slate-100 w-full h-auto max-w-full object-contain mx-auto;
   }
 
-  /* Infinite Marquee Animation */
+  /* GPU-Accelerated Infinite Marquee Animation */
   @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
   }
 
   .animate-marquee {
     display: flex;
     width: max-content;
-    animation: marquee 30s linear infinite;
+    will-change: transform;
+    animation: marquee 35s linear infinite;
   }
 
   /* Scroll Reveal Utility */
