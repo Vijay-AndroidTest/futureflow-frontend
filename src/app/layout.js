@@ -1,9 +1,23 @@
 import "./globals.css";
 import Link from "next/link";
+import Script from "next/script";
+import { Plus_Jakarta_Sans, Bricolage_Grotesque } from 'next/font/google';
 import { client } from "../sanity/client";
 import { urlFor } from "../sanity/imageBuilder";
 import MobileMenu from "../components/MobileMenu";
 import SearchBar from "../components/SearchBar";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const bricolageGrotesque = Bricolage_Grotesque({
+  subsets: ['latin'],
+  variable: '--font-header',
+  display: 'swap',
+});
 
 export async function generateMetadata() {
   const config = await client.fetch(`*[_type == "siteSettings"][0]{ defaultSeoTitle, defaultSeoDescription, favicon, siteName, "faviconUrl": favicon.asset->url }`);
@@ -104,19 +118,38 @@ export default async function RootLayout({ children }) {
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${plusJakartaSans.variable} ${bricolageGrotesque.variable}`}>
       <head>
         <link rel="icon" href={faviconUrl} type="image/png" sizes="any" />
         <link rel="shortcut icon" href={faviconUrl} type="image/png" />
         <link rel="apple-touch-icon" href={faviconUrl} />
+
+        {/* DNS Preconnect for Sanity Image CDN */}
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(rootSchema) }}
         />
+
+        {/* Deferred Non-Blocking AdSense */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8050029657155057"
+          strategy="lazyOnload"
+          crossOrigin="anonymous"
+        />
+
+        {/* Deferred Non-Blocking Google Analytics */}
         {config?.googleAnalyticsId && (
           <>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}`} />
-            <script
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}`}
+              strategy="afterInteractive"
+            />
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
@@ -128,8 +161,6 @@ export default async function RootLayout({ children }) {
             />
           </>
         )}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8050029657155057"
-             crossorigin="anonymous"></script>
       </head>
       <body className="min-h-screen">
         {/* Announcement Bar */}
