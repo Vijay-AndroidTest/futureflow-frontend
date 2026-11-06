@@ -27,6 +27,10 @@ export default async function Home() {
     "home": *[_type == "homepageSettings"][0]{
       ...,
       heroSection { ..., featuredPosts[]->{ ${postFields} } },
+      popularSectionTitle,
+      showPopularMore,
+      popularMoreLink,
+      "popularPosts": popularPosts[]->{ ${postFields} },
       tray1 { ..., posts[]->{ ${postFields} } },
       tray2,
       tray3 { ..., posts[]->{ ${postFields} } },
@@ -44,6 +48,16 @@ export default async function Home() {
   const heroPost = home?.heroSection?.featuredPosts?.[0] || latestPosts?.[0];
   const tray1Posts = home?.tray1?.posts || latestPosts?.slice(0, 4);
   const tray2Posts = latestPosts?.slice(0, 6);
+
+  // Resolution for Popular Posts / Editor's Pick
+  const popularPostsList = (home?.popularPosts && home.popularPosts.length > 0)
+    ? home.popularPosts
+    : (home?.tray1?.posts && home.tray1.posts.length > 0)
+    ? home.tray1.posts
+    : tray1Posts;
+
+  const popularTitle = home?.popularSectionTitle || home?.tray1?.title || "Editor's Pick";
+  const popularMoreLink = home?.popularMoreLink || home?.tray1?.moreLink;
 
   const tickerItems = home?.tickerItems || [
     { label: 'SEO Strategy', link: '/category/seo' },
@@ -192,16 +206,20 @@ export default async function Home() {
             </div>
         </div>
 
-        {/* --- TRAY 1: Editor's Pick --- */}
-        {home?.tray1?.enabled !== false && (
-            <section className="mb-16 md:mb-32">
+        {/* --- POPULAR POSTS / EDITOR'S PICK SECTION --- */}
+        {popularPostsList && popularPostsList.length > 0 && (
+          <section className="mb-16 md:mb-32">
             <div className="flex justify-between items-center mb-8 sm:mb-10 px-2 sm:px-4">
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#0B1739] brand-header">{home?.tray1?.title || "Editor's Pick"}</h2>
-                <div className="h-px flex-grow bg-slate-200 mx-4 sm:mx-8"></div>
-                {home?.tray1?.moreLink && <Link href={home.tray1.moreLink} className="text-xs font-black text-[#0878F9] uppercase tracking-widest shrink-0 hover:underline">{home.tray1.moreLabel || "View All →"}</Link>}
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#0B1739] brand-header">{popularTitle}</h2>
+              <div className="h-px flex-grow bg-slate-200 mx-4 sm:mx-8"></div>
+              {popularMoreLink && (
+                <Link href={popularMoreLink} className="text-xs font-black text-[#0878F9] uppercase tracking-widest shrink-0 hover:underline">
+                  View All →
+                </Link>
+              )}
             </div>
-            <FeaturedSlider featuredPosts={home?.tray1?.posts || tray1Posts} />
-            </section>
+            <FeaturedSlider featuredPosts={popularPostsList} />
+          </section>
         )}
 
         {/* --- TRAY 2: Automatic Latest Posts --- */}
