@@ -403,6 +403,7 @@ export default async function PostPage({ params }) {
                 className="w-full h-full object-contain"
                 alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Article hero image'}
                 loading="eager"
+                fetchPriority="high"
                 />
             </div>
         )}

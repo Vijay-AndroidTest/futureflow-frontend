@@ -166,6 +166,7 @@ export default async function Home() {
                         alt={heroPost.mainImage.alt || heroPost.mainImage.caption || heroPost.title || 'Featured hero article cover image'}
                         className="w-full h-full object-contain"
                         loading="eager"
+                        fetchPriority="high"
                       />
                     )}
                   </div>

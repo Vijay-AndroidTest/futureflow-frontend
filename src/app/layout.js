@@ -145,11 +145,11 @@ export default async function RootLayout({ children }) {
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}`}
-              strategy="afterInteractive"
+              strategy="lazyOnload"
             />
             <Script
               id="google-analytics"
-              strategy="afterInteractive"
+              strategy="lazyOnload"
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
