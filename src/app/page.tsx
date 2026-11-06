@@ -87,6 +87,8 @@ export default async function Home() {
             <img
                 src={urlFor(post.mainImage).width(width).height(height).quality(80).auto('format').url()}
                 alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Article thumbnail'}
+                width={width}
+                height={height}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 loading="lazy"
                 decoding="async"
@@ -167,6 +169,8 @@ export default async function Home() {
                       <img
                         src={urlFor(heroPost.mainImage).width(1000).quality(85).fit('max').auto('format').url()}
                         alt={heroPost.mainImage.alt || heroPost.mainImage.caption || heroPost.title || 'Featured hero article cover image'}
+                        width={1000}
+                        height={562}
                         className="w-full h-full object-contain"
                         loading="eager"
                         fetchPriority="high"

@@ -86,7 +86,8 @@ export default async function RootLayout({ children }) {
     footerTagline,
     footerLinks,
     footerCopyright,
-    googleAnalyticsId
+    googleAnalyticsId,
+    adsensePublisherId
   }`, {}, { next: { revalidate: 60 } });
 
   const faviconUrl = config?.faviconUrl || (config?.favicon ? urlFor(config.favicon).width(32).height(32).auto('format').url() : "/favicon.ico");
@@ -133,12 +134,14 @@ export default async function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(rootSchema) }}
         />
 
-        {/* Deferred Non-Blocking AdSense */}
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8050029657155057"
-          strategy="lazyOnload"
-          crossOrigin="anonymous"
-        />
+        {/* AdSense loaded safely if publisher ID is explicitly set */}
+        {config?.adsensePublisherId && (
+          <Script
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${config.adsensePublisherId}`}
+            strategy="lazyOnload"
+            crossOrigin="anonymous"
+          />
+        )}
 
         {/* Deferred Non-Blocking Google Analytics */}
         {config?.googleAnalyticsId && (
@@ -176,7 +179,7 @@ export default async function RootLayout({ children }) {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               {config?.logoUrl || config?.logo ? (
-                <img src={config?.logoUrl || urlFor(config.logo).height(40).url()} alt={config?.siteName || "Logo"} className="h-10 w-auto object-contain" />
+                <img src={config?.logoUrl || urlFor(config.logo).height(40).url()} alt={config?.siteName || "Logo"} width={160} height={40} className="h-10 w-auto object-contain" />
               ) : (
                 <span className="text-lg font-black tracking-tighter text-slate-900 uppercase italic">
                   {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#0878F9]">AI</span>
@@ -211,7 +214,7 @@ export default async function RootLayout({ children }) {
               ))}
 
               {nav?.ctaLabel && (
-                <Link href={nav.ctaLink || "#"} className="bg-[#0878F9] text-white px-6 py-2.5 rounded-lg text-[10px] font-black hover:bg-[#0660c8] transition-all shadow-lg shadow-blue-500/20 uppercase tracking-[0.2em]">
+                <Link href={nav.ctaLink || "#"} className="bg-[#0878F9] text-[#ffffff] px-6 py-2.5 rounded-lg text-[10px] font-black hover:bg-[#0660c8] transition-all shadow-lg shadow-blue-500/20 uppercase tracking-[0.2em]">
                   {nav.ctaLabel}
                 </Link>
               )}
@@ -238,7 +241,7 @@ export default async function RootLayout({ children }) {
                <div className="md:col-span-5">
                  <Link href="/" className="inline-block mb-6 md:mb-8">
                     {config?.logoDarkUrl || config?.logoUrl || config?.logo ? (
-                      <img src={config?.logoDarkUrl || config?.logoUrl || urlFor(config.logo).height(40).url()} alt={config?.siteName || "Logo"} className="h-10 w-auto object-contain" />
+                      <img src={config?.logoDarkUrl || config?.logoUrl || urlFor(config.logo).height(40).url()} alt={config?.siteName || "Logo"} width={160} height={40} className="h-10 w-auto object-contain" />
                     ) : (
                       <span className="text-3xl font-black italic-header italic tracking-tighter uppercase block">
                           {config?.siteName?.toUpperCase().replace(/\bAI\b/g, '').trim() || "FUTUREFLOW"} <span className="text-[#0878F9]">AI</span>
