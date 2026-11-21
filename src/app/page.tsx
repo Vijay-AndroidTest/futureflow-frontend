@@ -2,6 +2,7 @@ import { client } from "../sanity/client";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { urlFor } from "../sanity/imageBuilder";
+import QuickAuditBar from "../components/QuickAuditBar";
 
 const FeaturedSlider = dynamic(() => import("../components/FeaturedSlider"), { ssr: true });
 
@@ -138,15 +139,17 @@ export default async function Home() {
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-[1.02] mb-6 sm:mb-8 brand-header tracking-tight">
                   {home?.heroSection?.headline || "Smarter SEO & Digital Marketing Strategies for Real Growth"}
                 </h1>
-                <p className="text-slate-300 text-base sm:text-lg mb-8 sm:mb-10 font-medium leading-relaxed max-w-lg">
+                <p className="text-slate-300 text-base sm:text-lg mb-6 sm:mb-8 font-medium leading-relaxed max-w-lg">
                   {home?.heroSection?.subtext || "Practical SEO insights, digital marketing strategies, AI search research, and real-world experiments to help websites improve visibility, traffic, and conversions."}
                 </p>
+
+                {/* Instant Interactive Domain Audit Bar */}
+                <QuickAuditBar />
+
                 <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-12">
-                  <Link href={home?.heroSection?.primaryCtaLink || "/post"} className="bg-[#0878F9] text-white px-8 py-4 rounded-xl font-black text-xs hover:bg-[#0660c8] transition-all uppercase tracking-widest shadow-lg shadow-blue-500/20 text-center">
-                    {home?.heroSection?.primaryCtaLabel || "Explore Insights"}
-                  </Link>
-                  <Link href="https://seo.futureflowai.in/" target="_blank" className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-xs hover:bg-white/10 transition-all uppercase tracking-widest flex items-center justify-center gap-2 text-center">
-                    Free SEO Audit ↗
+                  <Link href={home?.heroSection?.primaryCtaLink || "/post"} className="bg-white/10 hover:bg-white/20 border border-white/15 text-white px-8 py-3.5 rounded-xl font-black text-xs transition-all uppercase tracking-widest shadow-lg text-center flex items-center justify-center gap-2">
+                    <span>{home?.heroSection?.primaryCtaLabel || "Explore Insights"}</span>
+                    <span>→</span>
                   </Link>
                 </div>
 

@@ -6,6 +6,19 @@ import { redirect } from "next/navigation";
 import ShareButtons from "../../../components/ShareButtons";
 import { CalloutBox, CustomTable, StatCallout, FaqSection, PromptBox, AffiliateCard } from "../../../components/EditorialBlocks";
 import RelatedPosts from "../../../components/RelatedPosts";
+import TableOfContents from "../../../components/TableOfContents";
+import GrowthNewsletterCard from "../../../components/GrowthNewsletterCard";
+
+function slugify(text) {
+  if (!text) return '';
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+}
 
 const myPortableTextComponents = {
   types: {
@@ -113,8 +126,34 @@ const myPortableTextComponents = {
     },
   },
   block: {
-    h2: ({ children }) => <h2 className="text-2xl lg:text-3xl font-black mt-12 mb-6 tracking-tight brand-header border-l-4 border-[#0878F9] pl-6 text-[#0B1739]">{children}</h2>,
-    h3: ({ children }) => <h3 className="text-xl lg:text-2xl font-black mt-10 mb-4 tracking-tight brand-header text-[#0B1739]">{children}</h3>,
+    h2: ({ value, children }) => {
+      const text = value?.children?.map(c => c.text).join('') || '';
+      const slug = slugify(text);
+      return (
+        <h2 id={slug || undefined} className="group text-2xl lg:text-3xl font-black mt-12 mb-6 tracking-tight brand-header border-l-4 border-[#0878F9] pl-6 text-[#0B1739] scroll-mt-24 flex items-center justify-between">
+          <span>{children}</span>
+          {slug && (
+            <a href={`#${slug}`} aria-label={`Direct link to section ${text}`} className="opacity-0 group-hover:opacity-100 text-[#0878F9] text-base transition-opacity ml-2 select-none">
+              #
+            </a>
+          )}
+        </h2>
+      );
+    },
+    h3: ({ value, children }) => {
+      const text = value?.children?.map(c => c.text).join('') || '';
+      const slug = slugify(text);
+      return (
+        <h3 id={slug || undefined} className="group text-xl lg:text-2xl font-black mt-10 mb-4 tracking-tight brand-header text-[#0B1739] scroll-mt-24 flex items-center justify-between">
+          <span>{children}</span>
+          {slug && (
+            <a href={`#${slug}`} aria-label={`Direct link to section ${text}`} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-[#0878F9] text-sm transition-opacity ml-2 select-none">
+              #
+            </a>
+          )}
+        </h3>
+      );
+    },
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-8 text-slate-600 font-medium">{children}</p>,
     blockquote: ({ children }) => (
         <blockquote className="bg-slate-50 rounded-2xl p-10 border-l-4 border-[#0B1739] my-12 italic-header italic text-2xl text-[#0B1739]">
@@ -164,6 +203,7 @@ export async function generateMetadata({ params }) {
       description,
       mainImage,
       publishedAt,
+      body,
       author->{ name }
     }`,
     { slug }
@@ -173,7 +213,33 @@ export async function generateMetadata({ params }) {
   const baseUrl = "https://futureflowai.in";
 
   const metaTitle = post?.seoTitle || post?.title || siteConfig?.defaultSeoTitle || siteConfig?.siteName || "FutureFlow AI";
-  const metaDescription = post?.seoDescription || post?.description || siteConfig?.defaultSeoDescription || "Practical SEO guides and digital marketing strategies.";
+
+  // Intelligent Meta Description (prevent boilerplate low-CTR snippets in Google)
+  let metaDescription = post?.seoDescription;
+
+  if (!metaDescription && post?.description) {
+    const isBoilerplate = post.description.toLowerCase().includes("explore actionable seo insights") ||
+                          post.description.toLowerCase().includes("practical seo insights");
+    if (!isBoilerplate) {
+      metaDescription = post.description;
+    }
+  }
+
+  // Extract from first paragraph if description is missing or generic
+  if (!metaDescription && Array.isArray(post?.body)) {
+    const firstParagraph = post.body.find(b => b._type === 'block' && b.style === 'normal' && Array.isArray(b.children));
+    if (firstParagraph) {
+      const text = firstParagraph.children.map(c => c.text).join('').trim();
+      if (text.length > 30) {
+        metaDescription = text.length > 155 ? text.slice(0, 152) + '...' : text;
+      }
+    }
+  }
+
+  if (!metaDescription) {
+    metaDescription = post?.description || siteConfig?.defaultSeoDescription || "Practical SEO guides and digital marketing strategies.";
+  }
+
   const imageUrl = post?.mainImage ? urlFor(post.mainImage).width(1200).height(630).url() : null;
 
   return {
@@ -257,6 +323,36 @@ export default async function PostPage({ params }) {
   const postUrl = `${baseUrl}/post/${slug}`;
   const imageUrl = post.mainImage ? urlFor(post.mainImage).width(1200).height(630).url() : null;
 
+  // Extract headings for Table of Contents
+  const headings = (post.body || [])
+    .filter(block => block._type === 'block' && (block.style === 'h2' || block.style === 'h3'))
+    .map(block => {
+      const text = block.children?.map(c => c.text).join('') || '';
+      return {
+        text,
+        slug: slugify(text),
+        level: block.style === 'h2' ? 2 : 3
+      };
+    })
+    .filter(h => h.text.trim().length > 0 && h.slug.length > 0);
+
+  // Extract FAQs from body to generate FAQPage Schema for Google Rich Snippets
+  const faqBlocks = (post.body || []).filter(block => block._type === 'faqSection' && Array.isArray(block.faqs) && block.faqs.length > 0);
+  const allFaqs = faqBlocks.flatMap(block => block.faqs);
+
+  const faqSchema = allFaqs.length > 0 ? {
+    "@type": "FAQPage",
+    "@id": `${postUrl}#faq`,
+    "mainEntity": allFaqs.map(item => ({
+      "@type": "Question",
+      "name": item.question || item.q || "",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer || item.a || ""
+      }
+    }))
+  } : null;
+
   const postAuthor = post.author?.name ? {
     "@type": "Person",
     "name": post.author.name,
@@ -318,7 +414,8 @@ export default async function PostPage({ params }) {
             "item": postUrl
           }
         ]
-      }
+      },
+      ...(faqSchema ? [faqSchema] : [])
     ]
   };
 
@@ -329,9 +426,9 @@ export default async function PostPage({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/* Article Header */}
-      <div className="max-w-4xl mx-auto px-6 pt-12 md:pt-24 pb-8 md:pb-16">
+      <div className="max-w-4xl mx-auto px-6 pt-8 sm:pt-14 pb-4 sm:pb-6">
         {/* Visual Breadcrumbs */}
-        <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8 flex-wrap">
+        <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6 flex-wrap">
           <Link href="/" className="hover:text-[#0B1739] transition-colors">Home</Link>
           <span>/</span>
           {category && (
@@ -345,11 +442,11 @@ export default async function PostPage({ params }) {
           <span className="text-slate-600 line-clamp-1 max-w-[200px] md:max-w-[300px]">{post.title}</span>
         </nav>
 
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-8 md:mb-10 leading-[1.05] text-[#0B1739] brand-header tracking-tight">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-6 md:mb-8 leading-[1.05] text-[#0B1739] brand-header tracking-tight">
             {post.title}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-6 md:gap-8 py-6 md:py-8 border-y border-slate-100 mb-8 md:mb-12">
+        <div className="flex flex-wrap items-center gap-6 md:gap-8 py-5 md:py-6 border-y border-slate-100 mb-6 md:mb-8">
             {post.author?.name && (
               <div className="flex flex-col">
                   <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Author</span>
@@ -380,7 +477,7 @@ export default async function PostPage({ params }) {
 
         {/* Key Takeaways Callout Box at top of article */}
         {post.description && (
-          <div className="my-8 p-6 sm:p-8 rounded-2xl md:rounded-3xl border-l-4 border-[#0878F9] bg-blue-50/50 shadow-md">
+          <div className="my-6 p-6 sm:p-7 rounded-2xl md:rounded-3xl border-l-4 border-[#0878F9] bg-blue-50/50 shadow-sm">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-lg">📌</span>
               <span className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full bg-[#0878F9] text-white">
@@ -394,28 +491,56 @@ export default async function PostPage({ params }) {
         )}
       </div>
 
-      {/* Hero Image - Uncropped Locked Aspect Ratio Container */}
-      <div className="max-w-7xl mx-auto px-6 mb-16 md:mb-24">
-        {post.mainImage && (
-            <div className="aspect-video w-full rounded-2xl md:rounded-[3rem] overflow-hidden shadow-2xl border border-slate-50 bg-[#0B1739] flex items-center justify-center p-2">
-                <img
-                src={urlFor(post.mainImage).width(1920).fit('max').auto('format').url()}
-                className="w-full h-full object-contain"
-                alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Article hero image'}
-                loading="eager"
-                fetchPriority="high"
-                />
-            </div>
-        )}
-      </div>
+      {/* Hero Image - Proportionate, high-impact container */}
+      {post.mainImage && (
+        <div className="max-w-4xl mx-auto px-6 mb-10 md:mb-14">
+          <div className="aspect-[16/9] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-slate-100 bg-[#0B1739] flex items-center justify-center p-1.5 sm:p-2">
+            <img
+              src={urlFor(post.mainImage).width(1400).fit('max').auto('format').url()}
+              className="w-full h-full object-contain"
+              alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Article hero image'}
+              loading="eager"
+              fetchPriority="high"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Content Area */}
-      <article className="max-w-3xl mx-auto px-6 pb-32">
+      <article className="max-w-3xl mx-auto px-6 pb-28">
+        {/* Table of Contents for quick navigation and Google Jump Sitelinks */}
+        {headings && headings.length >= 2 && (
+          <TableOfContents headings={headings} />
+        )}
+
         <div className="prose prose-lg max-w-none prose-slate">
           <PortableText value={post.body} components={myPortableTextComponents} />
         </div>
 
-        {/* Clickable Tag Links at Bottom */}
+        {/* In-Article Tool Bridge Card (Engineering as Marketing) */}
+        <div className="my-14 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-50 via-indigo-50/40 to-blue-50 border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-sm">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#0878F9] block mb-1">
+              Live Free Technical SEO Tool
+            </span>
+            <h4 className="text-base sm:text-lg font-black brand-header text-[#0B1739]">
+              Audit Your Core Web Vitals & AI Search Readiness
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
+              Test your site against Google Lighthouse 12 and LLM answer engine directives with zero paywalls.
+            </p>
+          </div>
+          <a
+            href="https://seo.futureflowai.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#0878F9] hover:bg-[#0660c8] text-white px-6 py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all shadow-md shadow-blue-500/20 shrink-0 whitespace-nowrap"
+          >
+            Run Audit Free ↗
+          </a>
+        </div>
+
+        {/* Clickable Tag Links */}
         {post.tags && post.tags.length > 0 && (
           <div className="mt-12 pt-8 border-t border-slate-100">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 block mb-4">
@@ -440,7 +565,7 @@ export default async function PostPage({ params }) {
 
         {/* Author E-E-A-T Profile Card */}
         {post.author && (
-          <div className="mt-16 p-8 sm:p-10 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center md:items-start gap-8">
+          <div className="mt-14 p-8 sm:p-10 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center md:items-start gap-8">
             {post.author.image && (
               <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
                 <img
@@ -481,8 +606,11 @@ export default async function PostPage({ params }) {
           </div>
         )}
 
+        {/* Solo Creator Growth Newsletter Lead Magnet */}
+        <GrowthNewsletterCard />
+
         {/* Read Next CTA Card */}
-        <div className="mt-16 p-8 sm:p-10 bg-[#0B1739] text-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-white/10">
+        <div className="mt-14 p-8 sm:p-10 bg-[#0B1739] text-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-white/10">
           <div>
             <span className="text-[#00C7E8] text-[10px] font-black uppercase tracking-[0.3em] block mb-2">Continue Reading</span>
             <h3 className="text-xl sm:text-2xl font-black brand-header tracking-tight">Ready for More Growth Strategies?</h3>
@@ -494,16 +622,16 @@ export default async function PostPage({ params }) {
         </div>
 
         {/* You May Also Like Section */}
-        <div className="mt-24 pt-16 border-t border-slate-100">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0878F9] mb-12 text-center">You May Also Like</h2>
+        <div className="mt-20 pt-14 border-t border-slate-100">
+            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0878F9] mb-10 text-center">You May Also Like</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <RelatedPosts currentSlug={slug} />
             </div>
         </div>
 
-        {/* Article Footer */}
-        <div className="mt-32 pt-16 border-t border-slate-100 text-center">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">Share This Story</h2>
+        {/* Article Footer with Share Buttons */}
+        <div className="mt-24 pt-14 border-t border-slate-100 text-center">
+            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-6">Share This Insight</h2>
             <ShareButtons title={post.title} url={`https://futureflowai.in/post/${slug}`} />
         </div>
       </article>
