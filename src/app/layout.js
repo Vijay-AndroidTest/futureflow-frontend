@@ -97,23 +97,39 @@ export default async function RootLayout({ children }) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Organization",
-        "@id": "https://futureflowai.in/#organization",
-        "name": "FutureFlow AI",
-        "url": "https://futureflowai.in/",
-        "logo": {
-          "@type": "ImageObject",
-          "url": logoUrl
-        }
-      },
-      {
         "@type": "WebSite",
         "@id": "https://futureflowai.in/#website",
         "url": "https://futureflowai.in/",
-        "name": "FutureFlow AI",
+        "name": config?.siteName || "FutureFlow AI",
+        "description": config?.siteTagline || "SEO, Digital Marketing Insights, Strategies and Tools",
         "publisher": {
           "@id": "https://futureflowai.in/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://futureflowai.in/post?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
         }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://futureflowai.in/#organization",
+        "name": config?.siteName || "FutureFlow AI",
+        "url": "https://futureflowai.in/",
+        "logo": {
+          "@type": "ImageObject",
+          "@id": "https://futureflowai.in/#logo",
+          "url": logoUrl,
+          "contentUrl": logoUrl,
+          "caption": config?.siteName || "FutureFlow AI"
+        },
+        "sameAs": [
+          "https://twitter.com/futureflowai",
+          "https://www.linkedin.com/company/futureflowai"
+        ]
       }
     ]
   };

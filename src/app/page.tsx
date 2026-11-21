@@ -126,8 +126,26 @@ export default async function Home() {
     { value: home?.statsReaders, label: 'READERS' },
   ].filter(stat => stat.value && String(stat.value).trim() !== '');
 
+  // Homepage Collection / ItemList Schema for Google Rich Results
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Featured Growth & SEO Guides",
+    "description": "Top SEO, digital marketing, and AI search guides by FutureFlow AI",
+    "itemListElement": (latestPosts || []).slice(0, 10).map((post: any, idx: number) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "url": `https://futureflowai.in/post/${post.slug?.current}`,
+      "name": post.title
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-[#f9f9fb]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
         
         {/* --- HERO SECTION --- */}
