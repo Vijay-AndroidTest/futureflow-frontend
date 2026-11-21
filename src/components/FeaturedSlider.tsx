@@ -18,12 +18,12 @@ export default function FeaturedSlider({ featuredPosts }: { featuredPosts: any[]
 
     return (
       <div className="flex flex-col lg:grid lg:grid-cols-12 min-h-0 lg:min-h-[480px] group/card bg-white">
-        {/* Image Side - Uncropped with dark container padding */}
-        <div className="lg:col-span-7 relative overflow-hidden bg-[#0B1739] aspect-video lg:aspect-auto flex items-center justify-center p-2">
+        {/* Image Side - Edge-to-Edge Flush Container */}
+        <div className="lg:col-span-7 relative overflow-hidden bg-slate-100 aspect-video lg:aspect-auto">
           {post.mainImage && (
             <img
-              src={urlFor(post.mainImage).width(1400).fit('max').auto('format').url()}
-              className="w-full h-full object-contain transition-transform duration-700 group-hover/card:scale-102"
+              src={urlFor(post.mainImage).width(1400).fit('crop').auto('format').url()}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105"
               alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Featured article cover image'}
               loading="eager"
             />

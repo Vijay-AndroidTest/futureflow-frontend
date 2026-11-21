@@ -491,13 +491,13 @@ export default async function PostPage({ params }) {
         )}
       </div>
 
-      {/* Hero Image - Proportionate, high-impact container */}
+      {/* Hero Image - Edge-to-Edge Flush Container (No Gap / No Letterboxing) */}
       {post.mainImage && (
         <div className="max-w-4xl mx-auto px-6 mb-10 md:mb-14">
-          <div className="aspect-[16/9] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-slate-100 bg-[#0B1739] flex items-center justify-center p-1.5 sm:p-2">
+          <div className="aspect-[16/9] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-slate-100 bg-slate-100">
             <img
-              src={urlFor(post.mainImage).width(1400).fit('max').auto('format').url()}
-              className="w-full h-full object-contain"
+              src={urlFor(post.mainImage).width(1400).fit('crop').auto('format').url()}
+              className="w-full h-full object-cover"
               alt={post.mainImage.alt || post.mainImage.caption || post.title || 'Article hero image'}
               loading="eager"
               fetchPriority="high"

@@ -167,14 +167,14 @@ export default async function Home() {
               </div>
               <div className="lg:col-span-6 order-1 lg:order-2">
                 <Link href={heroPost?.slug ? `/post/${heroPost.slug.current}` : "#"} className="block group">
-                  <div className="aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 border-4 border-white/5 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] flex items-center justify-center p-2">
+                  <div className="aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 border-4 border-white/5 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
                     {heroPost?.mainImage && (
                       <img
-                        src={urlFor(heroPost.mainImage).width(1000).quality(85).fit('max').auto('format').url()}
+                        src={urlFor(heroPost.mainImage).width(1000).height(562).quality(85).fit('crop').auto('format').url()}
                         alt={heroPost.mainImage.alt || heroPost.mainImage.caption || heroPost.title || 'Featured hero article cover image'}
                         width={1000}
                         height={562}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-cover"
                         loading="eager"
                         fetchPriority="high"
                         decoding="async"
