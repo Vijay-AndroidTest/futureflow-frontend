@@ -144,25 +144,8 @@ export function FaqSection({ title = "Frequently Asked Questions", faqs = [] }) 
     setOpenIndex(openIndex === idx ? null : idx);
   };
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(item => ({
-      "@type": "Question",
-      "name": item.question || item.q || "",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.answer || item.a || ""
-      }
-    }))
-  };
-
   return (
     <div className="my-12 w-full">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
       <div className="mb-6 border-b border-slate-100 pb-4">
         <span className="text-[#0878F9] text-[10px] font-black uppercase tracking-[0.4em] block mb-1">Q&A</span>
         <h3 className="text-2xl sm:text-3xl font-black brand-header text-[#0B1739] tracking-tight">
