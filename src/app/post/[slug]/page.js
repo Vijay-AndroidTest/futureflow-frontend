@@ -484,9 +484,24 @@ export default async function PostPage({ params }) {
                 Key Takeaways / Summary
               </span>
             </div>
-            <p className="text-base sm:text-lg font-medium text-[#0B1739] leading-relaxed mt-2">
-              {post.description}
-            </p>
+            {post.description.includes('•') || post.description.includes('\n') ? (
+              <ul className="mt-3 space-y-2.5">
+                {post.description
+                  .split(/\n|•/)
+                  .map((item) => item.trim())
+                  .filter(Boolean)
+                  .map((point, idx) => (
+                    <li key={idx} className="flex items-start gap-3 text-base sm:text-lg font-medium text-[#0B1739] leading-relaxed">
+                      <span className="text-[#0878F9] text-base font-black mt-0.5 select-none leading-none">•</span>
+                      <span className="flex-1">{point}</span>
+                    </li>
+                  ))}
+              </ul>
+            ) : (
+              <p className="text-base sm:text-lg font-medium text-[#0B1739] leading-relaxed mt-2 whitespace-pre-line">
+                {post.description}
+              </p>
+            )}
           </div>
         )}
       </div>
